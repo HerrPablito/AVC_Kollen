@@ -4,3 +4,215 @@
 
 @import "primeicons/primeicons.css";
 
+/* src/styles.scss */
+
+/* 1) Theme tokens */
+:root {
+    /* Brand palette (inspirerad av burgundy + blush + red) */
+    --burgundy-900: #2a0016;
+    /* djup vinröd */
+    --burgundy-800: #3a0020;
+    --burgundy-700: #4a002a;
+
+    --blush-300: #ffb3c1;
+    /* ljus rosa */
+    --blush-400: #ff8aa3;
+
+    --red-500: #e23b4e;
+    /* accent röd */
+    --red-600: #c92f42;
+
+    /* Semantic colors */
+    --bg-0: var(--burgundy-900);
+    --bg-1: color-mix(in srgb, var(--burgundy-800) 80%, black 20%);
+    --bg-2: color-mix(in srgb, var(--burgundy-700) 75%, black 25%);
+
+    --text-0: #f6f0f4;
+    /* nästan vit men varm */
+    --text-1: color-mix(in srgb, var(--text-0) 75%, var(--bg-0) 25%);
+    --text-2: color-mix(in srgb, var(--text-0) 55%, var(--bg-0) 45%);
+
+    --accent-0: var(--red-500);
+    --accent-1: var(--red-600);
+    --accent-soft: color-mix(in srgb, var(--blush-400) 35%, transparent 65%);
+
+    --danger-0: #ff4444;
+    --danger-1: #cc0000;
+
+    --border-0: color-mix(in srgb, var(--text-0) 12%, transparent 88%);
+    --shadow-0: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+    /* Radius */
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+
+    /* Spacing scale */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+
+    /* Focus */
+    --focus-ring: 0 0 0 3px color-mix(in srgb, var(--blush-400) 55%, transparent 45%);
+
+    /* Typography */
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+    /* Font sizes */
+    --text-xs: 0.75rem;
+    /* 12px */
+    --text-sm: 0.875rem;
+    /* 14px */
+    --text-base: 1rem;
+    /* 16px */
+    --text-lg: 1.125rem;
+    /* 18px */
+    --text-xl: 1.25rem;
+    /* 20px */
+    --text-2xl: 1.5rem;
+    /* 24px */
+    --text-3xl: 1.875rem;
+    /* 30px */
+    --text-4xl: 2.25rem;
+    /* 36px */
+    --text-5xl: 3rem;
+    /* 48px */
+
+    /* Line heights */
+    --leading-tight: 1.25;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.75;
+}
+
+/* 2) Global base */
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    background: radial-gradient(1200px 600px at 70% 20%,
+            color-mix(in srgb, var(--burgundy-700) 70%, black 30%),
+            var(--bg-0));
+    color: var(--text-0);
+}
+
+/* Typography defaults */
+h1 {
+    font-size: var(--text-5xl);
+    line-height: var(--leading-tight);
+    font-weight: 700;
+    margin: 0;
+}
+
+h2 {
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    font-weight: 600;
+    margin: 0;
+}
+
+h3 {
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    font-weight: 600;
+    margin: 0;
+}
+
+p {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+}
+
+/* 3) Default elements */
+a {
+    color: var(--blush-300);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: 8px;
+}
+
+/* 4) Layout helpers (håll få) */
+.container {
+    width: min(1120px, calc(100% - 2 * var(--space-6)));
+    margin: 0 auto;
+}
+
+.surface {
+    background: color-mix(in srgb, var(--bg-1) 85%, transparent 15%);
+    border: 1px solid var(--border-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-0);
+}
+
+/* 5) Buttons (baseline) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-0);
+    background: transparent;
+    color: var(--text-0);
+    cursor: pointer;
+}
+
+.btn--primary {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--accent-0), var(--accent-1));
+    color: white;
+}
+
+.btn--primary:hover {
+    filter: brightness(1.05);
+}
+
+.btn--secondary:hover {
+    background: color-mix(in srgb, var(--bg-2) 70%, transparent 30%);
+}
+
+/* 6) Page & Hero sections */
+.page {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+}
+
+.hero {
+    padding: var(--space-7);
+    max-width: 900px;
+}
+
+.hero__title {
+    margin: 0 0 var(--space-4) 0;
+}
+
+.hero__description {
+    margin: 0 0 var(--space-6) 0;
+    color: var(--text-1);
+    max-width: 60ch;
+}
+
+.hero__actions {
+    display: flex;
+    gap: var(--space-3);
+}
