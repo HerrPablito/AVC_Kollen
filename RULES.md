@@ -7,7 +7,11 @@
   - Tailwind CSS för utility-baserad styling
   - PrimeNG för färdiga UI-komponenter
 - **Layout**: Använd Flexbox för layout (Tailwind: `flex`, `flex-col`, `items-center`, etc.)
-- **Mobilanpassning**: Allt ska vara mobilanpassat och responsivt. Använd Tailwinds responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`) för att anpassa för olika skärmstorlekar.
+- **Mobile-First**: Sidan ska ALLTID fungera i mobilt läge minst lika bra eller bättre än desktop. Designa för mobil först, lägg till desktop-funktioner sedan.
+  - Använd Tailwinds responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`) för att bygga upp från mobil
+  - Testa alltid i mobilt läge först
+  - Touch-targets ska vara minst 44x44px
+  - Horisontell scrollning är förbjuden
 
 ## Angular Best Practices
 - **Signals**: Använd Angular Signals där det passar sig för reaktivitet.

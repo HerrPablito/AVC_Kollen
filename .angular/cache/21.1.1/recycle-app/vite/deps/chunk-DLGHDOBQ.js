@@ -1,6 +1,6 @@
 import {
   getDOM
-} from "./chunk-JBXRKU2W.js";
+} from "./chunk-QNVDUFQK.js";
 import {
   APP_ID,
   CSP_NONCE,
@@ -715,4 +715,4 @@ export {
   REMOVE_STYLES_ON_COMPONENT_DESTROY,
   DomRendererFactory2
 };
-//# sourceMappingURL=chunk-YW25P7W4.js.map
+//# sourceMappingURL=chunk-DLGHDOBQ.js.map
