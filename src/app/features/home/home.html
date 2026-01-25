@@ -244,23 +244,16 @@
         <!-- Content -->
         <div class="p-6">
             <div class="prose prose-invert max-w-none">
-                <p class="text-lg text-[var(--text-0)] mb-4">{{ article.content }}</p>
+                @if (article.excerpt) {
+                <p class="text-lg text-[var(--text-0)] mb-4">{{ article.excerpt }}</p>
+                }
 
-                @if (article.fractions && article.fractions.length > 0) {
-                <div class="mt-6 p-4 bg-[var(--bg-2)] rounded-lg">
-                    <h4 class="font-semibold mb-2 flex items-center gap-2">
-                        <i class="pi pi-tags text-[var(--accent-0)]"></i>
-                        Relaterade fraktioner
-                    </h4>
-                    <div class="flex flex-wrap gap-2">
-                        @for (fraction of article.fractions; track fraction) {
-                        <span
-                            class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-3 py-1 rounded-full text-sm">
-                            {{ fraction }}
-                        </span>
-                        }
-                    </div>
-                </div>
+                @if (article.description) {
+                <p class="text-[var(--text-1)] mb-4">{{ article.description }}</p>
+                }
+
+                @if (!article.excerpt && !article.description) {
+                <p class="text-[var(--text-1)] mb-4">Detaljerad information kommer snart.</p>
                 }
             </div>
         </div>

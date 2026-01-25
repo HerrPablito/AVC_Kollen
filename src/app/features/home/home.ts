@@ -109,12 +109,12 @@ export class HomeComponent {
             error: () => {
                 // Fallback content if API fails or slug is missing
                 this.selectedArticle.set({
-                    id: 'temp',
+                    id: 0,
                     title: slug.charAt(0).toUpperCase() + slug.slice(1),
                     slug: slug,
-                    excerpt: '',
-                    content: 'Detaljerad information om hur du sorterar denna fraktion kommer snart.',
-                    fractions: [slug]
+                    category: '',
+                    excerpt: 'Detaljerad information om hur du sorterar denna fraktion kommer snart.',
+                    description: undefined
                 });
             }
         });

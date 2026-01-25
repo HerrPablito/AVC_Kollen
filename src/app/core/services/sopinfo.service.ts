@@ -21,9 +21,9 @@ export class SopinfoService {
             return of(this.stationsCache()!);
         }
 
-        return this.http.get<any[]>(`${this.API_BASE}/stationer`).pipe(
-            tap(data => console.log('Sopinfo API: Fetched stations', data?.length)),
-            map(data => this.mapStations(data)),
+        return this.http.get<{ success: boolean; data: any[] }>(`${this.API_BASE}/stationer`).pipe(
+            tap(response => console.log('Sopinfo API: Fetched stations', response.data?.length)),
+            map(response => this.mapStations(response.data)),
             tap(stations => this.stationsCache.set(stations)),
             catchError(err => {
                 console.error('Sopinfo API Error (Stations):', err);
@@ -33,8 +33,8 @@ export class SopinfoService {
     }
 
     getStationDetails(id: string): Observable<Station> {
-        return this.http.get<any>(`${this.API_BASE}/stationer/${id}`).pipe(
-            map(data => this.mapStation(data)),
+        return this.http.get<{ success: boolean; data: any }>(`${this.API_BASE}/stationer/${id}`).pipe(
+            map(response => this.mapStation(response.data)),
             catchError(err => {
                 console.error(`Sopinfo API Error (Station ${id}):`, err);
                 return throwError(() => err);
@@ -47,9 +47,9 @@ export class SopinfoService {
         if (search) {
             params = params.set('search', search);
         }
-        return this.http.get<any[]>(`${this.API_BASE}/sorteringsguide`, { params }).pipe(
-            tap(data => console.log('Sopinfo API: Fetched guide articles', data?.length)),
-            map(data => this.mapArticles(data)),
+        return this.http.get<{ success: boolean; data: any[] }>(`${this.API_BASE}/sorteringsguide`, { params }).pipe(
+            tap(response => console.log('Sopinfo API: Fetched guide articles', response.data?.length)),
+            map(response => this.mapArticles(response.data)),
             catchError(err => {
                 console.error('Sopinfo API Error (Sorting Guide):', err);
                 return throwError(() => err);
@@ -58,8 +58,8 @@ export class SopinfoService {
     }
 
     getGuideArticle(slug: string): Observable<GuideArticle> {
-        return this.http.get<any>(`${this.API_BASE}/sorteringsguide/${slug}`).pipe(
-            map(data => this.mapArticle(data)),
+        return this.http.get<{ success: boolean; data: any }>(`${this.API_BASE}/sorteringsguide/${slug}`).pipe(
+            map(response => this.mapArticle(response.data)),
             catchError(err => {
                 console.error(`Sopinfo API Error (Guide Article ${slug}):`, err);
                 return throwError(() => err);
@@ -151,13 +151,39 @@ export class SopinfoService {
     }
 
     private mapArticle(item: any): GuideArticle {
+        // Helper to safely parse JSON strings
+        const parseJsonField = (field: string | null): any => {
+            if (!field) return undefined;
+            try {
+                return JSON.parse(field);
+            } catch {
+                return undefined;
+            }
+        };
+
         return {
             id: item.id,
-            title: item.titel || item.title,
+            title: item.namn || item.title,
             slug: item.slug,
-            excerpt: item.excerpt || '',
-            content: item.content || '',
-            fractions: item.fractions || []
+            category: item.kategori || '',
+            excerpt: item.sammanfattning || item.excerpt || '',
+            description: item.beskrivning || undefined,
+            image_url: item.bild_url || undefined,
+
+            // Parse JSON fields
+            allowed: parseJsonField(item.tillat),
+            not_allowed: parseJsonField(item.ej_tillat),
+            tips: parseJsonField(item.tips_json),
+            common_mistakes: item.vanliga_fel || undefined,
+            why_text: item.varfor_text || undefined,
+
+            // Parse color and icon objects
+            color: parseJsonField(item.farger),
+            icon: parseJsonField(item.ikoner),
+
+            // Metadata
+            order: item.ordning,
+            status: item.status
         };
     }
 }
