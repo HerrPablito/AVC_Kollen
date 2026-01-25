@@ -15,7 +15,7 @@ import { Station } from '../../core/models/sopinfo.models';
 export class StationsComponent implements OnInit {
     stations = signal<Station[]>([]);
     searchQuery = signal('');
-    selectedStationId = signal<string | null>(null);
+    selectedStationId = signal<number | null>(null);
     isLoading = signal(true);
 
     // Filtered stations based on search query
@@ -26,7 +26,7 @@ export class StationsComponent implements OnInit {
 
         return all.filter(s =>
             s.name.toLowerCase().includes(query) ||
-            s.city.toLowerCase().includes(query) ||
+            s.city?.toLowerCase().includes(query) ||
             s.address.toLowerCase().includes(query)
         );
     });
@@ -75,7 +75,7 @@ export class StationsComponent implements OnInit {
         }
     }
 
-    fetchStationDetails(id: string) {
+    fetchStationDetails(id: number) {
         // Optimistic update of UI implies we expand immediately.
         // Fetching extra details could update the specific object in the signal array.
         this.sopinfoService.getStationDetails(id).subscribe(details => {

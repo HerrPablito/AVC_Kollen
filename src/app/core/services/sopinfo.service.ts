@@ -21,7 +21,8 @@ export class SopinfoService {
             return of(this.stationsCache()!);
         }
 
-        return this.http.get<{ success: boolean; data: any[] }>(`${this.API_BASE}/stationer`).pipe(
+        // Fetch all stations with a high limit (API has ~5000 stations)
+        return this.http.get<{ success: boolean; data: any[] }>(`${this.API_BASE}/stationer?limit=10000`).pipe(
             tap(response => console.log('Sopinfo API: Fetched stations', response.data?.length)),
             map(response => this.mapStations(response.data)),
             tap(stations => this.stationsCache.set(stations)),
@@ -32,7 +33,7 @@ export class SopinfoService {
         );
     }
 
-    getStationDetails(id: string): Observable<Station> {
+    getStationDetails(id: number): Observable<Station> {
         return this.http.get<{ success: boolean; data: any }>(`${this.API_BASE}/stationer/${id}`).pipe(
             map(response => this.mapStation(response.data)),
             catchError(err => {
@@ -133,16 +134,32 @@ export class SopinfoService {
 
     private mapStation(item: any): Station {
         return {
-            id: item.id || item.station_id,
-            name: item.namn || item.name,
-            address: item.adress || item.address,
-            city: item.ort || item.city,
-            postal_code: item.postnummer || item.zip,
-            latitude: parseFloat(item.latitude || item.lat),
-            longitude: parseFloat(item.longitude || item.lon),
-            type: item.typ || 'avc',
-            services: item.services || [],
-            opening_hours: item.oppettider
+            id: item.id,
+            name: item.namn || item.name || '',
+            address: item.adress || item.address || '',
+            city: item.ort || item.city || undefined,
+            postal_code: item.postnummer || item.zip || undefined,
+            latitude: parseFloat(item.lat || item.latitude || '0'),
+            longitude: parseFloat(item.lng || item.longitude || '0'),
+            type: item.typ || 'ÅVC',
+
+            // Contact & Info
+            phone: item.telefon || undefined,
+            email: item.email || undefined,
+            website: item.webbplats || undefined,
+            description: item.beskrivning || undefined,
+            opening_info: item.oppet_info || undefined,
+
+            // Facilities
+            parking: item.parkering === 1 || item.parkering === true,
+            toilet: item.toalett === 1 || item.toalett === true,
+            cafe: item.cafe === 1 || item.cafe === true,
+            accessibility: item.tillganglighet || undefined,
+
+            // Metadata
+            municipality_id: item.kommun_id || undefined,
+            municipality_name: item.kommun_name || undefined,
+            status: item.status || undefined
         };
     }
 

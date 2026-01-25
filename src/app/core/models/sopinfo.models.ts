@@ -1,15 +1,33 @@
 export interface Station {
-    id: string;
+    id: number;
     name: string;
     address: string;
-    city: string;
-    postal_code: string;
+    city?: string;
+    postal_code?: string;
     latitude: number;
     longitude: number;
-    type: string; // 'avc', 'ftm', etc.
-    services?: string[];
-    opening_hours?: Record<string, string>;
-    distance?: number; // Calculated client-side
+    type: string; // 'ÅVC', etc.
+
+    // Contact & Info
+    phone?: string;
+    email?: string;
+    website?: string;
+    description?: string;
+    opening_info?: string;
+
+    // Facilities
+    parking?: boolean;
+    toilet?: boolean;
+    cafe?: boolean;
+    accessibility?: string;
+
+    // Metadata
+    municipality_id?: number;
+    municipality_name?: string;
+    status?: string;
+
+    // Client-side calculated
+    distance?: number;
 }
 
 export interface GuideArticle {

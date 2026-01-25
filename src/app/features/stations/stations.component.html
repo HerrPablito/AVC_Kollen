@@ -39,8 +39,12 @@
                         <div>
                             <h3 class="font-bold text-lg">{{ station.name }}</h3>
                             <div class="flex items-center gap-2 text-[var(--text-1)] text-sm">
+                                @if (station.city) {
                                 <span>{{ station.city }}</span>
+                                }
+                                @if (station.city && station.address) {
                                 <span>•</span>
+                                }
                                 <span>{{ station.address }}</span>
                             </div>
                         </div>
@@ -59,54 +63,123 @@
 
                 <!-- Expanded Details -->
                 @if (selectedStationId() === station.id) {
-                <div class="p-4 border-t border-[var(--border-0)] bg-[var(--bg-1)] fade-in">
+                <div class="p-6 border-t border-[var(--border-0)] bg-[var(--bg-1)] fade-in">
                     <div class="grid md:grid-cols-2 gap-8">
                         <!-- Info Column -->
                         <div>
-                            <h4 class="font-semibold mb-3 flex items-center gap-2">
+                            <h4 class="font-semibold mb-4 flex items-center gap-2">
                                 <i class="pi pi-info-circle text-[var(--accent-0)]"></i>
                                 Information
                             </h4>
-                            <ul class="space-y-2 text-sm text-[var(--text-1)]">
+                            <ul class="space-y-3 text-sm">
                                 <li class="flex justify-between">
-                                    <span>Typ:</span>
-                                    <span class="font-medium text-[var(--text-0)] capitalize">{{ station.type }}</span>
+                                    <span class="text-[var(--text-1)]">Typ:</span>
+                                    <span class="font-medium text-[var(--text-0)]">{{ station.type }}</span>
                                 </li>
                                 <li class="flex justify-between">
-                                    <span>Postnummer:</span>
+                                    <span class="text-[var(--text-1)]">Adress:</span>
+                                    <span class="font-medium text-[var(--text-0)]">{{ station.address }}</span>
+                                </li>
+                                @if (station.city) {
+                                <li class="flex justify-between">
+                                    <span class="text-[var(--text-1)]">Ort:</span>
+                                    <span class="font-medium text-[var(--text-0)]">{{ station.city }}</span>
+                                </li>
+                                }
+                                @if (station.postal_code) {
+                                <li class="flex justify-between">
+                                    <span class="text-[var(--text-1)]">Postnummer:</span>
                                     <span class="font-medium text-[var(--text-0)]">{{ station.postal_code }}</span>
                                 </li>
-                                @if (station.services && station.services.length > 0) {
-                                <li class="mt-2">
-                                    <span class="block mb-1">Tjänster:</span>
-                                    <div class="flex flex-wrap gap-1">
-                                        @for (service of station.services; track service) {
-                                        <span class="text-xs bg-[var(--bg-2)] px-2 py-1 rounded">{{ service }}</span>
-                                        }
-                                    </div>
+                                }
+                                @if (station.municipality_name) {
+                                <li class="flex justify-between">
+                                    <span class="text-[var(--text-1)]">Kommun:</span>
+                                    <span class="font-medium text-[var(--text-0)]">{{ station.municipality_name
+                                        }}</span>
+                                </li>
+                                }
+                                @if (station.phone) {
+                                <li class="flex justify-between">
+                                    <span class="text-[var(--text-1)]">Telefon:</span>
+                                    <a [href]="'tel:' + station.phone"
+                                        class="font-medium text-[var(--accent-0)] hover:underline"
+                                        (click)="$event.stopPropagation()">{{ station.phone }}</a>
+                                </li>
+                                }
+                                @if (station.email) {
+                                <li class="flex justify-between">
+                                    <span class="text-[var(--text-1)]">E-post:</span>
+                                    <a [href]="'mailto:' + station.email"
+                                        class="font-medium text-[var(--accent-0)] hover:underline"
+                                        (click)="$event.stopPropagation()">{{ station.email }}</a>
+                                </li>
+                                }
+                                @if (station.website) {
+                                <li class="flex justify-between">
+                                    <span class="text-[var(--text-1)]">Webbplats:</span>
+                                    <a [href]="station.website" target="_blank"
+                                        class="font-medium text-[var(--accent-0)] hover:underline"
+                                        (click)="$event.stopPropagation()">Besök <i
+                                            class="pi pi-external-link text-xs"></i></a>
+                                </li>
+                                }
+                                @if (station.status) {
+                                <li class="flex justify-between">
+                                    <span class="text-[var(--text-1)]">Status:</span>
+                                    <span class="font-medium" [class.text-green-400]="station.status === 'öppen'"
+                                        [class.text-red-400]="station.status !== 'öppen'">{{ station.status }}</span>
                                 </li>
                                 }
                             </ul>
+
+                            <!-- Facilities -->
+                            @if (station.parking || station.toilet || station.cafe) {
+                            <div class="mt-6">
+                                <h5 class="font-semibold mb-3 text-sm text-[var(--text-1)]">Faciliteter</h5>
+                                <div class="flex flex-wrap gap-2">
+                                    @if (station.parking) {
+                                    <span
+                                        class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-3 py-1 rounded-full text-xs">
+                                        <i class="pi pi-car"></i> Parkering
+                                    </span>
+                                    }
+                                    @if (station.toilet) {
+                                    <span
+                                        class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-3 py-1 rounded-full text-xs">
+                                        <i class="pi pi-home"></i> Toalett
+                                    </span>
+                                    }
+                                    @if (station.cafe) {
+                                    <span
+                                        class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-3 py-1 rounded-full text-xs">
+                                        <i class="pi pi-shopping-bag"></i> Café
+                                    </span>
+                                    }
+                                </div>
+                            </div>
+                            }
                         </div>
 
                         <!-- Opening Hours Column -->
                         <div>
-                            <h4 class="font-semibold mb-3 flex items-center gap-2">
+                            <h4 class="font-semibold mb-4 flex items-center gap-2">
                                 <i class="pi pi-calendar text-[var(--accent-0)]"></i>
                                 Öppettider
                             </h4>
-                            @if (station.opening_hours) {
-                            <ul class="space-y-1 text-sm text-[var(--text-1)]">
-                                @for (day of objectKeys(station.opening_hours); track day) {
-                                <li class="flex justify-between">
-                                    <span class="capitalize">{{ day }}:</span>
-                                    <span class="font-medium text-[var(--text-0)]">{{ station.opening_hours[day]
-                                        }}</span>
-                                </li>
-                                }
-                            </ul>
+                            @if (station.opening_info) {
+                            <div class="text-sm text-[var(--text-1)] bg-[var(--bg-2)] p-4 rounded-lg">
+                                <p>{{ station.opening_info }}</p>
+                            </div>
                             } @else {
                             <p class="text-sm text-[var(--text-2)] italic">Inga öppettider tillgängliga.</p>
+                            }
+
+                            @if (station.description) {
+                            <div class="mt-4">
+                                <h5 class="font-semibold mb-2 text-sm text-[var(--text-1)]">Beskrivning</h5>
+                                <p class="text-sm text-[var(--text-1)]">{{ station.description }}</p>
+                            </div>
                             }
 
                             <div class="mt-6 flex gap-2">
