@@ -3,7 +3,8 @@ import {
   RuntimeError,
   setClassMetadata,
   ɵɵdefineInjectable
-} from "./chunk-VOMFLLX2.js";
+} from "./chunk-E6AQL34E.js";
+import "./chunk-RSS3ODKE.js";
 import {
   __objRest,
   __spreadValues
@@ -4327,4 +4328,4 @@ export {
   validateStyleProperty as ɵvalidateStyleProperty,
   validateWebAnimatableStyleProperty as ɵvalidateWebAnimatableStyleProperty
 };
-//# sourceMappingURL=browser-HHMY2WBY.js.map
+//# sourceMappingURL=browser-X3TGKWBC.js.map

@@ -216,3 +216,178 @@ a:hover {
     display: flex;
     gap: var(--space-3);
 }
+
+/* 7) Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Animation delays for staggered effect */
+.delay-100 {
+    animation-delay: 0.1s;
+}
+
+.delay-200 {
+    animation-delay: 0.2s;
+}
+
+.delay-300 {
+    animation-delay: 0.3s;
+}
+
+.delay-400 {
+    animation-delay: 0.4s;
+}
+
+/* 8) Card components */
+.card {
+    background: color-mix(in srgb, var(--bg-1) 85%, transparent 15%);
+    border: 1px solid var(--border-0);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-0);
+    border-color: color-mix(in srgb, var(--accent-soft) 50%, var(--border-0) 50%);
+}
+
+/* 9) Search input with micro-interactions */
+.search-input {
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    background: color-mix(in srgb, var(--bg-2) 70%, transparent 30%);
+    border: 2px solid var(--border-0);
+    border-radius: var(--radius-md);
+    color: var(--text-0);
+    font-size: var(--text-lg);
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: var(--text-2);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent-0);
+    background: color-mix(in srgb, var(--bg-2) 90%, transparent 10%);
+    transform: scale(1.01);
+    box-shadow: var(--focus-ring);
+}
+
+/* 10) Section utilities */
+.section {
+    padding: var(--space-8) 0;
+}
+
+.section-title {
+    font-size: var(--text-4xl);
+    font-weight: 600;
+    margin-bottom: var(--space-6);
+    color: var(--text-0);
+}
+
+.section-description {
+    font-size: var(--text-lg);
+    color: var(--text-1);
+    max-width: 70ch;
+    margin: 0 auto var(--space-7);
+    text-align: center;
+}
+
+/* 11) Feature grid */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-7);
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-soft);
+    border-radius: var(--radius-md);
+}
+
+/* 12) Header/Navigation */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg-0) 95%, transparent 5%);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-0);
+    padding: var(--space-4) 0;
+}
+
+.nav-link {
+    color: var(--text-1);
+    font-size: var(--text-base);
+    font-weight: 500;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--text-0);
+    background: color-mix(in srgb, var(--bg-2) 50%, transparent 50%);
+    text-decoration: none;
+}
+
+/* 13) Footer */
+.footer {
+    background: color-mix(in srgb, var(--bg-1) 50%, transparent 50%);
+    border-top: 1px solid var(--border-0);
+    padding: var(--space-7) 0 var(--space-6);
+    margin-top: var(--space-8);
+}
+
+/* 14) Responsive utilities */
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title {
+        font-size: var(--text-3xl);
+    }
+
+    h1 {
+        font-size: var(--text-4xl);
+    }
+}
