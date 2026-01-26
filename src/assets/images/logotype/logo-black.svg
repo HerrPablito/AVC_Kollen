@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="ÅVC svart">
+  <defs>
+    <style>
+      :root { --c:#0B0B0B; }
+      .stroke { stroke:var(--c); }
+      .none { fill:none; }
+    </style>
+
+    <!-- Innerbåge, rättvänd (Å → V → C), ca kl 16:30 -->
+    <path id="innerArc" d="M 282 372 A 118 118 0 0 1 372 282" />
+  </defs>
+
+  <!-- Lins -->
+  <circle cx="256" cy="256" r="110" fill="#FFFFFF" opacity="0.55"/>
+  <circle cx="256" cy="256" r="110" fill="var(--c)" opacity="0.08"/>
+
+  <!-- Highlight -->
+  <path d="M206 196 C170 230, 172 284, 206 314"
+        class="none" stroke="#FFFFFF" stroke-opacity="0.85"
+        stroke-width="16" stroke-linecap="round"/>
+
+  <!-- Ring -->
+  <circle cx="256" cy="256" r="140"
+          class="none stroke"
+          stroke-width="28"
+          stroke-linecap="round"/>
+
+  <!-- ÅVC -->
+  <text fill="var(--c)"
+        font-size="46"
+        font-weight="800"
+        font-family="system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif"
+        letter-spacing="4">
+    <textPath href="#innerArc">ÅVC</textPath>
+  </text>
+</svg>

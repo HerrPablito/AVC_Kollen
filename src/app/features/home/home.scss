@@ -1,0 +1,38 @@
+// Override PrimeNG Drawer styles to match app theme
+:host ::ng-deep {
+    .p-drawer {
+        background: var(--bg-1) !important;
+        color: var(--text-0) !important;
+
+        .p-drawer-content {
+            background: var(--bg-1) !important;
+            color: var(--text-0) !important;
+            padding: 0 !important;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .p-drawer-header {
+            background: var(--bg-1) !important;
+            border-bottom: 1px solid var(--border-0) !important;
+            padding: 1rem !important;
+            display: none !important; // Hide default header since we use custom content
+        }
+
+        .p-drawer-footer {
+            background: var(--bg-1) !important;
+            border-top: 1px solid var(--border-0) !important;
+            padding: 1rem !important;
+        }
+
+        // Ensure drawer is above everything
+        &.p-drawer-bottom {
+            z-index: 1100 !important;
+        }
+    }
+
+    .p-drawer-mask {
+        background: rgba(0, 0, 0, 0.5) !important;
+        backdrop-filter: blur(4px);
+    }
+}

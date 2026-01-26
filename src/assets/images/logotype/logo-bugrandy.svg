@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="ÅVC burgundy">
+  <defs>
+    <style>
+      :root { --c:#6E1E2B; }
+      .stroke { stroke:var(--c); }
+      .none { fill:none; }
+    </style>
+
+    <path id="innerArc" d="M 282 372 A 118 118 0 0 1 372 282" />
+  </defs>
+
+  <circle cx="256" cy="256" r="110" fill="#FFFFFF" opacity="0.55"/>
+  <circle cx="256" cy="256" r="110" fill="var(--c)" opacity="0.08"/>
+
+  <path d="M206 196 C170 230, 172 284, 206 314"
+        class="none" stroke="#FFFFFF" stroke-opacity="0.85"
+        stroke-width="16" stroke-linecap="round"/>
+
+  <circle cx="256" cy="256" r="140"
+          class="none stroke"
+          stroke-width="28"
+          stroke-linecap="round"/>
+
+  <text fill="var(--c)"
+        font-size="46"
+        font-weight="800"
+        font-family="system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif"
+        letter-spacing="4">
+    <textPath href="#innerArc">ÅVC</textPath>
+  </text>
+</svg>

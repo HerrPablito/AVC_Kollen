@@ -1,0 +1,290 @@
+<!-- Hero Section -->
+<section class="section">
+    <div class="container">
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+            <!-- Hero Content -->
+            <div class="flex-1 fade-in-up">
+                <h1 class="mb-6">
+                    ÅVC Kollen
+                </h1>
+                <p class="text-xl text-[var(--text-1)] mb-8 max-w-[60ch]">
+                    Hitta din närmaste återvinningscentral och lär dig sortera rätt.
+                    Enkelt, snabbt och miljövänligt.
+                </p>
+
+                <!-- Search Component -->
+                <div class="mb-6">
+                    <input type="text" class="search-input" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
+                        [disabled]="isLoading()" placeholder="Sök på postnummer, ort eller kommun..."
+                        aria-label="Sök återvinningscentral" />
+                </div>
+
+                <div class="flex gap-4 flex-wrap mb-4">
+                    <button class="btn btn--primary" (click)="onSearch()" [disabled]="isLoading()">
+                        <i class="pi" [class.pi-search]="!isLoading()" [class.pi-spin]="isLoading()"
+                            [class.pi-spinner]="isLoading()"></i>
+                        {{ isLoading() ? 'Söker...' : 'Sök nu' }}
+                    </button>
+                    <button class="btn btn--secondary" (click)="useMyLocation()" [disabled]="isLoading()">
+                        <i class="pi pi-map-marker"></i>
+                        Använd min plats
+                    </button>
+                </div>
+
+                <!-- Search Result / Error -->
+                @if (errorMessage()) {
+                <div class="p-4 bg-red-100 text-red-700 rounded-lg mb-4 fade-in">
+                    <i class="pi pi-exclamation-circle mr-2"></i>
+                    {{ errorMessage() }}
+                </div>
+                }
+
+                @if (nearestStation(); as station) {
+                <div class="card p-4 mb-4 border-l-4 border-[var(--accent-0)] fade-in cursor-pointer hover:bg-[var(--bg-2)]"
+                    (click)="navigateToStation(station)">
+                    <h3 class="text-lg font-bold">{{ station.name }}</h3>
+                    <p class="text-sm text-[var(--text-1)]">{{ station.address }}, {{ station.city }}</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span
+                            class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-2 py-1 rounded text-xs font-semibold">
+                            {{ station.distance | number:'1.1-1' }} km bort
+                        </span>
+                        <span class="text-xs text-[var(--text-2)]">Klicka för detaljer</span>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <!-- Hero Image -->
+            <div class="flex-1 fade-in delay-200 flex justify-center">
+                <img src="/assets/images/logotype/logo-bugrandy.svg" alt="ÅVC Kollen Logotyp"
+                    class="w-full max-w-[400px] h-auto drop-shadow-xl" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Cards Section -->
+<section id="features" class="section">
+    <div class="container">
+        <h2 class="section-title text-center fade-in-up">
+            Allt du behöver för återvinning
+        </h2>
+        <p class="section-description fade-in-up delay-100">
+            ÅVC Kollen hjälper dig att hitta rätt plats och sortera rätt.
+            Spara tid och gör skillnad för miljön.
+        </p>
+
+        <div class="feature-grid">
+            <!-- Feature 1: Hitta ÅVC -->
+            <div class="card fade-in-up delay-100">
+                <div class="feature-icon">
+                    <i class="pi pi-map-marker text-3xl" style="color: var(--accent-0);"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-3">Hitta ÅVC</h3>
+                <p class="text-[var(--text-1)] leading-relaxed">
+                    Sök och hitta återvinningscentraler nära dig.
+                    Få vägbeskrivning, öppettider och information om vad du kan lämna.
+                </p>
+            </div>
+
+            <!-- Feature 2: Så sorterar du -->
+            <div class="card fade-in-up delay-200">
+                <div class="feature-icon">
+                    <i class="pi pi-refresh text-3xl" style="color: var(--accent-0);"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-3">Så sorterar du</h3>
+                <p class="text-[var(--text-1)] leading-relaxed">
+                    Lär dig hur du sorterar olika typer av avfall korrekt.
+                    Guider för plast, papper, elektronik och mycket mer.
+                </p>
+            </div>
+
+            <!-- Feature 3: Mina ÅVC -->
+            <div class="card fade-in-up delay-300">
+                <div class="feature-icon">
+                    <i class="pi pi-heart text-3xl" style="color: var(--accent-0);"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-3">Mina ÅVC</h3>
+                <p class="text-[var(--text-1)] leading-relaxed">
+                    Stjärnmärk dina favoritcentraler för snabb åtkomst.
+                    Få notiser om ändringar i öppettider eller tjänster.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sorting Guide Section -->
+<section id="sortera" class="section" style="background: color-mix(in srgb, var(--bg-1) 30%, transparent 70%);">
+    <div class="container">
+        <h2 class="section-title text-center">
+            Så sorterar du rätt
+        </h2>
+        <p class="section-description">
+            Olika material sorteras på olika sätt. Här är en snabbguide för de vanligaste avfallstyperna.
+        </p>
+
+        <!-- Waste Search -->
+        <div class="max-w-xl mx-auto mb-10 relative">
+            <h3 class="text-center text-sm font-semibold mb-2 uppercase tracking-wider text-[var(--accent-0)]">Osäker på
+                vad du ska slänga?</h3>
+            <div class="relative">
+                <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-2)]"></i>
+                <input type="text" [(ngModel)]="wasteQuery" (keyup.enter)="onWasteSearch()"
+                    placeholder="Sök på t.ex. 'mjölkpaket' eller 'batteri'" class="search-input pl-12">
+                <button class="absolute right-2 top-1/2 -translate-y-1/2 btn btn--primary py-1 px-3 text-sm h-8"
+                    (click)="onWasteSearch()">
+                    Sök
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <!-- Waste Type Icons -->
+            <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
+                (click)="openSortingModal('tidningar-och-papper')">
+                <div class="mb-4">
+                    <i class="pi pi-file text-4xl" style="color: var(--blush-300);"></i>
+                </div>
+                <h4 class="font-semibold mb-2">Papper</h4>
+                <p class="text-sm text-[var(--text-2)]">Tidningar, kartonger</p>
+            </div>
+
+            <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
+                (click)="openSortingModal('plastforpackningar')">
+                <div class="mb-4">
+                    <i class="pi pi-box text-4xl" style="color: var(--blush-300);"></i>
+                </div>
+                <h4 class="font-semibold mb-2">Plast</h4>
+                <p class="text-sm text-[var(--text-2)]">Flaskor, förpackningar</p>
+            </div>
+
+            <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
+                (click)="openSortingModal('glasforpackningar')">
+                <div class="mb-4">
+                    <i class="pi pi-circle text-4xl" style="color: var(--blush-300);"></i>
+                </div>
+                <h4 class="font-semibold mb-2">Glas</h4>
+                <p class="text-sm text-[var(--text-2)]">Burkar, flaskor</p>
+            </div>
+
+            <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
+                (click)="openSortingModal('elektronik')">
+                <div class="mb-4">
+                    <i class="pi pi-mobile text-4xl" style="color: var(--blush-300);"></i>
+                </div>
+                <h4 class="font-semibold mb-2">Elektronik</h4>
+                <p class="text-sm text-[var(--text-2)]">Telefoner, datorer</p>
+            </div>
+
+            <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
+                (click)="openSortingModal('batterier')">
+                <div class="mb-4">
+                    <i class="pi pi-bolt text-4xl" style="color: var(--blush-300);"></i>
+                </div>
+                <h4 class="font-semibold mb-2">Batterier</h4>
+                <p class="text-sm text-[var(--text-2)]">Alla typer</p>
+            </div>
+
+            <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
+                (click)="openSortingModal('metallforpackningar')">
+                <div class="mb-4">
+                    <i class="pi pi-trash text-4xl" style="color: var(--blush-300);"></i>
+                </div>
+                <h4 class="font-semibold mb-2">Metall</h4>
+                <p class="text-sm text-[var(--text-2)]">Burkar, aluminium</p>
+            </div>
+
+            <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
+                (click)="openSortingModal('matavfall')">
+                <div class="mb-4">
+                    <i class="pi pi-sun text-4xl" style="color: var(--blush-300);"></i>
+                </div>
+                <h4 class="font-semibold mb-2">Organiskt</h4>
+                <p class="text-sm text-[var(--text-2)]">Matavfall, trädgård</p>
+            </div>
+
+            <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
+                (click)="openSortingModal('farligt-avfall')">
+                <div class="mb-4">
+                    <i class="pi pi-exclamation-triangle text-4xl" style="color: var(--red-500);"></i>
+                </div>
+                <h4 class="font-semibold mb-2">Farligt</h4>
+                <p class="text-sm text-[var(--text-2)]">Kemikalier, färg</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <button routerLink="/sorteringsguide" class="btn btn--primary">
+                <i class="pi pi-book"></i>
+                Läs fullständig sorteringsguide
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Sorting Guide Drawer (Bottom) -->
+<p-drawer [(visible)]="drawerVisible" position="bottom" [style]="{'height': '90vh'}" [modal]="true">
+    @if (selectedArticle()) {
+    <ng-template pTemplate="content">
+        <app-article-detail [article]="selectedArticle()!" [showFooter]="true" (close)="closeModal()">
+        </app-article-detail>
+    </ng-template>
+    }
+</p-drawer>
+
+<!-- My ÅVC Section -->
+<section id="mina" class="section">
+    <div class="container">
+        <h2 class="section-title text-center">
+            Mina ÅVC
+        </h2>
+        <p class="section-description">
+            Spara dina favoritcentraler för snabb åtkomst. Logga in eller skapa konto för att börja.
+        </p>
+
+        <div class="max-w-2xl mx-auto">
+            <div class="card text-center p-12">
+                <div class="mb-6">
+                    <i class="pi pi-heart text-6xl" style="color: var(--accent-0);"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-4">Inga favoriter än</h3>
+                <p class="text-[var(--text-1)] mb-6">
+                    Börja stjärnmärka återvinningscentraler för att se dem här.
+                    Du kan enkelt hitta och besöka dina favoritplatser.
+                </p>
+                <div class="flex gap-4 justify-center flex-wrap">
+                    <button class="btn btn--primary">
+                        <i class="pi pi-user"></i>
+                        Logga in
+                    </button>
+                    <button class="btn btn--secondary">
+                        <i class="pi pi-user-plus"></i>
+                        Skapa konto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats/Info Section -->
+<section class="section" style="background: color-mix(in srgb, var(--bg-1) 30%, transparent 70%);">
+    <div class="container">
+        <div class="grid md:grid-cols-3 gap-8 text-center">
+            <div class="fade-in-up">
+                <div class="text-5xl font-bold mb-2" style="color: var(--accent-0);">500+</div>
+                <p class="text-[var(--text-1)]">Återvinningscentraler</p>
+            </div>
+            <div class="fade-in-up delay-100">
+                <div class="text-5xl font-bold mb-2" style="color: var(--accent-0);">290</div>
+                <p class="text-[var(--text-1)]">Kommuner i Sverige</p>
+            </div>
+            <div class="fade-in-up delay-200">
+                <div class="text-5xl font-bold mb-2" style="color: var(--accent-0);">100%</div>
+                <p class="text-[var(--text-1)]">Gratis att använda</p>
+            </div>
+        </div>
+    </div>
+</section>
