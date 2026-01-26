@@ -1,0 +1,123 @@
+.about-page {
+    min-height: calc(100vh - 200px);
+    padding: var(--space-8) 0;
+}
+
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+}
+
+.about-title {
+    font-size: var(--text-5xl);
+    font-weight: 700;
+    margin-bottom: var(--space-4);
+    background: linear-gradient(135deg, var(--accent-0), var(--blush-300));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about-subtitle {
+    font-size: var(--text-xl);
+    color: var(--text-1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.about-section {
+    background: color-mix(in srgb, var(--bg-1) 85%, transparent 15%);
+    border: 1px solid var(--border-0);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    margin-bottom: var(--space-5);
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-0);
+        border-color: color-mix(in srgb, var(--accent-soft) 50%, var(--border-0) 50%);
+    }
+}
+
+.section-title {
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+    color: var(--text-0);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+
+    i {
+        color: var(--accent-0);
+        font-size: var(--text-xl);
+    }
+}
+
+.section-content {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--text-1);
+
+    p {
+        margin-bottom: var(--space-4);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: var(--space-4) 0;
+
+        li {
+            padding-left: var(--space-5);
+            margin-bottom: var(--space-3);
+            position: relative;
+
+            &:before {
+                content: "✓";
+                position: absolute;
+                left: 0;
+                color: var(--accent-0);
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.highlight-box {
+    background: color-mix(in srgb, var(--accent-0) 10%, transparent 90%);
+    border-left: 4px solid var(--accent-0);
+    padding: var(--space-4);
+    border-radius: var(--radius-sm);
+    margin: var(--space-5) 0;
+
+    p {
+        margin: 0;
+        color: var(--text-0);
+        font-weight: 500;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-title {
+        font-size: var(--text-4xl);
+    }
+
+    .about-subtitle {
+        font-size: var(--text-lg);
+    }
+
+    .section-title {
+        font-size: var(--text-xl);
+    }
+}

@@ -527,7 +527,7 @@ body.p-overflow-hidden {
 /* PrimeNG Select Styling */
 .p-select {
     width: 100%;
-    background: color-mix(in srgb, var(--bg-1) 85%, transparent 15%);
+    background: color-mix(in srgb, var(--burgundy-800) 95%, var(--burgundy-700) 5%) !important;
     border: 2px solid var(--border-0);
     border-radius: var(--radius-md);
     transition: all 0.3s ease;
@@ -545,7 +545,7 @@ body.p-overflow-hidden {
     .p-select-label {
         padding: 0.75rem 1rem;
         color: var(--text-0);
-        background-color: transparent;
+        background-color: transparent !important;
         font-weight: 500;
         font-size: var(--text-base);
 
@@ -558,6 +558,7 @@ body.p-overflow-hidden {
         color: var(--text-1);
         width: 2.5rem;
         border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        background-color: transparent !important;
 
         &:hover {
             color: var(--text-0);
@@ -622,6 +623,115 @@ body.p-overflow-hidden {
 .custom-select-dropdown {
     .p-select-items-wrapper {
         background-color: var(--bg-1) !important;
+    }
+}
+
+/* Custom styling for favorites select */
+.my-favourites-select.p-select {
+    background: color-mix(in srgb, var(--burgundy-800) 95%, var(--burgundy-700) 5%) !important;
+
+    &:hover {
+        background: color-mix(in srgb, var(--burgundy-800) 100%, var(--burgundy-700) 0%) !important;
+        border-color: color-mix(in srgb, var(--accent-0) 60%, var(--border-0) 40%);
+    }
+
+    &.p-focus {
+        background: color-mix(in srgb, var(--burgundy-800) 100%, var(--burgundy-700) 0%) !important;
+        border-color: var(--accent-0);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-0) 20%, transparent 80%);
+    }
+
+    .p-select-label {
+        color: var(--text-0) !important;
+
+        &.p-placeholder {
+            color: var(--text-1) !important;
+        }
+    }
+
+    .p-select-dropdown {
+        color: var(--text-1) !important;
+
+        &:hover {
+            color: var(--text-0) !important;
+        }
+    }
+}
+
+/* Dropdown overlay for favorites select */
+.my-favourites-select-overlay.p-select-overlay {
+    background: var(--bg-0) !important;
+
+    .p-select-header {
+        background: color-mix(in srgb, var(--burgundy-800) 90%, var(--burgundy-700) 10%) !important;
+
+        >div {
+            background: transparent !important;
+        }
+
+        * {
+            background: transparent !important;
+        }
+    }
+
+    .p-select-list {
+        background: var(--bg-0) !important;
+    }
+
+    .p-select-list-container {
+        background: transparent !important;
+    }
+
+    .p-select-items-wrapper {
+        background: transparent !important;
+    }
+
+    // Enhanced hover effects for options
+    .p-select-option {
+        background: transparent !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-left: 3px solid transparent;
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    color-mix(in srgb, var(--accent-0) 20%, transparent 80%),
+                    transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        &:hover {
+            background: color-mix(in srgb, var(--burgundy-700) 40%, transparent 60%) !important;
+            border-left-color: var(--accent-0);
+            transform: translateX(4px);
+
+            &::before {
+                opacity: 1;
+            }
+        }
+
+        &.p-focus {
+            background: color-mix(in srgb, var(--accent-0) 10%, transparent 90%) !important;
+        }
+
+        &.p-select-option-selected {
+            background: color-mix(in srgb, var(--accent-0) 25%, transparent 75%) !important;
+            border-left-color: var(--accent-0);
+            font-weight: 600;
+        }
+    }
+
+    // Target any wrapper divs
+    >div {
+        background: transparent !important;
     }
 }
 

@@ -3,8 +3,7 @@
   <div class="container">
     <nav class="flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <button 
-          (click)="navigateHome()" 
+        <button (click)="navigateHome()"
           class="text-2xl font-bold hover:opacity-80 transition-opacity cursor-pointer border-none bg-transparent p-0"
           style="background: linear-gradient(135deg, var(--accent-0), var(--blush-300)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
           aria-label="Gå till startsidan">
@@ -14,44 +13,40 @@
       <div class="flex gap-2 items-center">
         <a href="#hitta" class="nav-link">Hitta ÅVC</a>
         <a routerLink="/sorteringsguide" class="nav-link">Så sorterar du</a>
-        
+        <a routerLink="/om" class="nav-link">Om ÅVC-kollen</a>
+        <a routerLink="/kontakt" class="nav-link">Kontakt</a>
+
         <!-- Mina ÅVC with PrimeNG Select -->
         <div class="w-64">
-          <p-select 
-            [options]="favoritesService.getFavorites() | slice:0"
-            placeholder="Mina ÅVC"
-            [showClear]="(favoritesService.getFavorites() | slice:0).length > 0"
-            (onChange)="onStationSelect($event)"
-            [optionLabel]="'name'"
-            optionGroupLabel="name"
-            styleClass="w-full"
-            dropdownStyleClass="custom-select-dropdown">
+          <p-select [options]="favoritesService.getFavorites() | slice:0" placeholder="Mina ÅVC"
+            [showClear]="(favoritesService.getFavorites() | slice:0).length > 0" (onChange)="onStationSelect($event)"
+            [optionLabel]="'name'" optionGroupLabel="name" class="my-favourites-select w-full"
+            panelStyleClass="my-favourites-select-overlay" dropdownStyleClass="custom-select-dropdown">
             <ng-template let-option pTemplate="item">
               @if (option) {
-                <div class="flex items-center gap-3 cursor-pointer py-2">
-                  <i class="pi pi-map-marker" style="color: var(--accent-0); flex-shrink: 0;"></i>
-                  <div class="flex-1 min-w-0">
-                    <p class="font-semibold text-sm text-[var(--text-0)]">{{ option.name }}</p>
-                    @if (option.municipality_name) {
-                      <p class="text-xs text-[var(--text-2)]">{{ option.municipality_name }}</p>
-                    }
-                    <p class="text-xs text-[var(--text-1)] mt-0.5">{{ option.distance | number:'1.1-1' }} km bort</p>
-                  </div>
+              <div class="flex items-center gap-3 cursor-pointer py-2">
+                <i class="pi pi-map-marker" style="color: var(--accent-0); flex-shrink: 0;"></i>
+                <div class="flex-1 min-w-0">
+                  <p class="font-semibold text-sm text-[var(--text-0)]">{{ option.name }}</p>
+                  @if (option.municipality_name) {
+                  <p class="text-xs text-[var(--text-2)]">{{ option.municipality_name }}</p>
+                  }
+                  <p class="text-xs text-[var(--text-1)] mt-0.5">{{ option.distance | number:'1.1-1' }} km bort</p>
                 </div>
+              </div>
               }
             </ng-template>
             <ng-template pTemplate="header">
-              <div class="flex items-center justify-between px-4 py-3">
+              <div class="flex items-center justify-between px-4 py-3" style="background: transparent;">
                 <span class="font-semibold flex items-center gap-2 text-[var(--text-0)]">
                   <i class="pi pi-heart-fill" style="color: var(--accent-0);"></i>
                   Mina favoriter
                 </span>
                 @if ((favoritesService.getFavorites() | slice:0).length > 0) {
-                  <button 
-                    (click)="favoritesService.clearFavorites(); $event.stopPropagation()"
-                    class="text-xs text-[var(--text-2)] hover:text-[var(--text-0)] transition-colors px-2 py-1 hover:bg-[var(--bg-2)] rounded">
-                    Rensa alla
-                  </button>
+                <button (click)="favoritesService.clearFavorites(); $event.stopPropagation()"
+                  class="text-xs text-[var(--text-2)] hover:text-[var(--text-0)] transition-colors px-2 py-1 hover:bg-[var(--bg-2)] rounded">
+                  Rensa alla
+                </button>
                 }
               </div>
             </ng-template>
@@ -69,8 +64,6 @@
 </header>
 
 <!-- Station Detail Dialog -->
-<app-station-detail 
-  [station]="selectedStation()" 
-  [visible]="showStationDetail()"
+<app-station-detail [station]="selectedStation()" [visible]="showStationDetail()"
   (onHide)="showStationDetail.set(false)">
 </app-station-detail>
