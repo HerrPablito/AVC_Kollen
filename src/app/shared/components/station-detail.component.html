@@ -1,0 +1,126 @@
+<!-- Station Detail Dialog -->
+<p-dialog [visible]="visible" [modal]="true" [maximizable]="false" [resizable]="false"
+    (onHide)="onHide()" [style]="{ 'max-width': '600px', 'width': '100%' }" styleClass="p-dialog-custom">
+    <ng-template pTemplate="header">
+        @if (station) {
+        <div class="flex items-center gap-3 justify-between">
+            <div class="flex items-center gap-3">
+                <i class="pi pi-map-marker text-2xl" style="color: var(--accent-0);"></i>
+                <div>
+                    <h2 class="text-xl font-bold">{{ station.name }}</h2>
+                    @if (station.municipality_name) {
+                    <p class="text-[var(--text-1)] text-xs">{{ station.municipality_name }}</p>
+                    }
+                </div>
+            </div>
+            <button (click)="toggleFavorite()" class="text-2xl" [class.text-yellow-400]="isFavorite()" [style]="!isFavorite() ? 'color: var(--text-2)' : ''">
+                <i [class.pi-star-fill]="isFavorite()" [class.pi-star]="!isFavorite()" class="pi"></i>
+            </button>
+        </div>
+        }
+    </ng-template>
+
+    <ng-template pTemplate="content">
+        @if (station) {
+        <div class="space-y-6">
+            <!-- Basic Info -->
+            <div class="bg-[var(--bg-1)] rounded-lg p-4">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-2">
+                    <i class="pi pi-home"></i>
+                    Adress & Kontakt
+                </h3>
+                <div class="space-y-2 text-[var(--text-0)]">
+                    <p>
+                        <span class="font-semibold">Adress:</span><br>
+                        {{ station.address }}<br>
+                        {{ station.postal_code }} {{ station.city }}
+                    </p>
+                    @if (station.phone) {
+                    <p>
+                        <span class="font-semibold">Telefon:</span> 
+                        <a [href]="'tel:' + station.phone" class="text-[var(--accent-0)] hover:underline">{{ station.phone }}</a>
+                    </p>
+                    }
+                    @if (station.email) {
+                    <p>
+                        <span class="font-semibold">E-post:</span> 
+                        <a [href]="'mailto:' + station.email" class="text-[var(--accent-0)] hover:underline">{{ station.email }}</a>
+                    </p>
+                    }
+                    @if (station.website) {
+                    <p>
+                        <span class="font-semibold">Hemsida:</span> 
+                        <a [href]="station.website" target="_blank" class="text-[var(--accent-0)] hover:underline">Besök webbplats</a>
+                    </p>
+                    }
+                </div>
+            </div>
+
+            <!-- Distance -->
+            <div class="bg-[var(--accent-soft)] rounded-lg p-4">
+                <h3 class="font-semibold text-lg mb-2 flex items-center gap-2 text-[var(--accent-0)]">
+                    <i class="pi pi-compass"></i>
+                    Avstånd
+                </h3>
+                <p class="text-lg font-bold text-[var(--accent-0)]">{{ station.distance | number:'1.1-1' }} km bort</p>
+            </div>
+
+            <!-- Facilities -->
+            @if (station.parking || station.toilet || station.cafe) {
+            <div class="bg-[var(--bg-1)] rounded-lg p-4">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-2">
+                    <i class="pi pi-check-circle"></i>
+                    Faciliteter
+                </h3>
+                <div class="space-y-2">
+                    @if (station.parking) {
+                    <p class="flex items-center gap-2 text-[var(--text-0)]">
+                        <i class="pi pi-check text-green-500"></i>
+                        Parkering
+                    </p>
+                    }
+                    @if (station.toilet) {
+                    <p class="flex items-center gap-2 text-[var(--text-0)]">
+                        <i class="pi pi-check text-green-500"></i>
+                        Toalett
+                    </p>
+                    }
+                    @if (station.cafe) {
+                    <p class="flex items-center gap-2 text-[var(--text-0)]">
+                        <i class="pi pi-check text-green-500"></i>
+                        Café
+                    </p>
+                    }
+                </div>
+            </div>
+            }
+
+            <!-- Opening Info -->
+            @if (station.opening_info) {
+            <div class="bg-[var(--bg-1)] rounded-lg p-4">
+                <h3 class="font-semibold text-lg mb-2 flex items-center gap-2">
+                    <i class="pi pi-clock"></i>
+                    Öppettider
+                </h3>
+                <p class="text-[var(--text-0)]">{{ station.opening_info }}</p>
+            </div>
+            }
+
+            <!-- Description -->
+            @if (station.description) {
+            <div class="bg-[var(--bg-1)] rounded-lg p-4">
+                <h3 class="font-semibold text-lg mb-2 flex items-center gap-2">
+                    <i class="pi pi-info-circle"></i>
+                    Om stationen
+                </h3>
+                <p class="text-[var(--text-0)]">{{ station.description }}</p>
+            </div>
+            }
+        </div>
+        }
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Stäng" (onClick)="onHide()" severity="secondary"></p-button>
+    </ng-template>
+</p-dialog>

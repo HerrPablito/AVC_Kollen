@@ -440,3 +440,256 @@ body.p-overflow-hidden {
 .animate-fadeIn {
     animation: fadeInDrawer 0.3s ease-out forwards;
 }
+
+/* 16) PrimeNG Button overrides */
+.p-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: var(--text-base);
+    transition: all 0.3s ease;
+    gap: var(--space-2);
+    height: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.p-button.p-button-primary {
+    background: color-mix(in srgb, var(--accent-0) 75%, var(--bg-2) 25%);
+    border: 1px solid var(--accent-0);
+    color: white;
+
+    &:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--accent-0) 90%, var(--bg-2) 10%);
+        border-color: var(--accent-0);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(226, 59, 78, 0.25);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: var(--focus-ring), 0 0 0 2px rgba(226, 59, 78, 0.5);
+    }
+}
+
+.p-button.p-button-secondary {
+    background: color-mix(in srgb, var(--bg-2) 70%, transparent 30%);
+    border: 1px solid var(--border-0);
+    color: var(--text-0);
+
+    &:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--bg-2) 100%, transparent 0%);
+        border-color: var(--accent-soft);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: var(--focus-ring);
+    }
+}
+
+.p-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+// Only add icon margin when button has a label (text content)
+.p-button:not(.p-button-icon-only) {
+
+    .p-icon,
+    .p-button-icon {
+        &:first-child {
+            margin-right: var(--space-2);
+        }
+
+        &:last-child:not(:first-child) {
+            margin-left: var(--space-2);
+        }
+    }
+}
+
+.p-button.p-loading .p-button-loading-icon {
+    animation: p-spin 1s linear infinite;
+}
+
+@keyframes p-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* PrimeNG Select Styling */
+.p-select {
+    width: 100%;
+    background: color-mix(in srgb, var(--bg-1) 85%, transparent 15%);
+    border: 2px solid var(--border-0);
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+
+    &:hover {
+        border-color: color-mix(in srgb, var(--accent-0) 50%, var(--border-0) 50%);
+    }
+
+    &.p-focus {
+        outline: none;
+        border-color: var(--accent-0);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-0) 20%, transparent 80%);
+    }
+
+    .p-select-label {
+        padding: 0.75rem 1rem;
+        color: var(--text-0);
+        background-color: transparent;
+        font-weight: 500;
+        font-size: var(--text-base);
+
+        &.p-placeholder {
+            color: var(--text-2);
+        }
+    }
+
+    .p-select-dropdown {
+        color: var(--text-1);
+        width: 2.5rem;
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
+
+        &:hover {
+            color: var(--text-0);
+        }
+    }
+}
+
+.p-select-overlay {
+    background-color: var(--bg-0);
+    border: 2px solid var(--accent-0);
+    border-radius: var(--radius-md);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    margin-top: 0.5rem;
+    overflow: hidden;
+
+    .p-select-header {
+        background: var(--bg-1);
+        border-bottom: 1px solid var(--border-0);
+        padding: 0;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .p-select-list {
+        padding: 0.5rem 0;
+        background: var(--bg-0);
+    }
+
+    .p-select-option {
+        padding: 0.75rem 1rem;
+        color: var(--text-0);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+
+        &:hover {
+            background-color: color-mix(in srgb, var(--accent-0) 15%, transparent 85%);
+            border-left-color: var(--accent-0);
+        }
+
+        &.p-focus {
+            background-color: color-mix(in srgb, var(--accent-0) 10%, transparent 90%);
+        }
+
+        &.p-select-option-selected {
+            background-color: color-mix(in srgb, var(--accent-0) 20%, transparent 80%);
+            color: var(--text-0);
+            font-weight: 600;
+            border-left-color: var(--accent-0);
+        }
+    }
+
+    .p-select-empty-message {
+        padding: 1.5rem;
+        text-align: center;
+        color: var(--text-2);
+        font-size: var(--text-sm);
+    }
+}
+
+.custom-select-dropdown {
+    .p-select-items-wrapper {
+        background-color: var(--bg-1) !important;
+    }
+}
+
+/* PrimeNG Dialog Styling */
+.p-dialog {
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-0);
+    overflow: hidden;
+
+    .p-dialog-header {
+        background: var(--bg-1);
+        color: var(--text-0);
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-0);
+        border-top-left-radius: var(--radius-lg);
+        border-top-right-radius: var(--radius-lg);
+    }
+
+    .p-dialog-content {
+        background: var(--bg-0);
+        color: var(--text-0);
+        padding: 1.5rem;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .p-dialog-footer {
+        background: var(--bg-1);
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--border-0);
+        border-bottom-left-radius: var(--radius-lg);
+        border-bottom-right-radius: var(--radius-lg);
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+
+    .p-dialog-header-icon {
+        color: var(--text-1);
+        width: 2rem;
+        height: 2rem;
+        border-radius: var(--radius-sm);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: var(--bg-2);
+            color: var(--text-0);
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: var(--focus-ring);
+        }
+    }
+}
+
+.p-dialog-mask {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+}
+
+/* Custom dialog class */
+.p-dialog-custom {
+    .p-dialog-header {
+        background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
+    }
+}

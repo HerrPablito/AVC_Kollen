@@ -9,7 +9,7 @@
             <!-- Search Input -->
             <div class="w-full md:w-auto relative">
                 <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-2)]"></i>
-                <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" placeholder="Sök i guiden..."
+                <input type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" (keyup.enter)="onSearch()" placeholder="Sök i guiden..."
                     class="search-input pl-10 w-full md:w-80">
             </div>
         </div>
@@ -82,66 +82,44 @@
     </div>
 </div>
 
-<!-- Article Detail Modal -->
-@if (selectedArticle(); as article) {
-<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm fade-in"
-    (click)="clearSelection()">
-    <div class="bg-[var(--bg-1)] rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative"
-        (click)="$event.stopPropagation()">
+<!-- Article Detail Dialog -->
+<p-dialog [visible]="selectedArticle() !== null" [modal]="true" [maximizable]="false" [resizable]="false"
+    (onHide)="clearSelection()" [style]="{ 'max-width': '800px', 'width': '100%' }" styleClass="p-dialog-custom">
+    <ng-template pTemplate="header">
+        @if (selectedArticle(); as article) {
+        <div class="flex items-center gap-3">
+            @if (article.color?.primary) {
+            <div class="w-10 h-10 rounded-full flex items-center justify-center"
+                [style.background-color]="article.color?.primary">
+                <i class="pi pi-recycle text-white"></i>
+            </div>
+            }
+            <div>
+                <h2 class="text-xl font-bold">{{ article.title }}</h2>
+                @if (article.category) {
+                <p class="text-[var(--text-1)] text-xs">{{ article.category }}</p>
+                }
+            </div>
+        </div>
+        }
+    </ng-template>
 
+    <ng-template pTemplate="content">
+        @if (selectedArticle(); as article) {
         <!-- Hero Image -->
         @if (article.image_url) {
-        <div class="relative h-64 overflow-hidden">
+        <div class="relative h-48 -mx-6 -mt-6 mb-6 overflow-hidden rounded-t-lg">
             <img [src]="'https://sopinfo.se/' + article.image_url" [alt]="article.title"
                 class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-1)] to-transparent"></div>
-
-            <!-- Close button on image -->
-            <button
-                class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors backdrop-blur-sm"
-                (click)="clearSelection()">
-                <i class="pi pi-times text-white"></i>
-            </button>
         </div>
         }
 
-        <!-- Header -->
-        <div class="p-6 border-b border-[var(--border-0)]">
-            <div class="flex items-start justify-between gap-4">
-                <div class="flex-grow">
-                    <div class="flex items-center gap-3 mb-2">
-                        @if (article.color?.primary) {
-                        <div class="w-12 h-12 rounded-full flex items-center justify-center"
-                            [style.background-color]="article.color?.primary">
-                            <i class="pi pi-recycle text-white text-xl"></i>
-                        </div>
-                        }
-                        <div>
-                            <h2 class="text-2xl font-bold">{{ article.title }}</h2>
-                            @if (article.category) {
-                            <p class="text-[var(--text-1)] text-sm">{{ article.category }}</p>
-                            }
-                        </div>
-                    </div>
-                </div>
-                @if (!article.image_url) {
-                <button
-                    class="w-8 h-8 rounded-full bg-[var(--bg-2)] hover:bg-[var(--accent-soft)] flex items-center justify-center transition-colors"
-                    (click)="clearSelection()">
-                    <i class="pi pi-times"></i>
-                </button>
-                }
-            </div>
+        <!-- Excerpt -->
+        @if (article.excerpt) {
+        <p class="text-lg text-[var(--text-0)] mb-6 leading-relaxed">{{ article.excerpt }}</p>
+        }
 
-            <!-- Excerpt -->
-            @if (article.excerpt) {
-            <p class="text-lg text-[var(--text-0)] mt-4 leading-relaxed">{{ article.excerpt }}</p>
-            }
-        </div>
-
-        <!-- Content -->
-        <div class="p-6 space-y-6">
-
+        <div class="space-y-6">
             <!-- Allowed Items -->
             @if (article.allowed && article.allowed.length > 0) {
             <div class="bg-green-500/10 border border-green-500/20 rounded-xl p-5">
@@ -207,14 +185,15 @@
             </div>
             }
         </div>
+        }
+    </ng-template>
 
-        <!-- Footer -->
-        <div class="p-6 border-t border-[var(--border-0)] flex justify-end gap-3 sticky bottom-0 bg-[var(--bg-1)]">
-            <button class="btn btn--secondary" (click)="clearSelection()">Stäng</button>
-            <a routerLink="/stationer" class="btn btn--primary">
-                <i class="pi pi-map-marker"></i> Hitta station
-            </a>
-        </div>
-    </div>
-</div>
-}
+    <ng-template pTemplate="footer">
+        @if (selectedArticle()) {
+        <button class="btn btn--secondary" (click)="clearSelection()">Stäng</button>
+        <a routerLink="/stationer" class="btn btn--primary">
+            <i class="pi pi-map-marker"></i> Hitta station
+        </a>
+        }
+    </ng-template>
+</p-dialog>

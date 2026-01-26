@@ -65,7 +65,12 @@ function fixStringEncoding(text: string): string {
     try {
         // Check if the string contains mojibake patterns (common UTF-8 as Latin-1 errors)
         // These patterns indicate the string needs fixing
-        const hasMojibake = /[Ã][¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ]/.test(text);
+        // Extended pattern to catch more variants: Ã, Â, â, à, Ä, ä, etc.
+        const hasMojibake = /[ÃâàäæçéèêëìíîïñòóôõöøùúûüýÆ][¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ]/g.test(text) ||
+            /[Ã][¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ]/.test(text) ||
+            /[Ã][¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿]/.test(text) ||
+            /â€/.test(text) || // Common Euro/curly quote issues
+            /â€™/.test(text);
 
         if (!hasMojibake) {
             // String looks fine, no need to fix

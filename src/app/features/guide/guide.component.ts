@@ -2,13 +2,16 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 import { SopinfoService } from '../../core/services/sopinfo.service';
+import { FavoritesService } from '../../shared/services/favorites.service';
 import { GuideArticle } from '../../core/models/sopinfo.models';
 
 @Component({
     selector: 'app-guide',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink, DialogModule, ButtonModule],
     templateUrl: './guide.component.html',
     styleUrl: './guide.component.scss'
 })
@@ -21,7 +24,8 @@ export class SortingGuideComponent implements OnInit {
     constructor(
         private sopinfoService: SopinfoService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        public favoritesService: FavoritesService
     ) { }
 
     ngOnInit() {

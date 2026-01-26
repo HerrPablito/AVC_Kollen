@@ -3,6 +3,7 @@
 ## Styling
 - **Undvik SCSS-filer**: Använd inte komponent-specifika SCSS-filer om det inte är absolut nödvändigt.
 - **Globala stilar**: Globala SCSS-filer är undantagna och får användas.
+- **UNDVIK ::ng-deep**: Använd ALDRIG `::ng-deep`. Det krånglar alltid till och bryter encapsulation. Använd istället globala stilar i `styles.scss`.
 - **Preferens**: Föredra **Tailwind CSS** och **PrimeNG** komponenter framför separata stilfiler eller inline styles.
   - Tailwind CSS för utility-baserad styling
   - PrimeNG för färdiga UI-komponenter
@@ -15,6 +16,12 @@
 
 ## Angular Best Practices
 - **Signals**: Använd Angular Signals där det passar sig för reaktivitet.
+- **Two-way binding med Signals**: Använd ALDRIG `[(ngModel)]="signal"` med Signals. Istället, använd separata bindningar:
+  - `[ngModel]="signal()"` och `(ngModelChange)="signal.set($event)"`
+- **Template-syntax**: Använd alltid moderna Angular-syntaxen:
+  - `@if` istället för `*ngIf`
+  - `@for` istället för `*ngFor`
+  - `@switch` istället för `*ngSwitch`
 
 ## Definition of Done
 - Bygger utan fel.

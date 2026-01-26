@@ -14,21 +14,23 @@
 
                 <!-- Search Component -->
                 <div class="mb-6">
-                    <input type="text" class="search-input" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
+                    <input type="text" class="search-input" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" (keyup.enter)="onSearch()"
                         [disabled]="isLoading()" placeholder="Sök på postnummer, ort eller kommun..."
                         aria-label="Sök återvinningscentral" />
                 </div>
 
                 <div class="flex gap-4 flex-wrap mb-4">
-                    <button class="btn btn--primary" (click)="onSearch()" [disabled]="isLoading()">
-                        <i class="pi" [class.pi-search]="!isLoading()" [class.pi-spin]="isLoading()"
-                            [class.pi-spinner]="isLoading()"></i>
-                        {{ isLoading() ? 'Söker...' : 'Sök nu' }}
-                    </button>
-                    <button class="btn btn--secondary" (click)="useMyLocation()" [disabled]="isLoading()">
+                    <p-button label="{{ isLoading() ? 'Söker...' : 'Sök nu' }}" (onClick)="onSearch()" [disabled]="isLoading()" [loading]="isLoading()" severity="primary">
+                        <i class="pi pi-search"></i>
+                    </p-button>
+                    <p-button label="Använd min plats" (onClick)="useMyLocation()" [disabled]="isLoading()" severity="secondary">
                         <i class="pi pi-map-marker"></i>
-                        Använd min plats
-                    </button>
+                    </p-button>
+                    @if (searchResults().length > 0 || nearestStation()) {
+                    <p-button label="Rensa sökning" (onClick)="clearSearch()" severity="secondary">
+                        <i class="pi pi-trash"></i>
+                    </p-button>
+                    }
                 </div>
 
                 <!-- Search Result / Error -->
@@ -39,17 +41,57 @@
                 </div>
                 }
 
-                @if (nearestStation(); as station) {
-                <div class="card p-4 mb-4 border-l-4 border-[var(--accent-0)] fade-in cursor-pointer hover:bg-[var(--bg-2)]"
-                    (click)="navigateToStation(station)">
-                    <h3 class="text-lg font-bold">{{ station.name }}</h3>
-                    <p class="text-sm text-[var(--text-1)]">{{ station.address }}, {{ station.city }}</p>
-                    <div class="flex items-center gap-2 mt-2">
-                        <span
-                            class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-2 py-1 rounded text-xs font-semibold">
-                            {{ station.distance | number:'1.1-1' }} km bort
-                        </span>
-                        <span class="text-xs text-[var(--text-2)]">Klicka för detaljer</span>
+                @if (showSearchResults() && searchResults().length > 0) {
+                <div class="mb-6 fade-in">
+                    <h3 class="font-semibold text-lg mb-3">Stationer inom 1 mil</h3>
+                    <div class="space-y-3">
+                        @for (station of searchResults(); track station.id) {
+                        <div class="card p-4 border-l-4 border-[var(--accent-0)] fade-in cursor-pointer hover:bg-[var(--bg-2)] transition-colors relative group"
+                            (click)="openStationDialog(station)">
+                            <button 
+                              (click)="toggleFavorite(station, $event)"
+                              class="absolute top-3 right-3 text-2xl transition-colors duration-200 hover:scale-110"
+                              [class.text-yellow-400]="isFavorite(station.id)"
+                              [style]="!isFavorite(station.id) ? 'color: var(--text-2)' : ''"
+                              [attr.aria-label]="isFavorite(station.id) ? 'Ta bort från favoriter' : 'Lägg till i favoriter'">
+                              <i [class.pi-star-fill]="isFavorite(station.id)" [class.pi-star]="!isFavorite(station.id)" class="pi"></i>
+                            </button>
+                            <div class="flex justify-between items-start pr-12">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-bold">{{ station.name }}</h3>
+                                    <p class="text-sm text-[var(--text-1)]">{{ station.address }}, {{ station.city }}</p>
+                                </div>
+                                <span class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-2 py-1 rounded text-xs font-semibold">
+                                    {{ station.distance | number:'1.1-1' }} km
+                                </span>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+
+                @if (nearestStation() && !showSearchResults()) {
+                <div class="card p-4 mb-4 border-l-4 border-[var(--accent-0)] fade-in cursor-pointer hover:bg-[var(--bg-2)] relative"
+                    (click)="openStationDialog(nearestStation()!)">
+                    <button 
+                      (click)="toggleFavorite(nearestStation()!, $event)"
+                      class="absolute top-3 right-3 text-2xl transition-colors duration-200 hover:scale-110"
+                      [class.text-yellow-400]="isFavorite(nearestStation()!.id)"
+                      [style]="!isFavorite(nearestStation()!.id) ? 'color: var(--text-2)' : ''"
+                      [attr.aria-label]="isFavorite(nearestStation()!.id) ? 'Ta bort från favoriter' : 'Lägg till i favoriter'">
+                      <i [class.pi-star-fill]="isFavorite(nearestStation()!.id)" [class.pi-star]="!isFavorite(nearestStation()!.id)" class="pi"></i>
+                    </button>
+                    <div class="pr-12">
+                        <h3 class="text-lg font-bold">{{ nearestStation()!.name }}</h3>
+                        <p class="text-sm text-[var(--text-1)]">{{ nearestStation()!.address }}, {{ nearestStation()!.city }}</p>
+                        <div class="flex items-center gap-2 mt-2">
+                            <span
+                                class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-2 py-1 rounded text-xs font-semibold">
+                                {{ nearestStation()!.distance | number:'1.1-1' }} km bort
+                            </span>
+                            <span class="text-xs text-[var(--text-2)]">Klicka för detaljer</span>
+                        </div>
                     </div>
                 </div>
                 }
@@ -129,14 +171,11 @@
         <div class="max-w-xl mx-auto mb-10 relative">
             <h3 class="text-center text-sm font-semibold mb-2 uppercase tracking-wider text-[var(--accent-0)]">Osäker på
                 vad du ska slänga?</h3>
-            <div class="relative">
-                <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-2)]"></i>
-                <input type="text" [(ngModel)]="wasteQuery" (keyup.enter)="onWasteSearch()"
-                    placeholder="Sök på t.ex. 'mjölkpaket' eller 'batteri'" class="search-input pl-12">
-                <button class="absolute right-2 top-1/2 -translate-y-1/2 btn btn--primary py-1 px-3 text-sm h-8"
-                    (click)="onWasteSearch()">
-                    Sök
-                </button>
+            <div class="relative flex items-center">
+                <i class="pi pi-search absolute left-4 text-[var(--text-2)]"></i>
+                <input type="text" [ngModel]="wasteQuery()" (ngModelChange)="wasteQuery.set($event)" (keyup.enter)="onWasteSearch()"
+                    placeholder="Sök på t.ex. 'mjölkpaket' eller 'batteri'" class="search-input pl-12 pr-20 flex-1">
+                <p-button label="Sök" (onClick)="onWasteSearch()" class="absolute right-1 text-sm" severity="primary"></p-button>
             </div>
         </div>
 
@@ -216,23 +255,135 @@
         </div>
 
         <div class="text-center mt-8">
-            <button routerLink="/sorteringsguide" class="btn btn--primary">
+            <p-button routerLink="/sorteringsguide" label="Läs fullständig sorteringsguide" severity="primary">
                 <i class="pi pi-book"></i>
-                Läs fullständig sorteringsguide
-            </button>
+            </p-button>
         </div>
     </div>
 </section>
 
-<!-- Sorting Guide Drawer (Bottom) -->
-<p-drawer [(visible)]="drawerVisible" position="bottom" [style]="{'height': '90vh'}" [modal]="true">
-    @if (selectedArticle()) {
-    <ng-template pTemplate="content">
-        <app-article-detail [article]="selectedArticle()!" [showFooter]="true" (close)="closeModal()">
-        </app-article-detail>
+<!-- Station Detail Dialog - Using reusable component -->
+<app-station-detail 
+    [station]="selectedStation()" 
+    [visible]="showStationDetail()"
+    (onHide)="closeStationDialog()">
+</app-station-detail>
+
+<!-- Article Detail Dialog -->
+<p-dialog [visible]="selectedArticle() !== null" [modal]="true" [maximizable]="false" [resizable]="false"
+    (onHide)="closeModal()" [style]="{ 'max-width': '800px', 'width': '100%' }" styleClass="p-dialog-custom">
+    <ng-template pTemplate="header">
+        @if (selectedArticle(); as article) {
+        <div class="flex items-center gap-3">
+            @if (article.color?.primary) {
+            <div class="w-10 h-10 rounded-full flex items-center justify-center"
+                [style.background-color]="article.color?.primary">
+                <i class="pi pi-recycle text-white"></i>
+            </div>
+            }
+            <div>
+                <h2 class="text-xl font-bold">{{ article.title }}</h2>
+                @if (article.category) {
+                <p class="text-[var(--text-1)] text-xs">{{ article.category }}</p>
+                }
+            </div>
+        </div>
+        }
     </ng-template>
-    }
-</p-drawer>
+
+    <ng-template pTemplate="content">
+        @if (selectedArticle(); as article) {
+        <!-- Hero Image -->
+        @if (article.image_url) {
+        <div class="relative h-48 -mx-6 -mt-6 mb-6 overflow-hidden rounded-t-lg">
+            <img [src]="'https://sopinfo.se/' + article.image_url" [alt]="article.title"
+                class="w-full h-full object-cover">
+        </div>
+        }
+
+        <!-- Excerpt -->
+        @if (article.excerpt) {
+        <p class="text-lg text-[var(--text-0)] mb-6 leading-relaxed">{{ article.excerpt }}</p>
+        }
+
+        <div class="space-y-6">
+            <!-- Allowed Items -->
+            @if (article.allowed && article.allowed.length > 0) {
+            <div class="bg-green-500/10 border border-green-500/20 rounded-xl p-5">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-2 text-green-400">
+                    <i class="pi pi-check-circle"></i>
+                    Får sorteras här
+                </h3>
+                <ul class="space-y-2">
+                    @for (item of article.allowed; track item) {
+                    <li class="flex items-start gap-2 text-[var(--text-0)]">
+                        <i class="pi pi-check text-green-400 mt-1 flex-shrink-0"></i>
+                        <span>{{ item }}</span>
+                    </li>
+                    }
+                </ul>
+            </div>
+            }
+
+            <!-- Not Allowed Items -->
+            @if (article.not_allowed && article.not_allowed.length > 0) {
+            <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-5">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-2 text-red-400">
+                    <i class="pi pi-times-circle"></i>
+                    Får INTE sorteras här
+                </h3>
+                <ul class="space-y-2">
+                    @for (item of article.not_allowed; track item) {
+                    <li class="flex items-start gap-2 text-[var(--text-0)]">
+                        <i class="pi pi-times text-red-400 mt-1 flex-shrink-0"></i>
+                        <span>{{ item }}</span>
+                    </li>
+                    }
+                </ul>
+            </div>
+            }
+
+            <!-- Tips -->
+            @if (article.tips && article.tips.length > 0) {
+            <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-5">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-2 text-blue-400">
+                    <i class="pi pi-lightbulb"></i>
+                    Praktiska tips
+                </h3>
+                <ul class="space-y-2">
+                    @for (tip of article.tips; track tip) {
+                    <li class="flex items-start gap-2 text-[var(--text-0)]">
+                        <i class="pi pi-arrow-right text-blue-400 mt-1 flex-shrink-0"></i>
+                        <span>{{ tip }}</span>
+                    </li>
+                    }
+                </ul>
+            </div>
+            }
+
+            <!-- Why Text / Environmental Impact -->
+            @if (article.why_text) {
+            <div class="bg-[var(--accent-soft)] border border-[var(--accent-0)]/20 rounded-xl p-5">
+                <h3 class="font-semibold text-lg mb-3 flex items-center gap-2 text-[var(--accent-0)]">
+                    <i class="pi pi-globe"></i>
+                    Därför är det viktigt
+                </h3>
+                <p class="text-[var(--text-0)] leading-relaxed">{{ article.why_text }}</p>
+            </div>
+            }
+        </div>
+        }
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        @if (selectedArticle()) {
+        <p-button label="Stäng" (onClick)="closeModal()" severity="secondary"></p-button>
+        <p-button routerLink="/stationer" label="Hitta station" severity="primary">
+            <i class="pi pi-map-marker"></i>
+        </p-button>
+        }
+    </ng-template>
+</p-dialog>
 
 <!-- My ÅVC Section -->
 <section id="mina" class="section">
@@ -255,14 +406,12 @@
                     Du kan enkelt hitta och besöka dina favoritplatser.
                 </p>
                 <div class="flex gap-4 justify-center flex-wrap">
-                    <button class="btn btn--primary">
+                    <p-button label="Logga in" severity="primary">
                         <i class="pi pi-user"></i>
-                        Logga in
-                    </button>
-                    <button class="btn btn--secondary">
+                    </p-button>
+                    <p-button label="Skapa konto" severity="secondary">
                         <i class="pi pi-user-plus"></i>
-                        Skapa konto
-                    </button>
+                    </p-button>
                 </div>
             </div>
         </div>
