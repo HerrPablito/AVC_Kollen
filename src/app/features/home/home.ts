@@ -2,13 +2,15 @@ import { Component, signal } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DrawerModule } from 'primeng/drawer';
 import { SopinfoService } from '../../core/services/sopinfo.service';
 import { Station, GuideArticle } from '../../core/models/sopinfo.models';
+import { ArticleDetailComponent } from '../../shared/components/article-detail.component';
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [RouterLink, FormsModule, CommonModule],
+    imports: [RouterLink, FormsModule, CommonModule, DrawerModule, ArticleDetailComponent],
     templateUrl: './home.html',
     styleUrl: './home.scss'
 })
@@ -18,7 +20,8 @@ export class HomeComponent {
     nearestStation = signal<Station | null>(null);
     errorMessage = signal<string | null>(null);
 
-    // Sorting Modal State
+    // Drawer State
+    drawerVisible = signal(false);
     selectedArticle = signal<GuideArticle | null>(null);
 
     // Quick Search "Vad vill du slänga?"
@@ -102,11 +105,15 @@ export class HomeComponent {
     }
 
     openSortingModal(slug: string) {
+        console.log('Opening modal for slug:', slug);
         this.sopinfoService.getGuideArticle(slug).subscribe({
             next: (article) => {
+                console.log('Article loaded:', article);
                 this.selectedArticle.set(article);
+                this.drawerVisible.set(true);
             },
-            error: () => {
+            error: (err) => {
+                console.error('Failed to load article:', err);
                 // Fallback content if API fails or slug is missing
                 this.selectedArticle.set({
                     id: 0,
@@ -116,12 +123,15 @@ export class HomeComponent {
                     excerpt: 'Detaljerad information om hur du sorterar denna fraktion kommer snart.',
                     description: undefined
                 });
+                this.drawerVisible.set(true);
             }
         });
     }
 
     closeModal() {
-        this.selectedArticle.set(null);
+        this.drawerVisible.set(false);
+        // Clear article after animation
+        setTimeout(() => this.selectedArticle.set(null), 300);
     }
 
     onWasteSearch() {

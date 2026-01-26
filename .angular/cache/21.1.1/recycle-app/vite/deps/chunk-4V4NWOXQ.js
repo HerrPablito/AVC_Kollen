@@ -1,6 +1,6 @@
 import {
   withHttpTransferCache
-} from "./chunk-ZDK7WQTT.js";
+} from "./chunk-3RPL3V77.js";
 import {
   DomEventsPlugin,
   DomRendererFactory2,
@@ -8,18 +8,18 @@ import {
   EventManager,
   EventManagerPlugin,
   SharedStylesHost
-} from "./chunk-YVA6MXSD.js";
+} from "./chunk-2WACLJDD.js";
 import {
   CommonModule,
   PLATFORM_BROWSER_ID
-} from "./chunk-2UX6L7MY.js";
+} from "./chunk-WLJCUUBK.js";
 import {
   DomAdapter,
   XhrFactory,
   getDOM,
   parseCookieValue,
   setRootDomAdapter
-} from "./chunk-4XDFU4M3.js";
+} from "./chunk-FXXIW5PT.js";
 import {
   ApplicationModule,
   ApplicationRef,
@@ -73,7 +73,7 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-FVACEUZF.js";
+} from "./chunk-MLFTOVQU.js";
 import {
   __spreadValues
 } from "./chunk-GOMI4DH3.js";
@@ -1055,4 +1055,4 @@ export {
   provideClientHydration,
   VERSION
 };
-//# sourceMappingURL=chunk-MN3I7D2J.js.map
+//# sourceMappingURL=chunk-4V4NWOXQ.js.map

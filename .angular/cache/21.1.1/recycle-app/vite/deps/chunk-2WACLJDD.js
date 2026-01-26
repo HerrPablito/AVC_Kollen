@@ -1,6 +1,6 @@
 import {
   getDOM
-} from "./chunk-4XDFU4M3.js";
+} from "./chunk-FXXIW5PT.js";
 import {
   APP_ID,
   CSP_NONCE,
@@ -19,7 +19,7 @@ import {
   setClassMetadata,
   ɵɵdefineInjectable,
   ɵɵinject
-} from "./chunk-FVACEUZF.js";
+} from "./chunk-MLFTOVQU.js";
 
 // node_modules/@angular/platform-browser/fesm2022/_dom_renderer-chunk.mjs
 var EventManagerPlugin = class {
@@ -715,4 +715,4 @@ export {
   REMOVE_STYLES_ON_COMPONENT_DESTROY,
   DomRendererFactory2
 };
-//# sourceMappingURL=chunk-YVA6MXSD.js.map
+//# sourceMappingURL=chunk-2WACLJDD.js.map

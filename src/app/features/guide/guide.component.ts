@@ -16,8 +16,6 @@ export class SortingGuideComponent implements OnInit {
     articles = signal<GuideArticle[]>([]);
     isLoading = signal(true);
     searchQuery = signal('');
-
-    // If slug exists, we are in detail view (or we could use child routes, but simple toggle for now)
     selectedArticle = signal<GuideArticle | null>(null);
 
     constructor(
@@ -27,10 +25,6 @@ export class SortingGuideComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        // Check if we have a search query param or article slug? 
-        // Plan said: /api/sorteringsguide?search or /api/sorteringsguide/:slug.
-        // Our route is just 'sorteringsguide'. Maybe we should have 'sorteringsguide/:slug' too?
-        // Let's implement list view first, and modal/detail handling.
 
         this.loadArticles();
     }

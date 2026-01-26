@@ -143,7 +143,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             <!-- Waste Type Icons -->
             <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
-                (click)="openSortingModal('papper')">
+                (click)="openSortingModal('tidningar-och-papper')">
                 <div class="mb-4">
                     <i class="pi pi-file text-4xl" style="color: var(--blush-300);"></i>
                 </div>
@@ -152,7 +152,7 @@
             </div>
 
             <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
-                (click)="openSortingModal('plast')">
+                (click)="openSortingModal('plastforpackningar')">
                 <div class="mb-4">
                     <i class="pi pi-box text-4xl" style="color: var(--blush-300);"></i>
                 </div>
@@ -161,7 +161,7 @@
             </div>
 
             <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
-                (click)="openSortingModal('glas')">
+                (click)="openSortingModal('glasforpackningar')">
                 <div class="mb-4">
                     <i class="pi pi-circle text-4xl" style="color: var(--blush-300);"></i>
                 </div>
@@ -188,7 +188,7 @@
             </div>
 
             <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
-                (click)="openSortingModal('metall')">
+                (click)="openSortingModal('metallforpackningar')">
                 <div class="mb-4">
                     <i class="pi pi-trash text-4xl" style="color: var(--blush-300);"></i>
                 </div>
@@ -197,7 +197,7 @@
             </div>
 
             <div class="card text-center p-6 cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 hover:border-[var(--accent-soft)]"
-                (click)="openSortingModal('organiskt')">
+                (click)="openSortingModal('matavfall')">
                 <div class="mb-4">
                     <i class="pi pi-sun text-4xl" style="color: var(--blush-300);"></i>
                 </div>
@@ -224,50 +224,15 @@
     </div>
 </section>
 
-<!-- Article Detail Modal -->
-@if (selectedArticle(); as article) {
-<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm fade-in"
-    (click)="closeModal()">
-    <div class="bg-[var(--bg-1)] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative"
-        (click)="$event.stopPropagation()">
-        <!-- Header -->
-        <div
-            class="sticky top-0 bg-[var(--bg-1)] p-6 border-b border-[var(--border-0)] flex justify-between items-center z-10">
-            <h2 class="text-2xl font-bold">{{ article.title }}</h2>
-            <button
-                class="w-8 h-8 rounded-full bg-[var(--bg-2)] hover:bg-[var(--accent-soft)] flex items-center justify-center transition-colors"
-                (click)="closeModal()">
-                <i class="pi pi-times"></i>
-            </button>
-        </div>
-
-        <!-- Content -->
-        <div class="p-6">
-            <div class="prose prose-invert max-w-none">
-                @if (article.excerpt) {
-                <p class="text-lg text-[var(--text-0)] mb-4">{{ article.excerpt }}</p>
-                }
-
-                @if (article.description) {
-                <p class="text-[var(--text-1)] mb-4">{{ article.description }}</p>
-                }
-
-                @if (!article.excerpt && !article.description) {
-                <p class="text-[var(--text-1)] mb-4">Detaljerad information kommer snart.</p>
-                }
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="p-6 border-t border-[var(--border-0)] flex justify-end gap-3 sticky bottom-0 bg-[var(--bg-1)]">
-            <button class="btn btn--secondary" (click)="closeModal()">Stäng</button>
-            <a routerLink="/stationer" class="btn btn--primary">
-                <i class="pi pi-map-marker"></i> Hitta station
-            </a>
-        </div>
-    </div>
-</div>
-}
+<!-- Sorting Guide Drawer (Bottom) -->
+<p-drawer [(visible)]="drawerVisible" position="bottom" [style]="{'height': '90vh'}" [modal]="true">
+    @if (selectedArticle()) {
+    <ng-template pTemplate="content">
+        <app-article-detail [article]="selectedArticle()!" [showFooter]="true" (close)="closeModal()">
+        </app-article-detail>
+    </ng-template>
+    }
+</p-drawer>
 
 <!-- My ÅVC Section -->
 <section id="mina" class="section">
