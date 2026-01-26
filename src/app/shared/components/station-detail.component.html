@@ -1,6 +1,6 @@
 <!-- Station Detail Dialog -->
-<p-dialog [visible]="visible" [modal]="true" [maximizable]="false" [resizable]="false"
-    (onHide)="onHide()" [style]="{ 'max-width': '600px', 'width': '100%' }" styleClass="p-dialog-custom">
+<p-dialog [visible]="visible" [modal]="true" [maximizable]="false" [resizable]="false" (onHide)="onHide()"
+    [style]="{ 'max-width': '600px', 'width': '100%' }" class="p-dialog-custom">
     <ng-template pTemplate="header">
         @if (station) {
         <div class="flex items-center gap-3 justify-between">
@@ -13,7 +13,8 @@
                     }
                 </div>
             </div>
-            <button (click)="toggleFavorite()" class="text-2xl" [class.text-yellow-400]="isFavorite()" [style]="!isFavorite() ? 'color: var(--text-2)' : ''">
+            <button (click)="toggleFavorite()" class="text-2xl" [class.text-yellow-400]="isFavorite()"
+                [style]="!isFavorite() ? 'color: var(--text-2)' : ''">
                 <i [class.pi-star-fill]="isFavorite()" [class.pi-star]="!isFavorite()" class="pi"></i>
             </button>
         </div>
@@ -37,20 +38,23 @@
                     </p>
                     @if (station.phone) {
                     <p>
-                        <span class="font-semibold">Telefon:</span> 
-                        <a [href]="'tel:' + station.phone" class="text-[var(--accent-0)] hover:underline">{{ station.phone }}</a>
+                        <span class="font-semibold">Telefon:</span>
+                        <a [href]="'tel:' + station.phone" class="text-[var(--accent-0)] hover:underline">{{
+                            station.phone }}</a>
                     </p>
                     }
                     @if (station.email) {
                     <p>
-                        <span class="font-semibold">E-post:</span> 
-                        <a [href]="'mailto:' + station.email" class="text-[var(--accent-0)] hover:underline">{{ station.email }}</a>
+                        <span class="font-semibold">E-post:</span>
+                        <a [href]="'mailto:' + station.email" class="text-[var(--accent-0)] hover:underline">{{
+                            station.email }}</a>
                     </p>
                     }
                     @if (station.website) {
                     <p>
-                        <span class="font-semibold">Hemsida:</span> 
-                        <a [href]="station.website" target="_blank" class="text-[var(--accent-0)] hover:underline">Besök webbplats</a>
+                        <span class="font-semibold">Hemsida:</span>
+                        <a [href]="station.website" target="_blank" class="text-[var(--accent-0)] hover:underline">Besök
+                            webbplats</a>
                     </p>
                     }
                 </div>

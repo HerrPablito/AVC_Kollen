@@ -1,0 +1,50 @@
+<div class="page">
+    <div class="container">
+        <div class="contact-wrapper">
+
+            <p-card header="Kontakt">
+                <p class="intro">
+                    Har du frågor eller synpunkter? Skicka ett meddelande så återkommer vi så snart vi kan.
+                </p>
+
+                <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+                    <div class="field">
+                        <label for="email">E-post *</label>
+                        <input id="email" pInputText formControlName="email" placeholder="din@mail.se"
+                            autocomplete="email" />
+                        @if (showError('email')) {
+                        <p-message severity="error" text="Ange en giltig e-postadress." />
+                        }
+                    </div>
+
+                    <div class="field">
+                        <label for="phone">Telefon (valfritt)</label>
+                        <input id="phone" pInputText formControlName="phone" placeholder="07x-xxx xx xx"
+                            autocomplete="tel" />
+                    </div>
+
+                    <div class="field">
+                        <label for="message">Meddelande *</label>
+                        <textarea id="message" pTextarea formControlName="message" rows="6"
+                            placeholder="Skriv ditt meddelande…"></textarea>
+                        @if (showError('message')) {
+                        <p-message severity="error" text="Meddelande krävs (minst 10 tecken)." />
+                        }
+                    </div>
+
+                    @if (success()) {
+                    <p-message severity="success" text="Tack! Ditt meddelande är skickat." />
+                    }
+
+                    @if (error()) {
+                    <p-message severity="error" [text]="error()!" />
+                    }
+
+                    <p-button type="submit" label="Skicka" [loading]="loading()"
+                        [disabled]="form.invalid || loading()" />
+                </form>
+            </p-card>
+
+        </div>
+    </div>
+</div>

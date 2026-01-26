@@ -9,19 +9,15 @@ import { Station, GuideArticle, GeoLocation } from '../models/sopinfo.models';
 export class SopinfoService {
     private readonly API_BASE = 'https://sopinfo.se/api';
 
-    // Cache signals
     private stationsCache = signal<Station[] | null>(null);
 
     constructor(private http: HttpClient) { }
-
-    // --- API Methods ---
 
     getStations(): Observable<Station[]> {
         if (this.stationsCache()) {
             return of(this.stationsCache()!);
         }
 
-        // Fetch all stations with a high limit (API has ~5000 stations)
         return this.http.get<{ success: boolean; data: any[] }>(`${this.API_BASE}/stationer?limit=10000`).pipe(
             tap(response => console.log('Sopinfo API: Fetched stations', response.data?.length)),
             map(response => this.mapStations(response.data)),

@@ -14,16 +14,18 @@
 
                 <!-- Search Component -->
                 <div class="mb-6">
-                    <input type="text" class="search-input" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" (keyup.enter)="onSearch()"
-                        [disabled]="isLoading()" placeholder="Sök på postnummer, ort eller kommun..."
-                        aria-label="Sök återvinningscentral" />
+                    <input type="text" class="search-input" [ngModel]="searchQuery()"
+                        (ngModelChange)="searchQuery.set($event)" (keyup.enter)="onSearch()" [disabled]="isLoading()"
+                        placeholder="Sök på postnummer, ort eller kommun..." aria-label="Sök återvinningscentral" />
                 </div>
 
                 <div class="flex gap-4 flex-wrap mb-4">
-                    <p-button label="{{ isLoading() ? 'Söker...' : 'Sök nu' }}" (onClick)="onSearch()" [disabled]="isLoading()" [loading]="isLoading()" severity="primary">
+                    <p-button label="{{ isLoading() ? 'Söker...' : 'Sök nu' }}" (onClick)="onSearch()"
+                        [disabled]="isLoading()" [loading]="isLoading()" severity="primary">
                         <i class="pi pi-search"></i>
                     </p-button>
-                    <p-button label="Använd min plats" (onClick)="useMyLocation()" [disabled]="isLoading()" severity="secondary">
+                    <p-button label="Använd min plats" (onClick)="useMyLocation()" [disabled]="isLoading()"
+                        severity="secondary">
                         <i class="pi pi-map-marker"></i>
                     </p-button>
                     @if (searchResults().length > 0 || nearestStation()) {
@@ -48,20 +50,22 @@
                         @for (station of searchResults(); track station.id) {
                         <div class="card p-4 border-l-4 border-[var(--accent-0)] fade-in cursor-pointer hover:bg-[var(--bg-2)] transition-colors relative group"
                             (click)="openStationDialog(station)">
-                            <button 
-                              (click)="toggleFavorite(station, $event)"
-                              class="absolute top-3 right-3 text-2xl transition-colors duration-200 hover:scale-110"
-                              [class.text-yellow-400]="isFavorite(station.id)"
-                              [style]="!isFavorite(station.id) ? 'color: var(--text-2)' : ''"
-                              [attr.aria-label]="isFavorite(station.id) ? 'Ta bort från favoriter' : 'Lägg till i favoriter'">
-                              <i [class.pi-star-fill]="isFavorite(station.id)" [class.pi-star]="!isFavorite(station.id)" class="pi"></i>
+                            <button (click)="toggleFavorite(station, $event)"
+                                class="absolute top-3 right-3 text-2xl transition-colors duration-200 hover:scale-110"
+                                [class.text-yellow-400]="isFavorite(station.id)"
+                                [style]="!isFavorite(station.id) ? 'color: var(--text-2)' : ''"
+                                [attr.aria-label]="isFavorite(station.id) ? 'Ta bort från favoriter' : 'Lägg till i favoriter'">
+                                <i [class.pi-star-fill]="isFavorite(station.id)"
+                                    [class.pi-star]="!isFavorite(station.id)" class="pi"></i>
                             </button>
                             <div class="flex justify-between items-start pr-12">
                                 <div class="flex-1">
                                     <h3 class="text-lg font-bold">{{ station.name }}</h3>
-                                    <p class="text-sm text-[var(--text-1)]">{{ station.address }}, {{ station.city }}</p>
+                                    <p class="text-sm text-[var(--text-1)]">{{ station.address }}, {{ station.city }}
+                                    </p>
                                 </div>
-                                <span class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-2 py-1 rounded text-xs font-semibold">
+                                <span
+                                    class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-2 py-1 rounded text-xs font-semibold">
                                     {{ station.distance | number:'1.1-1' }} km
                                 </span>
                             </div>
@@ -74,17 +78,18 @@
                 @if (nearestStation() && !showSearchResults()) {
                 <div class="card p-4 mb-4 border-l-4 border-[var(--accent-0)] fade-in cursor-pointer hover:bg-[var(--bg-2)] relative"
                     (click)="openStationDialog(nearestStation()!)">
-                    <button 
-                      (click)="toggleFavorite(nearestStation()!, $event)"
-                      class="absolute top-3 right-3 text-2xl transition-colors duration-200 hover:scale-110"
-                      [class.text-yellow-400]="isFavorite(nearestStation()!.id)"
-                      [style]="!isFavorite(nearestStation()!.id) ? 'color: var(--text-2)' : ''"
-                      [attr.aria-label]="isFavorite(nearestStation()!.id) ? 'Ta bort från favoriter' : 'Lägg till i favoriter'">
-                      <i [class.pi-star-fill]="isFavorite(nearestStation()!.id)" [class.pi-star]="!isFavorite(nearestStation()!.id)" class="pi"></i>
+                    <button (click)="toggleFavorite(nearestStation()!, $event)"
+                        class="absolute top-3 right-3 text-2xl transition-colors duration-200 hover:scale-110"
+                        [class.text-yellow-400]="isFavorite(nearestStation()!.id)"
+                        [style]="!isFavorite(nearestStation()!.id) ? 'color: var(--text-2)' : ''"
+                        [attr.aria-label]="isFavorite(nearestStation()!.id) ? 'Ta bort från favoriter' : 'Lägg till i favoriter'">
+                        <i [class.pi-star-fill]="isFavorite(nearestStation()!.id)"
+                            [class.pi-star]="!isFavorite(nearestStation()!.id)" class="pi"></i>
                     </button>
                     <div class="pr-12">
                         <h3 class="text-lg font-bold">{{ nearestStation()!.name }}</h3>
-                        <p class="text-sm text-[var(--text-1)]">{{ nearestStation()!.address }}, {{ nearestStation()!.city }}</p>
+                        <p class="text-sm text-[var(--text-1)]">{{ nearestStation()!.address }}, {{
+                            nearestStation()!.city }}</p>
                         <div class="flex items-center gap-2 mt-2">
                             <span
                                 class="badge bg-[var(--accent-soft)] text-[var(--accent-1)] px-2 py-1 rounded text-xs font-semibold">
@@ -173,9 +178,11 @@
                 vad du ska slänga?</h3>
             <div class="relative flex items-center">
                 <i class="pi pi-search absolute left-4 text-[var(--text-2)]"></i>
-                <input type="text" [ngModel]="wasteQuery()" (ngModelChange)="wasteQuery.set($event)" (keyup.enter)="onWasteSearch()"
-                    placeholder="Sök på t.ex. 'mjölkpaket' eller 'batteri'" class="search-input pl-12 pr-20 flex-1">
-                <p-button label="Sök" (onClick)="onWasteSearch()" class="absolute right-1 text-sm" severity="primary"></p-button>
+                <input type="text" [ngModel]="wasteQuery()" (ngModelChange)="wasteQuery.set($event)"
+                    (keyup.enter)="onWasteSearch()" placeholder="Sök på t.ex. 'mjölkpaket' eller 'batteri'"
+                    class="search-input pl-12 pr-20 flex-1">
+                <p-button label="Sök" (onClick)="onWasteSearch()" class="absolute right-1 text-sm"
+                    severity="primary"></p-button>
             </div>
         </div>
 
@@ -263,15 +270,12 @@
 </section>
 
 <!-- Station Detail Dialog - Using reusable component -->
-<app-station-detail 
-    [station]="selectedStation()" 
-    [visible]="showStationDetail()"
-    (onHide)="closeStationDialog()">
+<app-station-detail [station]="selectedStation()" [visible]="showStationDetail()" (onHide)="closeStationDialog()">
 </app-station-detail>
 
 <!-- Article Detail Dialog -->
 <p-dialog [visible]="selectedArticle() !== null" [modal]="true" [maximizable]="false" [resizable]="false"
-    (onHide)="closeModal()" [style]="{ 'max-width': '800px', 'width': '100%' }" styleClass="p-dialog-custom">
+    (onHide)="closeModal()" [style]="{ 'max-width': '800px', 'width': '100%' }" class="p-dialog-custom">
     <ng-template pTemplate="header">
         @if (selectedArticle(); as article) {
         <div class="flex items-center gap-3">
