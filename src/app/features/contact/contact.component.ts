@@ -2,8 +2,6 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactService } from '../../core/services/contact.service';
-
-import { Card } from 'primeng/card';
 import { InputText } from 'primeng/inputtext';
 import { Textarea } from 'primeng/textarea';
 import { Button } from 'primeng/button';
@@ -15,7 +13,6 @@ import { Message } from 'primeng/message';
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        Card,
         InputText,
         Textarea,
         Button,

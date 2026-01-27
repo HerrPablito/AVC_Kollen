@@ -1,0 +1,148 @@
+<section class="section">
+    <div class="container max-w-4xl">
+        <div class="card">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold mb-4"
+                    style="background: linear-gradient(135deg, var(--accent-0), var(--blush-300)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Integritetspolicy
+                </h1>
+                <p class="text-[var(--text-2)]">Senast uppdaterad: {{ currentDate }}</p>
+            </div>
+
+            <!-- Introduction -->
+            <div class="mb-8">
+                <p class="text-lg leading-relaxed text-[var(--text-1)]">
+                    ÅVC Kollen värnar om din integritet. Denna policy beskriver hur vi samlar in, använder och skyddar
+                    dina personuppgifter när du använder vår tjänst.
+                </p>
+            </div>
+
+            <!-- Section 1 -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-[var(--accent-0)] flex items-center gap-2">
+                    <i class="pi pi-info-circle"></i>
+                    Vilka uppgifter samlar vi in?
+                </h2>
+                <div class="space-y-4 text-[var(--text-1)]">
+                    <p>Vi samlar in följande typer av information:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li><strong>Platsdata:</strong> Om du väljer att använda funktionen "Min position" för att hitta
+                            närmaste återvinningscentral, använder vi din geografiska position. Denna data lagras inte
+                            permanent.</li>
+                        <li><strong>Sökhistorik:</strong> Postnummer och orter du söker efter sparas lokalt i din
+                            webbläsare för att förbättra användarupplevelsen.</li>
+                        <li><strong>Favoriter:</strong> Återvinningscentraler du markerar som favoriter lagras lokalt i
+                            din webbläsare.</li>
+                        <li><strong>Kontaktformulär:</strong> När du kontaktar oss via kontaktformuläret samlar vi in
+                            din e-postadress, telefonnummer (valfritt) och ditt meddelande.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-[var(--accent-0)] flex items-center gap-2">
+                    <i class="pi pi-shield"></i>
+                    Hur använder vi dina uppgifter?
+                </h2>
+                <div class="space-y-4 text-[var(--text-1)]">
+                    <p>Vi använder dina uppgifter för att:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>Tillhandahålla och förbättra våra tjänster</li>
+                        <li>Hjälpa dig hitta närmaste återvinningscentral baserat på din position eller sökning</li>
+                        <li>Spara dina favoriter och preferenser lokalt i din webbläsare</li>
+                        <li>Besvara dina frågor och förfrågningar via kontaktformuläret</li>
+                        <li>Förbättra användarupplevelsen och funktionaliteten på webbplatsen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-[var(--accent-0)] flex items-center gap-2">
+                    <i class="pi pi-lock"></i>
+                    Hur skyddar vi dina uppgifter?
+                </h2>
+                <div class="space-y-4 text-[var(--text-1)]">
+                    <p>Vi vidtar lämpliga tekniska och organisatoriska åtgärder för att skydda dina personuppgifter:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>All kommunikation sker via säker HTTPS-anslutning</li>
+                        <li>Platsdata och favoriter lagras endast lokalt i din webbläsare</li>
+                        <li>Vi delar inte dina personuppgifter med tredje part utan ditt samtycke</li>
+                        <li>Kontaktformulär skickas via säkra kanaler</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 4 -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-[var(--accent-0)] flex items-center gap-2">
+                    <i class="pi pi-cookie"></i>
+                    Cookies och lokal lagring
+                </h2>
+                <div class="space-y-4 text-[var(--text-1)]">
+                    <p>Vi använder lokal lagring (localStorage) i din webbläsare för att:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>Spara dina favoritmarkerade återvinningscentraler</li>
+                        <li>Komma ihåg dina preferenser och inställningar</li>
+                        <li>Förbättra prestanda och användarupplevelse</li>
+                    </ul>
+                    <p class="mt-4">
+                        Du kan när som helst rensa denna data genom att rensa webbläsarens cache och lokal lagring.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Section 5 -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-[var(--accent-0)] flex items-center gap-2">
+                    <i class="pi pi-user"></i>
+                    Dina rättigheter
+                </h2>
+                <div class="space-y-4 text-[var(--text-1)]">
+                    <p>Enligt GDPR har du rätt att:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>Få information om vilka personuppgifter vi behandlar om dig</li>
+                        <li>Begära rättelse av felaktiga uppgifter</li>
+                        <li>Begära radering av dina uppgifter</li>
+                        <li>Invända mot behandling av dina uppgifter</li>
+                        <li>Återkalla ditt samtycke när som helst</li>
+                    </ul>
+                    <p class="mt-4">
+                        För att utöva dina rättigheter, kontakta oss via vårt <a routerLink="/kontakt"
+                            class="text-[var(--accent-0)] hover:underline font-semibold">kontaktformulär</a>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Section 6 -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-[var(--accent-0)] flex items-center gap-2">
+                    <i class="pi pi-refresh"></i>
+                    Ändringar i integritetspolicyn
+                </h2>
+                <div class="space-y-4 text-[var(--text-1)]">
+                    <p>
+                        Vi kan komma att uppdatera denna integritetspolicy från tid till annan. Eventuella ändringar
+                        kommer att publiceras på denna sida med ett uppdaterat datum.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="p-6 bg-[var(--bg-2)] rounded-lg border border-[var(--border-0)]">
+                <h3 class="text-xl font-semibold mb-3 text-[var(--accent-0)]">Har du frågor?</h3>
+                <p class="text-[var(--text-1)] mb-4">
+                    Om du har frågor om vår integritetspolicy eller hur vi hanterar dina personuppgifter, är du
+                    välkommen att kontakta oss.
+                </p>
+                <a routerLink="/kontakt"
+                    class="inline-flex items-center gap-2 px-6 py-3 bg-[var(--accent-0)] text-white rounded-lg hover:bg-[var(--burgundy-700)] transition-colors font-semibold">
+                    <i class="pi pi-envelope"></i>
+                    Kontakta oss
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

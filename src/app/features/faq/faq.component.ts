@@ -3,12 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-footer',
+    selector: 'app-faq',
     standalone: true,
     imports: [CommonModule, RouterLink],
-    templateUrl: './footer.component.html',
-    styleUrl: './footer.component.scss'
+    templateUrl: './faq.component.html',
+    styleUrl: './faq.component.scss'
 })
-export class FooterComponent {
-    currentYear = new Date().getFullYear();
-}
+export class FaqComponent { }
