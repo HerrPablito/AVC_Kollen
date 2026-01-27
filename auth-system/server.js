@@ -1,4 +1,17 @@
 require('dotenv').config();
+console.error("🔍 DEBUG: Starting server.js");
+console.error("🔍 DEBUG: DATABASE_URL present:", Boolean(process.env.DATABASE_URL));
+if (process.env.DATABASE_URL) {
+    try {
+        const dbUrl = new URL(process.env.DATABASE_URL);
+        console.error(`🔍 DEBUG: Database Host: ${dbUrl.host}`);
+    } catch (e) {
+        console.error('⚠️ DEBUG: Could not parse DATABASE_URL');
+    }
+} else {
+    console.error('⚠️ DEBUG: DATABASE_URL is MISSING!');
+}
+
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -48,16 +61,7 @@ app.use((err, req, res, next) => {
 // Start server
 async function startServer() {
     try {
-        console.log("DATABASE_URL present:", Boolean(process.env.DATABASE_URL));
         // Test database connection
-        if (process.env.DATABASE_URL) {
-            try {
-                const dbUrl = new URL(process.env.DATABASE_URL);
-                console.log(`🔌 Attempting to connect to database at: ${dbUrl.host}`);
-            } catch (e) {
-                console.log('⚠️ Could not parse DATABASE_URL');
-            }
-        }
         await pool.query('SELECT NOW()');
         console.log('✅ Database connection verified');
 
