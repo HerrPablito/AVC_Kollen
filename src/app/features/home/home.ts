@@ -9,11 +9,12 @@ import { Station, GuideArticle } from '../../core/models/sopinfo.models';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { AuthService } from '../../core/services/auth.service';
 import { StationDetailComponent } from '../../shared/components/station-detail.component';
+import { AnimationComponent } from '../../shared/components/animation.component';
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [RouterLink, FormsModule, CommonModule, DialogModule, ButtonModule, StationDetailComponent],
+    imports: [RouterLink, FormsModule, CommonModule, DialogModule, ButtonModule, StationDetailComponent, AnimationComponent],
     templateUrl: './home.html',
     styleUrl: './home.scss'
 })
