@@ -1,0 +1,62 @@
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1>Logga in</h1>
+            <p>Logga in för att spara dina favoriter</p>
+        </div>
+
+        @if (error()) {
+        <div class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ error() }}
+        </div>
+        }
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">E-post</label>
+                <input id="email" type="email" formControlName="email" placeholder="din@email.com"
+                    [class.invalid]="email?.invalid && email?.touched" />
+                @if (email?.invalid && email?.touched) {
+                <div class="field-error">
+                    @if (email?.errors?.['required']) {
+                    <span>E-post krävs</span>
+                    }
+                    @if (email?.errors?.['email']) {
+                    <span>Ogiltig e-postadress</span>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="password">Lösenord</label>
+                <input id="password" type="password" formControlName="password" placeholder="••••••••"
+                    [class.invalid]="password?.invalid && password?.touched" />
+                @if (password?.invalid && password?.touched) {
+                <div class="field-error">
+                    @if (password?.errors?.['required']) {
+                    <span>Lösenord krävs</span>
+                    }
+                    @if (password?.errors?.['minlength']) {
+                    <span>Lösenord måste vara minst 6 tecken</span>
+                    }
+                </div>
+                }
+            </div>
+
+            <button type="submit" class="login-btn" [disabled]="loginForm.invalid || loading()">
+                @if (loading()) {
+                <i class="pi pi-spin pi-spinner"></i>
+                Loggar in...
+                } @else {
+                Logga in
+                }
+            </button>
+        </form>
+
+        <div class="register-link">
+            <p>Har du inget konto? <a routerLink="/register">Registrera dig</a></p>
+        </div>
+    </div>
+</div>

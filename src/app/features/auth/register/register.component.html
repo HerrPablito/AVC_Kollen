@@ -1,0 +1,78 @@
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <h1>Skapa konto</h1>
+            <p>Registrera dig för att spara dina favoriter</p>
+        </div>
+
+        @if (error()) {
+        <div class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ error() }}
+        </div>
+        }
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">E-post</label>
+                <input id="email" type="email" formControlName="email" placeholder="din@email.com"
+                    [class.invalid]="email?.invalid && email?.touched" />
+                @if (email?.invalid && email?.touched) {
+                <div class="field-error">
+                    @if (email?.errors?.['required']) {
+                    <span>E-post krävs</span>
+                    }
+                    @if (email?.errors?.['email']) {
+                    <span>Ogiltig e-postadress</span>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="password">Lösenord</label>
+                <input id="password" type="password" formControlName="password" placeholder="••••••••"
+                    [class.invalid]="password?.invalid && password?.touched" />
+                @if (password?.invalid && password?.touched) {
+                <div class="field-error">
+                    @if (password?.errors?.['required']) {
+                    <span>Lösenord krävs</span>
+                    }
+                    @if (password?.errors?.['minlength']) {
+                    <span>Lösenord måste vara minst 6 tecken</span>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Bekräfta lösenord</label>
+                <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••"
+                    [class.invalid]="(confirmPassword?.invalid || registerForm.errors?.['mismatch']) && confirmPassword?.touched" />
+                @if (confirmPassword?.touched) {
+                <div class="field-error">
+                    @if (confirmPassword?.errors?.['required']) {
+                    <span>Bekräfta lösenordet</span>
+                    }
+                    @if (registerForm.errors?.['mismatch']) {
+                    <span>Lösenorden matchar inte</span>
+                    }
+                </div>
+                }
+            </div>
+
+            <button type="submit" class="register-btn" [disabled]="registerForm.invalid || loading()">
+                @if (loading()) {
+                <i class="pi pi-spin pi-spinner"></i>
+                Registrerar...
+                } @else {
+                Registrera konto
+                }
+            </button>
+        </form>
+
+        <div class="login-link">
+            <p>Har du redan ett konto? <a routerLink="/login">Logga in</a></p>
+        </div>
+    </div>
+</div>

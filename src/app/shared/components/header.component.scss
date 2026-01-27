@@ -1,1 +1,81 @@
-// Header styling can be added here if needed
+.auth-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: 1rem;
+
+    .profile-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: var(--bg-2);
+        border: 1px solid var(--border-0);
+        border-radius: var(--radius-sm);
+        color: var(--text-0);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+
+        i {
+            color: var(--accent-0);
+        }
+
+        .profile-email {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &:hover {
+            background: color-mix(in srgb, var(--bg-2) 80%, white 20%);
+            border-color: var(--accent-0);
+        }
+    }
+
+    .logout-btn {
+        padding: 0.5rem 0.75rem;
+        background: transparent;
+        border: 1px solid var(--border-0);
+        border-radius: var(--radius-sm);
+        color: var(--text-1);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+
+        i {
+            font-size: 1.1rem;
+        }
+
+        &:hover {
+            background: var(--bg-2);
+            color: var(--danger-0);
+            border-color: var(--danger-0);
+        }
+    }
+
+    .login-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: linear-gradient(135deg, var(--accent-0) 0%, var(--accent-1) 100%);
+        border-radius: var(--radius-sm);
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+
+        i {
+            font-size: 1.1rem;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(226, 59, 78, 0.3);
+        }
+    }
+}

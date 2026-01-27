@@ -1,0 +1,55 @@
+<div class="profile-container">
+    @if (loading()) {
+    <div class="loading">
+        <i class="pi pi-spin pi-spinner"></i>
+        <p>Laddar profil...</p>
+    </div>
+    } @else if (user()) {
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="avatar">
+                <i class="pi pi-user"></i>
+            </div>
+            <h1>Min profil</h1>
+            <p class="email">{{ user()!.email }}</p>
+        </div>
+
+        <div class="profile-info">
+            <div class="info-item">
+                <i class="pi pi-calendar"></i>
+                <div>
+                    <span class="label">Medlem sedan</span>
+                    <span class="value">{{ user()!.createdAt | date:'d MMMM yyyy' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a routerLink="/" class="btn btn-secondary">
+                <i class="pi pi-home"></i>
+                Tillbaka till startsidan
+            </a>
+            <button (click)="logout()" class="btn btn-danger">
+                <i class="pi pi-sign-out"></i>
+                Logga ut
+            </button>
+        </div>
+
+        <div class="profile-features">
+            <h2>Dina fördelar</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="pi pi-heart-fill"></i>
+                    <h3>Sparade favoriter</h3>
+                    <p>Dina favoriter sparas automatiskt i molnet</p>
+                </div>
+                <div class="feature">
+                    <i class="pi pi-sync"></i>
+                    <h3>Synkronisering</h3>
+                    <p>Tillgång till dina favoriter från alla enheter</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>

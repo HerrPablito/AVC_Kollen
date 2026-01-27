@@ -58,6 +58,24 @@
             </ng-template>
           </p-select>
         </div>
+
+        <!-- Auth Section -->
+        <div class="auth-section">
+          @if (authService.currentUser$ | async; as user) {
+          <a routerLink="/profile" class="profile-link">
+            <i class="pi pi-user"></i>
+            <span class="profile-email">{{ user.email }}</span>
+          </a>
+          <button (click)="logout()" class="logout-btn" title="Logga ut">
+            <i class="pi pi-sign-out"></i>
+          </button>
+          } @else {
+          <a routerLink="/login" class="login-btn">
+            <i class="pi pi-sign-in"></i>
+            <span>Logga in</span>
+          </a>
+          }
+        </div>
       </div>
     </nav>
   </div>

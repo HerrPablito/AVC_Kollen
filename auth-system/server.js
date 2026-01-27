@@ -5,6 +5,7 @@ const cors = require('cors');
 const pool = require('./config/database');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const favoritesRoutes = require('./routes/favorites');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,6 +31,7 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/favorites', favoritesRoutes);
 app.use('/', userRoutes);
 
 // 404 handler

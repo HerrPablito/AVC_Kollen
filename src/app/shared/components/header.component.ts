@@ -6,6 +6,7 @@ import { StationDetailComponent } from './station-detail.component';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { Station } from '../../core/models/sopinfo.models';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
     selector: 'app-header',
@@ -20,7 +21,8 @@ export class HeaderComponent {
 
     constructor(
         private router: Router,
-        public favoritesService: FavoritesService
+        public favoritesService: FavoritesService,
+        public authService: AuthService
     ) { }
 
     navigateHome() {
@@ -42,5 +44,13 @@ export class HeaderComponent {
             this.selectedStation.set(station);
             this.showStationDetail.set(true);
         }
+    }
+
+    logout(): void {
+        this.authService.logout().subscribe({
+            next: () => {
+                this.router.navigate(['/']);
+            }
+        });
     }
 }

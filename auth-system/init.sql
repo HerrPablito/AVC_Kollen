@@ -21,6 +21,18 @@ CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id ON refresh_tokens(user_id)
 CREATE INDEX IF NOT EXISTS idx_refresh_tokens_token ON refresh_tokens(token);
 CREATE INDEX IF NOT EXISTS idx_refresh_tokens_expires_at ON refresh_tokens(expires_at);
 
+-- Create favorites table
+CREATE TABLE IF NOT EXISTS favorites (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    avc_id VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, avc_id)
+);
+
+-- Create index for favorites
+CREATE INDEX IF NOT EXISTS idx_favorites_user_id ON favorites(user_id);
+
 -- Insert a test user (password: "password123")
 -- Password hash generated with bcrypt, rounds=10
 INSERT INTO users (email, password_hash) 
