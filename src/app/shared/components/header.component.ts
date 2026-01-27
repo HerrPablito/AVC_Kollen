@@ -1,6 +1,7 @@
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { SopinfoService } from '../../core/services/sopinfo.service';
 import { StationDetailComponent } from './station-detail.component';
@@ -12,7 +13,7 @@ import { AuthService } from '../../core/services/auth.service';
 @Component({
     selector: 'app-header',
     standalone: true,
-    imports: [RouterLink, CommonModule, StationDetailComponent, ButtonModule, SelectModule],
+    imports: [RouterLink, CommonModule, FormsModule, StationDetailComponent, ButtonModule, SelectModule],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
@@ -24,6 +25,9 @@ export class HeaderComponent implements OnInit {
 
     selectedStation = signal<Station | null>(null);
     showStationDetail = signal(false);
+
+    // Model for the p-select to allow resetting
+    selectedFavorite: Station | null = null;
 
     // All available stations (for mapping favorites)
     allStations = signal<Station[]>([]);
@@ -73,10 +77,12 @@ export class HeaderComponent implements OnInit {
         if (station) {
             this.selectedStation.set(station);
             this.showStationDetail.set(true);
-            // Clear selection after opening dialog so it can be selected again
+
+            // Reset selection immediately so "Mina ÅVC" placeholder returns
+            // and the same station can be selected again
             setTimeout(() => {
-                event.source.writeValue(null);
-            }, 100);
+                this.selectedFavorite = null;
+            }, 0);
         }
     }
 

@@ -17,8 +17,8 @@
 
         <!-- Mina ÅVC with PrimeNG Select -->
         <div class="w-64">
-          <p-select [options]="getFavoritesList()" placeholder="Mina ÅVC" [showClear]="getFavoritesList().length > 0"
-            (onChange)="onStationSelect($event)" [optionLabel]="'name'" optionGroupLabel="name"
+          <p-select [options]="getFavoritesList()" placeholder="Mina ÅVC" [(ngModel)]="selectedFavorite"
+            [showClear]="false" (onChange)="onStationSelect($event)" [optionLabel]="'name'" optionGroupLabel="name"
             class="my-favourites-select w-full" panelStyleClass="my-favourites-select-overlay"
             dropdownStyleClass="custom-select-dropdown">
             <ng-template let-option pTemplate="item">
