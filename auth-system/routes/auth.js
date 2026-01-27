@@ -108,7 +108,8 @@ router.post('/login', async (req, res) => {
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            path: '/auth/refresh',
             maxAge: REFRESH_TOKEN_EXPIRY_DAYS * 24 * 60 * 60 * 1000 // 30 days in ms
         });
 
@@ -184,7 +185,13 @@ router.post('/logout', async (req, res) => {
         }
 
         // Clear cookie
-        res.clearCookie('refreshToken');
+        const cookieOptions = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            path: '/auth/refresh'
+        };
+        res.clearCookie('refreshToken', cookieOptions);
 
         res.json({ message: 'Logout successful' });
     } catch (error) {
