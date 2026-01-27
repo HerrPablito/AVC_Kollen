@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -15,8 +15,9 @@ import { FavoritesService } from '../services/favorites.service';
 export class StationDetailComponent {
     @Input() station: Station | null = null;
     @Input() visible = false;
+    @Output() onHide = new EventEmitter<void>();
 
-    constructor(public favoritesService: FavoritesService) {}
+    constructor(public favoritesService: FavoritesService) { }
 
     isFavorite(): boolean {
         return this.station ? this.favoritesService.isFavorite(this.station.id) : false;
@@ -28,7 +29,7 @@ export class StationDetailComponent {
         }
     }
 
-    onHide(): void {
-        // Parent component should handle closing
+    handleHide(): void {
+        this.onHide.emit();
     }
 }

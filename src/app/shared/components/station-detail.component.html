@@ -1,5 +1,5 @@
 <!-- Station Detail Dialog -->
-<p-dialog [visible]="visible" [modal]="true" [maximizable]="false" [resizable]="false" (onHide)="onHide()"
+<p-dialog [visible]="visible" [modal]="true" [maximizable]="false" [resizable]="false" (onHide)="handleHide()"
     [style]="{ 'max-width': '600px', 'width': '100%' }" class="p-dialog-custom">
     <ng-template pTemplate="header">
         @if (station) {
@@ -125,6 +125,6 @@
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <p-button label="Stäng" (onClick)="onHide()" severity="secondary"></p-button>
+        <p-button label="Stäng" (onClick)="handleHide()" severity="secondary"></p-button>
     </ng-template>
 </p-dialog>
