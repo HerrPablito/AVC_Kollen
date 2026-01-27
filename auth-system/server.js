@@ -65,6 +65,13 @@ async function startServer() {
         await pool.query('SELECT NOW()');
         console.log('✅ Database connection verified');
 
+        // Initialize database schema
+        const fs = require('fs');
+        const path = require('path');
+        const initSql = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf8');
+        await pool.query(initSql);
+        console.log('✅ Database schema initialized');
+
         app.listen(PORT, '0.0.0.0', () => {
             console.log(`🚀 Server running on port ${PORT}`);
             console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
