@@ -389,7 +389,6 @@
     </ng-template>
 </p-dialog>
 
-<!-- My ÅVC Section -->
 <section id="mina" class="section">
     <div class="container">
         <h2 class="section-title text-center">
@@ -400,7 +399,58 @@
         </p>
 
         <div class="max-w-2xl mx-auto">
-            <div class="card text-center p-12">
+            <!-- LOGGED IN USER VIEW -->
+            @if (authService.isAuthenticated()) {
+            @if (favoriteStations().length > 0) {
+            <!-- Favorites List -->
+            <div class="grid gap-3 fade-in">
+                @for (station of favoriteStations(); track station.id) {
+                <div class="card p-4 border-l-4 border-[var(--accent-0)] cursor-pointer hover:bg-[var(--bg-2)] transition-all flex justify-between items-center group relative"
+                    (click)="openStationDialog(station)">
+
+                    <!-- Favorite Toggle Button -->
+                    <button (click)="toggleFavorite(station, $event)"
+                        class="absolute top-3 right-3 text-2xl text-yellow-400 hover:scale-110 transition-transform z-10"
+                        aria-label="Ta bort favoriter">
+                        <i class="pi pi-star-fill"></i>
+                    </button>
+
+                    <div class="pr-10">
+                        <h3 class="font-bold text-lg mb-1">{{ station.name }}</h3>
+                        <div class="flex items-center gap-2 text-sm text-[var(--text-1)]">
+                            <i class="pi pi-map-marker text-[var(--accent-1)]"></i>
+                            <span>{{ station.address }}, {{ station.city }}</span>
+                        </div>
+                        @if (station.opening_info) {
+                        <div class="mt-2 text-xs text-[var(--text-2)] bg-[var(--bg-1)] inline-block px-2 py-1 rounded">
+                            <i class="pi pi-clock mr-1"></i>
+                            {{ station.opening_info | slice:0:30 }}...
+                        </div>
+                        }
+                    </div>
+
+                    <div class="hidden sm:block">
+                        <i
+                            class="pi pi-chevron-right text-[var(--text-2)] group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+                }
+            </div>
+            } @else {
+            <!-- Logged in but no favorites -->
+            <div class="card text-center p-12 fade-in">
+                <div class="mb-6">
+                    <i class="pi pi-heart text-6xl" style="color: var(--text-2); opacity: 0.5;"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-2">Inga favoriter än</h3>
+                <p class="text-[var(--text-1)]">
+                    Stjärnmärk stationer du besöker ofta för att samla dem här.
+                </p>
+            </div>
+            }
+            } @else {
+            <!-- GUEST VIEW -->
+            <div class="card text-center p-12 fade-in">
                 <div class="mb-6">
                     <i class="pi pi-heart text-6xl" style="color: var(--accent-0);"></i>
                 </div>
@@ -418,6 +468,7 @@
                     </p-button>
                 </div>
             </div>
+            }
         </div>
     </div>
 </section>

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed, OnInit, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -6,7 +6,8 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { SopinfoService } from '../../core/services/sopinfo.service';
 import { Station, GuideArticle } from '../../core/models/sopinfo.models';
-import { FavoritesService } from '../../shared/services/favorites.service';
+import { FavouritesService } from '../../core/services/favourites.service';
+import { AuthService } from '../../core/services/auth.service';
 import { StationDetailComponent } from '../../shared/components/station-detail.component';
 
 @Component({
@@ -16,7 +17,12 @@ import { StationDetailComponent } from '../../shared/components/station-detail.c
     templateUrl: './home.html',
     styleUrl: './home.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+    private sopinfoService = inject(SopinfoService);
+    private router = inject(Router);
+    public favoritesService = inject(FavouritesService);
+    public authService = inject(AuthService);
+
     searchQuery = signal('');
     isLoading = signal(false);
     nearestStation = signal<Station | null>(null);
@@ -32,14 +38,39 @@ export class HomeComponent {
     // Quick Search "Vad vill du slänga?"
     wasteQuery = signal('');
 
+    // All available stations (for mapping favorites)
+    allStations = signal<Station[]>([]);
+
+    // Computed Favorites with full Station objects
+    favoriteStations = computed(() => {
+        const favoriteIds = this.favoritesService.favourites();
+        const stations = this.allStations();
+
+        if (!favoriteIds || favoriteIds.length === 0 || !stations || stations.length === 0) {
+            return [];
+        }
+
+        return stations.filter(station => favoriteIds.includes(station.id.toString()));
+    });
+
     // Radius for search (in km) - 1 mil = ~10 km
     private readonly SEARCH_RADIUS_KM = 10;
 
-    constructor(
-        private sopinfoService: SopinfoService,
-        private router: Router,
-        public favoritesService: FavoritesService
-    ) { }
+    constructor() { }
+
+    ngOnInit() {
+        // Load all stations to map favorites
+        this.loadAllStations();
+    }
+
+    private loadAllStations() {
+        this.sopinfoService.getStations().subscribe({
+            next: (stations) => {
+                this.allStations.set(stations);
+            },
+            error: (err) => console.error('Failed to load stations for favorites:', err)
+        });
+    }
 
     async onSearch() {
         if (!this.searchQuery()) return;
@@ -53,6 +84,7 @@ export class HomeComponent {
 
             if (location) {
                 // 2. Fetch all stations and find nearest
+                // Note: We might already have stations in allStations, but reusing existing logic for now
                 this.findNearestStation(location.latitude, location.longitude);
             }
         } catch (error) {
@@ -81,12 +113,18 @@ export class HomeComponent {
     }
 
     private findNearestStation(lat: number, lon: number) {
+        // Use cached stations if available in service, or fetch
         this.sopinfoService.getStations().subscribe({
             next: (stations) => {
                 if (!stations || stations.length === 0) {
                     this.errorMessage.set('Inga stationer hittades.');
                     this.isLoading.set(false);
                     return;
+                }
+
+                // Update allStations if not already set (side effect optimization)
+                if (this.allStations().length === 0) {
+                    this.allStations.set(stations);
                 }
 
                 // Calculate distances for all stations
@@ -130,7 +168,7 @@ export class HomeComponent {
             next: (article) => {
                 console.log('Article loaded:', article);
                 this.selectedArticle.set(article);
-             },
+            },
             error: (err) => {
                 console.error('Failed to load article:', err);
                 // Fallback content if API fails or slug is missing
@@ -165,7 +203,11 @@ export class HomeComponent {
             event.stopPropagation();
         }
         if (station) {
-            this.favoritesService.toggleFavorite(station);
+            if (this.favoritesService.isFavourite(station.id.toString())) {
+                this.favoritesService.removeFavourite(station.id.toString());
+            } else {
+                this.favoritesService.addFavourite(station.id.toString());
+            }
         }
     }
 
@@ -173,7 +215,7 @@ export class HomeComponent {
         if (!stationId) {
             return false;
         }
-        return this.favoritesService.isFavorite(stationId);
+        return this.favoritesService.isFavourite(stationId.toString());
     }
 
     onWasteSearch() {
