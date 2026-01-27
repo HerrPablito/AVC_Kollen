@@ -57,6 +57,21 @@ router.delete('/:avcId', authenticateToken, async (req, res) => {
     }
 });
 
+// Clear all favorites
+router.delete('/', authenticateToken, async (req, res) => {
+    try {
+        await pool.query(
+            'DELETE FROM favorites WHERE user_id = $1',
+            [req.user.userId]
+        );
+
+        res.json({ message: 'All favorites cleared' });
+    } catch (error) {
+        console.error('Clear all favorites error:', error);
+        res.status(500).json({ error: 'Failed to clear favorites' });
+    }
+});
+
 // Bulk add favorites (for migration from localStorage)
 router.post('/bulk', authenticateToken, async (req, res) => {
     try {

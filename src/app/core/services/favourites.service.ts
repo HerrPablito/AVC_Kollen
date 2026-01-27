@@ -171,4 +171,25 @@ export class FavouritesService {
     getFavourites(): string[] {
         return this.favourites();
     }
+
+    /**
+     * Clear all favourites
+     */
+    clearFavourites(): void {
+        if (this.authService.isAuthenticated()) {
+            // Clear from database
+            this.http.delete(`${this.API_URL}/favorites`).subscribe({
+                next: () => {
+                    this.favourites.set([]);
+                },
+                error: (error) => {
+                    console.error('Failed to clear favorites:', error);
+                }
+            });
+        } else {
+            // Clear from localStorage
+            this.favourites.set([]);
+            localStorage.removeItem(this.STORAGE_KEY);
+        }
+    }
 }

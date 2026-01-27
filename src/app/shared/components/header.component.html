@@ -42,8 +42,10 @@
                   Mina favoriter
                 </span>
                 @if (getFavoritesList().length > 0) {
-                <!-- Just clear local view or implement clear all in service if needed -->
-                <span class="text-xs text-[var(--text-2)]">{{ getFavoritesList().length }} sparade</span>
+                <button (click)="favoritesService.clearFavourites(); $event.stopPropagation()"
+                  class="text-xs text-[var(--text-2)] hover:text-[var(--text-0)] transition-colors px-2 py-1 hover:bg-[var(--bg-2)] rounded">
+                  Rensa alla
+                </button>
                 }
               </div>
             </ng-template>

@@ -82,7 +82,7 @@ export class HeaderComponent implements OnInit {
             // and the same station can be selected again
             setTimeout(() => {
                 this.selectedFavorite = null;
-            }, 0);
+            }, 100);
         }
     }
 
