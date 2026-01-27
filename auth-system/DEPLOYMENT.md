@@ -215,24 +215,19 @@ Render is another excellent option with free tier and easy Docker deployment.
    Edit `auth-system/config/database.js`:
 
    ```javascript
-   const { Pool } = require('pg');
+const { Pool } = require('pg');
 
-   // Support both individual vars and DATABASE_URL
-   const pool = process.env.DATABASE_URL
-       ? new Pool({
-           connectionString: process.env.DATABASE_URL,
-           ssl: { rejectUnauthorized: false }
-       })
-       : new Pool({
-           host: process.env.DB_HOST,
-           port: process.env.DB_PORT,
-           user: process.env.DB_USER,
-           password: process.env.DB_PASSWORD,
-           database: process.env.DB_NAME,
-           ssl: { rejectUnauthorized: false }
-       });
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is not set');
+}
 
-   module.exports = pool;
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+module.exports = pool;
+
    ```
 
 6. **Deploy**
