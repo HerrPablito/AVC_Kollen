@@ -1,0 +1,77 @@
+<div class="dashboard-container">
+    <div class="dashboard-card">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <button class="btn-logout" (click)="logout()">Logout</button>
+        </div>
+
+        @if (loading()) {
+        <div class="loading">
+            <p>Loading user information...</p>
+        </div>
+        }
+
+        @if (errorMessage()) {
+        <div class="error-message">
+            {{ errorMessage() }}
+            <button class="btn-retry" (click)="loadUser()">Retry</button>
+        </div>
+        }
+
+        @if (user() && !loading()) {
+        <div class="user-info">
+            <div class="welcome">
+                <h2>Welcome back!</h2>
+                <p class="subtitle">You are successfully logged in.</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-row">
+                    <span class="label">Email:</span>
+                    <span class="value">{{ user()?.email }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">User ID:</span>
+                    <span class="value">{{ user()?.id }}</span>
+                </div>
+                @if (user()?.createdAt) {
+                <div class="info-row">
+                    <span class="label">Member since:</span>
+                    <span class="value">{{ user()?.createdAt | date:'medium' }}</span>
+                </div>
+                }
+            </div>
+
+            <div class="features">
+                <h3>Protected Content</h3>
+                <p>This page is only accessible to authenticated users. Your access token is automatically included in
+                    all API requests.</p>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="icon">🔐</span>
+                        <div>
+                            <strong>Secure Authentication</strong>
+                            <p>JWT tokens with automatic refresh</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="icon">🍪</span>
+                        <div>
+                            <strong>HttpOnly Cookies</strong>
+                            <p>Refresh tokens stored securely</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="icon">⚡</span>
+                        <div>
+                            <strong>Auto Token Refresh</strong>
+                            <p>Seamless session management</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>
