@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://din-backend-pa-render.onrender.com'
+    apiUrl: 'https://avc-kollen.onrender.com'
 };
