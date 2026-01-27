@@ -42,6 +42,21 @@ app.get('/health', (req, res) => {
     res.json({ ok: true });
 });
 
+// Manual DB init for debugging
+app.get('/init-db', async (req, res) => {
+    try {
+        const fs = require('fs');
+        const path = require('path');
+        const initSql = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf8');
+        await pool.query(initSql);
+        console.log('✅ Database initialized manually via endpoint');
+        res.json({ message: 'Database schema initialized manually' });
+    } catch (error) {
+        console.error('Init DB error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Routes
 app.use('/auth', authRoutes);
 app.use('/favorites', favoritesRoutes);
