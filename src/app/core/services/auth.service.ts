@@ -113,7 +113,7 @@ export class AuthService {
             catchError(error => {
                 // Even if logout fails, clear local state
                 this.handleAuthFailure();
-                this.router.navigate(['/login']);
+                this.router.navigate(['/']);
                 return throwError(() => error);
             })
         );
