@@ -1,50 +1,73 @@
-<div class="page">
+<section class="section">
     <div class="container">
-        <div class="contact-wrapper">
+        <div class="max-w-3xl mx-auto">
 
-            <p-card header="Kontakt">
-                <p class="intro">
-                    Har du frågor eller synpunkter? Skicka ett meddelande så återkommer vi så snart vi kan.
-                </p>
+            <div class="card">
+                <!-- Header -->
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold mb-3"
+                        style="background: linear-gradient(135deg, var(--accent-0), var(--blush-300)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        Kontakt
+                    </h1>
+                    <p class="text-[var(--text-1)] leading-relaxed">
+                        Har du frågor eller synpunkter? Skicka ett meddelande så återkommer vi så snart vi kan.
+                    </p>
+                </div>
 
-                <form [formGroup]="form" (ngSubmit)="submit()" class="form">
-                    <div class="field">
-                        <label for="email">E-post *</label>
+                <!-- Form -->
+                <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-5">
+
+                    <!-- Email Field -->
+                    <div class="space-y-2">
+                        <label for="email" class="block font-semibold text-[var(--text-0)]">
+                            E-post *
+                        </label>
                         <input id="email" pInputText formControlName="email" placeholder="din@mail.se"
-                            autocomplete="email" />
+                            autocomplete="email" class="w-full" />
                         @if (showError('email')) {
-                        <p-message severity="error" text="Ange en giltig e-postadress." />
+                        <p-message severity="error" text="Ange en giltig e-postadress." styleClass="w-full" />
                         }
                     </div>
 
-                    <div class="field">
-                        <label for="phone">Telefon (valfritt)</label>
+                    <!-- Phone Field -->
+                    <div class="space-y-2">
+                        <label for="phone" class="block font-semibold text-[var(--text-0)]">
+                            Telefon (valfritt)
+                        </label>
                         <input id="phone" pInputText formControlName="phone" placeholder="07x-xxx xx xx"
-                            autocomplete="tel" />
+                            autocomplete="tel" class="w-full" />
                     </div>
 
-                    <div class="field">
-                        <label for="message">Meddelande *</label>
+                    <!-- Message Field -->
+                    <div class="space-y-2">
+                        <label for="message" class="block font-semibold text-[var(--text-0)]">
+                            Meddelande *
+                        </label>
                         <textarea id="message" pTextarea formControlName="message" rows="6"
-                            placeholder="Skriv ditt meddelande…"></textarea>
+                            placeholder="Skriv ditt meddelande…" class="w-full"></textarea>
                         @if (showError('message')) {
-                        <p-message severity="error" text="Meddelande krävs (minst 10 tecken)." />
+                        <p-message severity="error" text="Meddelande krävs (minst 10 tecken)." styleClass="w-full" />
                         }
                     </div>
 
+                    <!-- Success Message -->
                     @if (success()) {
-                    <p-message severity="success" text="Tack! Ditt meddelande är skickat." />
+                    <p-message severity="success" text="Tack! Ditt meddelande är skickat." styleClass="w-full" />
                     }
 
+                    <!-- Error Message -->
                     @if (error()) {
-                    <p-message severity="error" [text]="error()!" />
+                    <p-message severity="error" [text]="error()!" styleClass="w-full" />
                     }
 
-                    <p-button type="submit" label="Skicka" [loading]="loading()"
-                        [disabled]="form.invalid || loading()" />
+                    <!-- Submit Button -->
+                    <div class="pt-2">
+                        <p-button type="submit" label="Skicka" [loading]="loading()"
+                            [disabled]="form.invalid || loading()" severity="primary" />
+                    </div>
                 </form>
-            </p-card>
+            </div>
 
         </div>
     </div>
-</div>
+</section>
