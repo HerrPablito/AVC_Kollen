@@ -1,3 +1,6 @@
+# TEST
+https://my-recycle-app.pages.dev/
+
 # RecycleApp
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0-rc.0.
