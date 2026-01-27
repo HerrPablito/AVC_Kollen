@@ -17,10 +17,10 @@
 
         <!-- Mina ÅVC with PrimeNG Select -->
         <div class="w-64">
-          <p-select [options]="favoritesService.getFavorites() | slice:0" placeholder="Mina ÅVC"
-            [showClear]="(favoritesService.getFavorites() | slice:0).length > 0" (onChange)="onStationSelect($event)"
-            [optionLabel]="'name'" optionGroupLabel="name" class="my-favourites-select w-full"
-            panelStyleClass="my-favourites-select-overlay" dropdownStyleClass="custom-select-dropdown">
+          <p-select [options]="getFavoritesList()" placeholder="Mina ÅVC" [showClear]="getFavoritesList().length > 0"
+            (onChange)="onStationSelect($event)" [optionLabel]="'name'" optionGroupLabel="name"
+            class="my-favourites-select w-full" panelStyleClass="my-favourites-select-overlay"
+            dropdownStyleClass="custom-select-dropdown">
             <ng-template let-option pTemplate="item">
               @if (option) {
               <div class="flex items-center gap-3 cursor-pointer py-2">
@@ -41,11 +41,9 @@
                   <i class="pi pi-heart-fill" style="color: var(--accent-0);"></i>
                   Mina favoriter
                 </span>
-                @if ((favoritesService.getFavorites() | slice:0).length > 0) {
-                <button (click)="favoritesService.clearFavorites(); $event.stopPropagation()"
-                  class="text-xs text-[var(--text-2)] hover:text-[var(--text-0)] transition-colors px-2 py-1 hover:bg-[var(--bg-2)] rounded">
-                  Rensa alla
-                </button>
+                @if (getFavoritesList().length > 0) {
+                <!-- Just clear local view or implement clear all in service if needed -->
+                <span class="text-xs text-[var(--text-2)]">{{ getFavoritesList().length }} sparade</span>
                 }
               </div>
             </ng-template>

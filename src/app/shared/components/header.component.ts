@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FavoritesService } from '../services/favorites.service';
+import { FavouritesService } from '../../core/services/favourites.service';
+import { SopinfoService } from '../../core/services/sopinfo.service';
 import { StationDetailComponent } from './station-detail.component';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
@@ -15,15 +16,44 @@ import { AuthService } from '../../core/services/auth.service';
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+    private sopinfoService = inject(SopinfoService);
+    private router = inject(Router);
+    public favoritesService = inject(FavouritesService);
+    public authService = inject(AuthService);
+
     selectedStation = signal<Station | null>(null);
     showStationDetail = signal(false);
 
-    constructor(
-        private router: Router,
-        public favoritesService: FavoritesService,
-        public authService: AuthService
-    ) { }
+    // All available stations (for mapping favorites)
+    allStations = signal<Station[]>([]);
+
+    // Computed Favorites with full Station objects for the dropdown
+    favoriteStations = computed(() => {
+        const favoriteIds = this.favoritesService.favourites();
+        const stations = this.allStations();
+
+        if (!favoriteIds || favoriteIds.length === 0 || !stations || stations.length === 0) {
+            return [];
+        }
+
+        return stations.filter(station => favoriteIds.includes(station.id.toString()));
+    });
+
+    constructor() { }
+
+    ngOnInit() {
+        this.loadAllStations();
+    }
+
+    private loadAllStations() {
+        this.sopinfoService.getStations().subscribe({
+            next: (stations) => {
+                this.allStations.set(stations);
+            },
+            error: (err) => console.error('Failed to load stations for header favorites:', err)
+        });
+    }
 
     navigateHome() {
         this.router.navigate(['/']);
@@ -43,6 +73,10 @@ export class HeaderComponent {
         if (station) {
             this.selectedStation.set(station);
             this.showStationDetail.set(true);
+            // Clear selection after opening dialog so it can be selected again
+            setTimeout(() => {
+                event.source.writeValue(null);
+            }, 100);
         }
     }
 
@@ -52,5 +86,10 @@ export class HeaderComponent {
                 this.router.navigate(['/']);
             }
         });
+    }
+
+    // Helper for template to consistently access favorites list
+    getFavoritesList(): Station[] {
+        return this.favoriteStations();
     }
 }
