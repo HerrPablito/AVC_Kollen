@@ -108,7 +108,7 @@ export class AuthService {
         ).pipe(
             tap(() => {
                 this.handleAuthFailure();
-                this.router.navigate(['/login']);
+                this.router.navigate(['/']);
             }),
             catchError(error => {
                 // Even if logout fails, clear local state
