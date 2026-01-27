@@ -48,7 +48,16 @@ app.use((err, req, res, next) => {
 // Start server
 async function startServer() {
     try {
+        console.log("DATABASE_URL present:", Boolean(process.env.DATABASE_URL));
         // Test database connection
+        if (process.env.DATABASE_URL) {
+            try {
+                const dbUrl = new URL(process.env.DATABASE_URL);
+                console.log(`🔌 Attempting to connect to database at: ${dbUrl.host}`);
+            } catch (e) {
+                console.log('⚠️ Could not parse DATABASE_URL');
+            }
+        }
         await pool.query('SELECT NOW()');
         console.log('✅ Database connection verified');
 
