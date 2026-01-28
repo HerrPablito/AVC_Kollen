@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
+import { environment } from '../../../environments/environment';
+
 // Flag to prevent multiple simultaneous refresh attempts
 let isRefreshing = false;
 
@@ -11,11 +13,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    // Clone request and add Authorization header if token exists
+    // Clone request and add Authorization header if token exists AND request is to our API
     const token = authService.getAccessToken();
     let authReq = req;
 
-    if (token) {
+    if (token && req.url.startsWith(environment.apiUrl)) {
         authReq = req.clone({
             setHeaders: {
                 Authorization: `Bearer ${token}`
