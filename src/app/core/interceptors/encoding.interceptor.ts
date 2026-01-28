@@ -62,39 +62,24 @@ function fixEncodingRecursive(data: any): any {
  * 4. Then decode those bytes as UTF-8 to get the correct character "ö"
  */
 function fixStringEncoding(text: string): string {
-    try {
-        // Check if the string contains mojibake patterns (common UTF-8 as Latin-1 errors)
-        // These patterns indicate the string needs fixing
-        // Extended pattern to catch more variants: Ã, Â, â, à, Ä, ä, etc.
-        const hasMojibake = /[ÃâàäæçéèêëìíîïñòóôõöøùúûüýÆ][¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ]/g.test(text) ||
-            /[Ã][¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ]/.test(text) ||
-            /[Ã][¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿]/.test(text) ||
-            /â€/.test(text) || // Common Euro/curly quote issues
-            /â€™/.test(text);
-
-        if (!hasMojibake) {
-            // String looks fine, no need to fix
-            return text;
-        }
-
-        // Convert string to Latin-1 bytes, then decode as UTF-8
-        const latin1Bytes: number[] = [];
-        for (let i = 0; i < text.length; i++) {
-            latin1Bytes.push(text.charCodeAt(i) & 0xFF);
-        }
-
-        const utf8String = new TextDecoder('utf-8').decode(new Uint8Array(latin1Bytes));
-
-        // Verify the fix didn't make things worse
-        // If the result has replacement characters, return original
-        if (utf8String.includes('�')) {
-            return text;
-        }
-
-        return utf8String;
-    } catch (error) {
-        // If anything goes wrong, return original text
-        console.warn('Encoding fix failed for string:', text, error);
-        return text;
-    }
+    // Explicitly replace known double-encoded UTF-8 (interpreted as Latin-1/Win-1252) sequences.
+    // This is more robust than generic decoding which can fail on mixed content.
+    return text
+        // Lowercase
+        .replace(/Ã¥/g, 'å')  // å
+        .replace(/Ã¤/g, 'ä')  // ä
+        .replace(/Ã¶/g, 'ö')  // ö
+        // Uppercase
+        .replace(/Ã…/g, 'Å')  // Å
+        .replace(/Ã„/g, 'Ä')  // Ä
+        .replace(/Ã–/g, 'Ö')  // Ö
+        // Other common chars
+        .replace(/Ã©/g, 'é')  // é
+        .replace(/Ã¨/g, 'è')  // è
+        .replace(/Ã¼/g, 'ü')  // ü
+        .replace(/Ã\*/g, '×') // ×
+        // Punctuation
+        .replace(/â€“/g, '–') // en-dash
+        .replace(/â€™/g, '’') // right single quote
+        .replace(/â€/g, '”'); // right double quote (partial match sometimes)
 }
