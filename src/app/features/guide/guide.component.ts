@@ -21,14 +21,27 @@ export class SortingGuideComponent implements OnInit {
     selectedArticle = signal<GuideArticle | null>(null);
 
     // Map of slugs to local fallback images
+    // We now prioritize these local images over the API ones as per user request
     private fallbackMap: { [key: string]: string } = {
+        'plastforpackningar': 'assets/images/categories/plastforpackningar.png',
+        'matavfall': 'assets/images/categories/matavfall.png',
+        'pappersforpackningar': 'assets/images/categories/pappersforpackningar.png',
+        'metallforpackningar': 'assets/images/categories/metallforpackningar.png',
         'tidningar-och-papper': 'assets/images/categories/tidningar-och-papper.png',
+        'farligt-avfall': 'assets/images/categories/farligt-avfall.png',
+        'glasforpackningar': 'assets/images/categories/glasforpackningar.png',
+        'grovavfall': 'assets/images/categories/grovavfall.png',
         'tradgardsavfall': 'assets/images/categories/tradgardsavfall.png',
+        'restavfall': 'assets/images/categories/restavfall.png',
+        'pant': 'assets/images/categories/pant.png',
         'byggavfall': 'assets/images/categories/byggavfall.png',
+        'flyttguiden': 'assets/images/categories/aterbruksguiden.png', // Reusing reuse image
         'aterbruksguiden': 'assets/images/categories/aterbruksguiden.png',
+        'renoveringsguiden': 'assets/images/categories/byggavfall.png', // Reusing construction image
+        'tra-och-mobler': 'assets/images/categories/tra-och-mobler.png',
+        'sorteringshjalpen': 'assets/images/categories/aterbruksguiden.png', // Reusing reuse image
         'batterier': 'assets/images/categories/batterier.png',
-        'renoveringsguiden': 'assets/images/categories/byggavfall.png',
-        'sorteringshjalpen': 'assets/images/categories/aterbruksguiden.png'
+        'elektronik': 'assets/images/categories/elektronik.png'
     };
     private defaultFallback = 'assets/images/categories/fallback.png';
     // set of article IDs that have failed to load their remote image
@@ -87,18 +100,18 @@ export class SortingGuideComponent implements OnInit {
     }
 
     getImageUrl(article: GuideArticle): string {
-        // If we know this image failed, return local fallback
-        if (this.failedImages.has(article.id)) {
-            return this.fallbackMap[article.slug] || this.defaultFallback;
+        // Option 1: Prioritize local "fallback" images if they exist
+        if (this.fallbackMap[article.slug]) {
+            return this.fallbackMap[article.slug];
         }
 
-        // If API has no URL, return local fallback immediately
-        if (!article.image_url) {
-            return this.fallbackMap[article.slug] || this.defaultFallback;
+        // Option 2: Use API image if available
+        if (article.image_url) {
+            return `https://sopinfo.se/${article.image_url}`;
         }
 
-        // Otherwise try the remote URL
-        return `https://sopinfo.se/${article.image_url}`;
+        // Option 3: Default fallback
+        return this.defaultFallback;
     }
 
     handleImageError(article: GuideArticle) {
