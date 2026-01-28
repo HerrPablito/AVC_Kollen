@@ -1,7 +1,8 @@
-import { Component, signal, computed, OnInit, inject } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterLink, Router } from '@angular/router';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { SopinfoService } from '../../core/services/sopinfo.service';
@@ -10,20 +11,25 @@ import { FavouritesService } from '../../core/services/favourites.service';
 import { AuthService } from '../../core/services/auth.service';
 import { StationDetailComponent } from '../../shared/components/station-detail.component';
 import { Top10StationsPer10kComponent } from '../../shared/components/stats/top10-stations-per-10k.component';
+import { GuideArticleDetailComponent } from '../../shared/components/guide-article-detail.component';
 
 
 @Component({
     selector: 'app-home',
     standalone: true,
     imports: [RouterLink, FormsModule, CommonModule, DialogModule, ButtonModule, StationDetailComponent, Top10StationsPer10kComponent],
+    providers: [DialogService],
     templateUrl: './home.html',
     styleUrl: './home.scss'
 })
 export class HomeComponent implements OnInit {
     private sopinfoService = inject(SopinfoService);
     private router = inject(Router);
+    private dialogService = inject(DialogService);
     public favoritesService = inject(FavouritesService);
     public authService = inject(AuthService);
+
+    ref: DynamicDialogRef | undefined | null;
 
     searchQuery = signal('');
     isLoading = signal(false);
@@ -32,15 +38,10 @@ export class HomeComponent implements OnInit {
     errorMessage = signal<string | null>(null);
     showSearchResults = signal(false);
 
-
-    selectedArticle = signal<GuideArticle | null>(null);
     selectedStation = signal<Station | null>(null);
     showStationDetail = signal(false);
 
-
     wasteQuery = signal('');
-
-
 
     // Computed Favorites with full Station objects
     favoriteStations = computed(() => {
@@ -56,42 +57,7 @@ export class HomeComponent implements OnInit {
 
     private readonly SEARCH_RADIUS_KM = 10;
 
-    // Map of slugs to local fallback images
-    private fallbackMap: { [key: string]: string } = {
-        'plastforpackningar': 'assets/images/categories/plastforpackningar.png',
-        'matavfall': 'assets/images/categories/matavfall.png',
-        'pappersforpackningar': 'assets/images/categories/pappersforpackningar.png',
-        'metallforpackningar': 'assets/images/categories/metallforpackningar.png',
-        'tidningar-och-papper': 'assets/images/categories/tidningar-och-papper.png',
-        'farligt-avfall': 'assets/images/categories/farligt-avfall.png',
-        'glasforpackningar': 'assets/images/categories/glasforpackningar.png',
-        'grovavfall': 'assets/images/categories/grovavfall.png',
-        'tradgardsavfall': 'assets/images/categories/tradgardsavfall.png',
-        'restavfall': 'assets/images/categories/restavfall.png',
-        'pant': 'assets/images/categories/pant.png',
-        'byggavfall': 'assets/images/categories/byggavfall.png',
-        'flyttguiden': 'assets/images/categories/aterbruksguiden.png',
-        'aterbruksguiden': 'assets/images/categories/aterbruksguiden.png',
-        'renoveringsguiden': 'assets/images/categories/byggavfall.png',
-        'tra_och_mobler': 'assets/images/categories/tra-och-mobler.png',
-        'textilier': 'assets/images/categories/textil.png',
-        'sorteringshjalpen': 'assets/images/categories/aterbruksguiden.png',
-        'batterier': 'assets/images/categories/batterier.png',
-        'elektronik': 'assets/images/categories/elektronik.png'
-    };
-    private defaultFallback = 'assets/images/categories/fallback.png';
-
     constructor() { }
-
-    getImageUrl(article: GuideArticle): string {
-        if (this.fallbackMap[article.slug]) {
-            return this.fallbackMap[article.slug];
-        }
-        if (article.image_url) {
-            return `https://sopinfo.se/${article.image_url}`;
-        }
-        return this.defaultFallback;
-    }
 
     ngOnInit() {
         this.loadAllStations();
@@ -188,30 +154,44 @@ export class HomeComponent implements OnInit {
 
 
     openSortingModal(slug: string) {
-
         this.sopinfoService.getGuideArticle(slug).subscribe({
             next: (article) => {
-
-                this.selectedArticle.set(article);
+                this.showArticleDialog(article);
             },
             error: (err) => {
                 console.error('Failed to load article:', err);
-                // Fallback content if API fails or slug is missing
-                this.selectedArticle.set({
+                const fallbackArticle: GuideArticle = {
                     id: 0,
-                    title: slug.charAt(0).toUpperCase() + slug.slice(1),
+                    title: slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' '),
                     slug: slug,
-                    category: '',
+                    category: 'Information saknas',
                     excerpt: 'Detaljerad information om hur du sorterar denna fraktion kommer snart.',
                     description: undefined
-                });
+                };
+                this.showArticleDialog(fallbackArticle);
             }
         });
     }
 
-    closeModal() {
-        this.selectedArticle.set(null);
+    private showArticleDialog(article: GuideArticle) {
+        this.ref = this.dialogService.open(GuideArticleDetailComponent, {
+            header: article.title, // Fallback if header is shown, but we hide it for custom look
+            width: '100%', // Mobile First
+            style: { 'max-width': '800px' }, // Restrict max width
+            styleClass: 'dynamic-dialog-custom',
+            contentStyle: { overflow: 'auto' },
+            baseZIndex: 10000,
+            maximizable: false,
+            resizable: false,
+            showHeader: false, // Use custom header in component
+            data: {
+                article: article
+            },
+            modal: true
+        });
     }
+
+    // closeModal removed as it is no longer used with DynamicDialog
 
     openStationDialog(station: Station) {
         this.selectedStation.set(station);
