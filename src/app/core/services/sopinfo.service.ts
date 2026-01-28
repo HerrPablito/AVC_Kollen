@@ -186,7 +186,7 @@ export class SopinfoService {
             category: item.kategori || '',
             excerpt: item.sammanfattning || item.excerpt || '',
             description: item.beskrivning || undefined,
-            image_url: item.bild_url || undefined,
+            image_url: this.fixImageUrl(item.bild_url),
 
             // Parse JSON fields
             allowed: parseJsonField(item.tillat),
@@ -203,5 +203,17 @@ export class SopinfoService {
             order: item.ordning,
             status: item.status
         };
+    }
+
+    private fixImageUrl(url: string | null): string | undefined {
+        if (!url) return undefined;
+
+        // Fix legacy paths: sessions/matavfall/images/filename.jpg -> images/matavfall/filename.jpg
+        const sessionsMatch = url.match(/^sessions\/([^/]+)\/images\/(.+)$/);
+        if (sessionsMatch) {
+            return `images/${sessionsMatch[1]}/${sessionsMatch[2]}`;
+        }
+
+        return url;
     }
 }
