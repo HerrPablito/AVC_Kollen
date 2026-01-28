@@ -1,35 +1,17 @@
-// Hero Section with Animation
+// Home specific styles
+
 .section.hero {
+    /* Override global .hero max-width (900px) which forces left alignment */
+    max-width: 100%;
+    width: 100%;
+
+    /* Ensure proper vertical spacing if needed, though .section handles padding */
     position: relative;
-    overflow: hidden;
-    /* Hide animation characters entering/leaving */
 
-    /* 
-       Add padding-top to account for:
-       1. Header height (~80px or whatever layout has)
-       2. Animation band height (~120px)
-       
-       Adjust base padding as needed. 
-       If standard section padding is e.g. 4rem (64px), 
-       adding more here pushes content down.
-    */
-    padding-top: calc(80px + 120px + 2rem);
-
-    app-animation {
-        position: absolute;
-        top: 80px;
-        /* Start right below the header (assuming ~80px header) */
-        left: 0;
-        width: 100%;
-        height: 120px;
-        /* Height of the animation band */
-        z-index: 10;
-        /* Show above background but below modals/dropdowns */
-    }
-
-    /* Ensure container content (Text/Buttons) is distinct */
-    .container {
-        position: relative;
-        z-index: 20;
-    }
+    /* Ensure content is centered vertically if the screen is tall */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Optional: min-height for hero impact */
+    /* min-height: 60vh; */
 }
