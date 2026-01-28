@@ -66,3 +66,11 @@ export interface GeoLocation {
     latitude: number;
     longitude: number;
 }
+
+export interface Kommun {
+    id: number;
+    name: string;        // kommunnamn
+    slug: string;
+    station_count: number; // antal stationer
+    befolkning: number;    // invånare
+}

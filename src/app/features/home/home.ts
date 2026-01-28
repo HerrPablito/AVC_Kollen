@@ -9,12 +9,13 @@ import { Station, GuideArticle } from '../../core/models/sopinfo.models';
 import { FavouritesService } from '../../core/services/favourites.service';
 import { AuthService } from '../../core/services/auth.service';
 import { StationDetailComponent } from '../../shared/components/station-detail.component';
+import { Top10StationsPer10kComponent } from '../../shared/components/stats/top10-stations-per-10k.component';
 
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [RouterLink, FormsModule, CommonModule, DialogModule, ButtonModule, StationDetailComponent],
+    imports: [RouterLink, FormsModule, CommonModule, DialogModule, ButtonModule, StationDetailComponent, Top10StationsPer10kComponent],
     templateUrl: './home.html',
     styleUrl: './home.scss'
 })

@@ -1,0 +1,17 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.card {
+    background: var(--bg-1);
+    border: 1px solid var(--border-0);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+@media (max-width: 640px) {
+    .chart-container {
+        height: 60vh !important;
+    }
+}

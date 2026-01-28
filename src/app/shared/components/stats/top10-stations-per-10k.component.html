@@ -1,0 +1,31 @@
+<div class="card h-full p-4 relative">
+    <h3 class="text-xl font-semibold mb-4 text-[var(--text-0)]">Top 10: Stationstäthet</h3>
+    <p class="text-sm text-[var(--text-2)] mb-6">Antal återvinningsstationer per 10 000 invånare.</p>
+
+    <!-- Loading State -->
+    @if (isLoading()) {
+    <div class="space-y-3">
+        @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
+        <div class="flex items-center gap-2">
+            <p-skeleton width="20%" height="1.5rem"></p-skeleton>
+            <p-skeleton [width]="(100 - (i * 5)) + '%'" height="1.5rem"></p-skeleton>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- Error State -->
+    @else if (hasError()) {
+    <div class="flex flex-col items-center justify-center py-12 text-[var(--danger-0)]">
+        <i class="pi pi-exclamation-triangle text-4xl mb-2"></i>
+        <p>Kunde inte ladda statistik.</p>
+    </div>
+    }
+
+    <!-- Chart -->
+    @else {
+    <div class="chart-container" style="position: relative; height: 50vh; min-height: 400px;">
+        <p-chart type="bar" [data]="chartData" [options]="chartOptions" [responsive]="true" height="100%"></p-chart>
+    </div>
+    }
+</div>
