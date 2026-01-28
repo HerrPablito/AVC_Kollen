@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -12,7 +12,7 @@ import { GuideArticleDetailComponent } from '../../shared/components/guide-artic
 @Component({
     selector: 'app-guide',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink, DialogModule, ButtonModule],
+    imports: [CommonModule, FormsModule, DialogModule, ButtonModule],
     providers: [DialogService],
     templateUrl: './guide.component.html',
     styleUrl: './guide.component.scss'

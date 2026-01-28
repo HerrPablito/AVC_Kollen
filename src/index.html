@@ -7,10 +7,201 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="assets/images/logotype/logo-favicon.svg">
+  <style>
+    /* Critical CSS for loader */
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #2a0016;
+      /* Fallback matches app theme */
+    }
+
+    .app-loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(1200px 600px at 70% 20%, #3a0020, #2a0016);
+      color: #f6f0f4;
+      font-family: system-ui, -apple-system, sans-serif;
+      z-index: 99999;
+    }
+
+    .recycle-icon-wrapper {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .recycle-logo {
+      width: 64px;
+      height: 64px;
+      position: relative;
+      z-index: 2;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    /* Outer spinning ring */
+    .recycle-spinner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #e23b4e;
+      /* Brand Red */
+      border-left-color: rgba(226, 59, 78, 0.2);
+      animation: spin 1.5s linear infinite;
+    }
+
+    /* Inner spinning ring (reverse) */
+    .recycle-spinner::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #ff8aa3;
+      /* Brand Blush */
+      border-right-color: rgba(255, 138, 163, 0.2);
+      animation: spin 2s linear infinite reverse;
+    }
+
+    /* Recycling arrows concept using pseudo elements on a wrapper could be complex, 
+       sticking to the double spinner for a "tech/eco" feel */
+
+    .loading-text {
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease-out;
+    }
+
+    .loading-dots::after {
+      content: '...';
+      animation: dots 1.5s steps(4, end) infinite;
+      display: inline-block;
+      width: 1em;
+      text-align: left;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+        filter: drop-shadow(0 0 10px rgba(226, 59, 78, 0.3));
+      }
+
+      50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+        filter: drop-shadow(0 0 15px rgba(226, 59, 78, 0.5));
+      }
+    }
+
+    @keyframes dots {
+
+      0%,
+      20% {
+        content: '';
+      }
+
+      40% {
+        content: '.';
+      }
+
+      60% {
+        content: '..';
+      }
+
+      80%,
+      100% {
+        content: '...';
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <app-root></app-root>
+  <app-root>
+    <div class="app-loading-screen">
+      <div class="recycle-icon-wrapper">
+        <div class="recycle-spinner"></div>
+        <!-- Inlined SVG Logo for immediate loading and color control -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" class="recycle-logo">
+          <defs>
+            <style>
+              .logo-stroke {
+                stroke: #ffffff;
+              }
+
+              .logo-fill {
+                fill: #ffffff;
+              }
+
+              .logo-none {
+                fill: none;
+              }
+            </style>
+            <!-- Inner arc path for text -->
+            <path id="arc" d="M 74 96 A 30 30 0 0 1 96 74" />
+          </defs>
+          <!-- Ring -->
+          <circle cx="64" cy="64" r="46" class="logo-none logo-stroke" stroke-width="12" stroke-linecap="round" />
+          <!-- ÅVC -->
+          <text class="logo-fill" font-size="20" font-weight="800"
+            font-family="system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" letter-spacing="2">
+            <textPath href="#arc">ÅVC</textPath>
+          </text>
+        </svg>
+      </div>
+      <div class="loading-text">
+        Laddar ÅVC Kollen<span class="loading-dots"></span>
+      </div>
+    </div>
+  </app-root>
 </body>
 
 </html>
