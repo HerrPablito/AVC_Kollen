@@ -11,74 +11,176 @@
         </button>
       </div>
       <div class="flex gap-2 items-center">
-        <a routerLink="/sorteringsguide" class="nav-link">Så sorterar du</a>
-        <a routerLink="/om" class="nav-link">Om ÅVC-kollen</a>
-        <a routerLink="/kontakt" class="nav-link">Kontakt</a>
+        <!-- Mobile Menu Button -->
+        <button
+          class="lg:hidden p-2 text-[var(--text-0)] hover:bg-[var(--bg-2)] rounded-lg transition-colors border-none bg-transparent cursor-pointer"
+          (click)="showMobileMenu.set(true)" aria-label="Öppna meny">
+          <i class="pi pi-bars text-2xl"></i>
+        </button>
 
-        <!-- Mina ÅVC with PrimeNG Select -->
-        <div class="w-64">
-          <p-select [options]="getFavoritesList()" placeholder="Mina ÅVC" [(ngModel)]="selectedFavorite"
-            [showClear]="false" (onChange)="onStationSelect($event)" [optionLabel]="'name'" optionGroupLabel="name"
-            class="my-favourites-select w-full" panelStyleClass="my-favourites-select-overlay"
-            dropdownStyleClass="custom-select-dropdown">
-            <ng-template let-option pTemplate="item">
-              @if (option) {
-              <div class="flex items-center gap-3 cursor-pointer py-2">
-                <i class="pi pi-map-marker" style="color: var(--accent-0); flex-shrink: 0;"></i>
-                <div class="flex-1 min-w-0">
-                  <p class="font-semibold text-sm text-[var(--text-0)]">{{ option.name }}</p>
-                  @if (option.municipality_name) {
-                  <p class="text-xs text-[var(--text-2)]">{{ option.municipality_name }}</p>
-                  }
-                  <p class="text-xs text-[var(--text-1)] mt-0.5">{{ option.distance | number:'1.1-1' }} km bort</p>
+        <!-- Desktop Nav -->
+        <div class="hidden lg:flex gap-2 items-center">
+          <a routerLink="/sorteringsguide" class="nav-link">Så sorterar du</a>
+          <a routerLink="/om" class="nav-link">Om ÅVC-kollen</a>
+          <a routerLink="/kontakt" class="nav-link">Kontakt</a>
+
+          <!-- Mina ÅVC with PrimeNG Select -->
+          <div class="w-64">
+            <p-select [options]="getFavoritesList()" placeholder="Mina ÅVC" [(ngModel)]="selectedFavorite"
+              [showClear]="false" (onChange)="onStationSelect($event)" [optionLabel]="'name'" optionGroupLabel="name"
+              class="my-favourites-select w-full" panelStyleClass="my-favourites-select-overlay"
+              dropdownStyleClass="custom-select-dropdown">
+              <ng-template let-option pTemplate="item">
+                @if (option) {
+                <div class="flex items-center gap-3 cursor-pointer py-2">
+                  <i class="pi pi-map-marker" style="color: var(--accent-0); flex-shrink: 0;"></i>
+                  <div class="flex-1 min-w-0">
+                    <p class="font-semibold text-sm text-[var(--text-0)]">{{ option.name }}</p>
+                    @if (option.municipality_name) {
+                    <p class="text-xs text-[var(--text-2)]">{{ option.municipality_name }}</p>
+                    }
+                    <p class="text-xs text-[var(--text-1)] mt-0.5">{{ option.distance | number:'1.1-1' }} km bort</p>
+                  </div>
                 </div>
-              </div>
-              }
-            </ng-template>
-            <ng-template pTemplate="header">
-              <div class="flex items-center justify-between px-4 py-3" style="background: transparent;">
-                <span class="font-semibold flex items-center gap-2 text-[var(--text-0)]">
-                  <i class="pi pi-heart-fill" style="color: var(--accent-0);"></i>
-                  Mina favoriter
-                </span>
-                @if (getFavoritesList().length > 0) {
-                <button (click)="favoritesService.clearFavourites(); $event.stopPropagation()"
-                  class="text-xs text-[var(--text-2)] hover:text-[var(--text-0)] transition-colors px-2 py-1 hover:bg-[var(--bg-2)] rounded">
-                  Rensa alla
-                </button>
                 }
-              </div>
-            </ng-template>
-            <ng-template pTemplate="empty">
-              <div class="px-4 py-6 text-center text-[var(--text-2)] text-sm">
-                <i class="pi pi-heart text-lg block mb-2"></i>
-                Ingen favoriter ännu
-              </div>
-            </ng-template>
-          </p-select>
-        </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <div class="flex items-center justify-between px-4 py-3" style="background: transparent;">
+                  <span class="font-semibold flex items-center gap-2 text-[var(--text-0)]">
+                    <i class="pi pi-heart-fill" style="color: var(--accent-0);"></i>
+                    Mina favoriter
+                  </span>
+                  @if (getFavoritesList().length > 0) {
+                  <button (click)="favoritesService.clearFavourites(); $event.stopPropagation()"
+                    class="text-xs text-[var(--text-2)] hover:text-[var(--text-0)] transition-colors px-2 py-1 hover:bg-[var(--bg-2)] rounded">
+                    Rensa alla
+                  </button>
+                  }
+                </div>
+              </ng-template>
+              <ng-template pTemplate="empty">
+                <div class="px-4 py-6 text-center text-[var(--text-2)] text-sm">
+                  <i class="pi pi-heart text-lg block mb-2"></i>
+                  Ingen favoriter ännu
+                </div>
+              </ng-template>
+            </p-select>
+          </div>
 
-        <!-- Auth Section -->
-        <div class="auth-section">
-          @if (authService.currentUser$ | async; as user) {
-          <a routerLink="/profile" class="profile-link">
-            <i class="pi pi-user"></i>
-            <span class="profile-email">{{ user.email }}</span>
-          </a>
-          <button (click)="logout()" class="logout-btn" title="Logga ut">
-            <i class="pi pi-sign-out"></i>
-          </button>
-          } @else {
-          <a routerLink="/login" class="login-btn">
-            <i class="pi pi-sign-in"></i>
-            <span>Logga in</span>
-          </a>
-          }
+          <!-- Auth Section -->
+          <div class="auth-section">
+            @if (authService.currentUser$ | async; as user) {
+            <a routerLink="/profile" class="profile-link">
+              <i class="pi pi-user"></i>
+              <span class="profile-email">{{ user.email }}</span>
+            </a>
+            <button (click)="logout()" class="logout-btn" title="Logga ut">
+              <i class="pi pi-sign-out"></i>
+            </button>
+            } @else {
+            <a routerLink="/login" class="login-btn">
+              <i class="pi pi-sign-in"></i>
+              <span>Logga in</span>
+            </a>
+            }
+          </div>
         </div>
       </div>
     </nav>
   </div>
 </header>
+
+<!-- Mobile Menu Drawer -->
+<p-drawer [(visible)]="showMobileMenu" position="right" styleClass="mobile-menu-drawer">
+  <div class="flex flex-col h-full">
+    <div class="mb-8">
+      <h2 class="text-xl font-bold mb-6"
+        style="background: linear-gradient(135deg, var(--accent-0), var(--blush-300)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        ÅVC Kollen
+      </h2>
+      <div class="flex flex-col gap-4">
+        <a routerLink="/sorteringsguide"
+          class="nav-link block w-full py-3 px-4 rounded-lg bg-[var(--bg-2)] border border-[var(--border-0)]"
+          (click)="showMobileMenu.set(false)">
+          <i class="pi pi-list mr-2 text-[var(--accent-0)]"></i>
+          Så sorterar du
+        </a>
+        <a routerLink="/om"
+          class="nav-link block w-full py-3 px-4 rounded-lg bg-[var(--bg-2)] border border-[var(--border-0)]"
+          (click)="showMobileMenu.set(false)">
+          <i class="pi pi-info-circle mr-2 text-[var(--accent-0)]"></i>
+          Om ÅVC-kollen
+        </a>
+        <a routerLink="/kontakt"
+          class="nav-link block w-full py-3 px-4 rounded-lg bg-[var(--bg-2)] border border-[var(--border-0)]"
+          (click)="showMobileMenu.set(false)">
+          <i class="pi pi-envelope mr-2 text-[var(--accent-0)]"></i>
+          Kontakt
+        </a>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-sm font-semibold text-[var(--text-2)] uppercase tracking-wider mb-3">Mina Favoriter</h3>
+      <!-- Mina ÅVC Mobile -->
+      <p-select [options]="getFavoritesList()" placeholder="Välj favoritstation" [(ngModel)]="selectedFavorite"
+        [showClear]="false" (onChange)="onStationSelect($event); showMobileMenu.set(false)" [optionLabel]="'name'"
+        optionGroupLabel="name" class="my-favourites-select w-full" panelStyleClass="my-favourites-select-overlay"
+        dropdownStyleClass="custom-select-dropdown">
+        <ng-template let-option pTemplate="item">
+          @if (option) {
+          <div class="flex items-center gap-3 cursor-pointer py-2">
+            <i class="pi pi-map-marker" style="color: var(--accent-0); flex-shrink: 0;"></i>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-sm text-[var(--text-0)]">{{ option.name }}</p>
+              @if (option.municipality_name) {
+              <p class="text-xs text-[var(--text-2)]">{{ option.municipality_name }}</p>
+              }
+              <p class="text-xs text-[var(--text-1)] mt-0.5">{{ option.distance | number:'1.1-1' }} km bort</p>
+            </div>
+          </div>
+          }
+        </ng-template>
+        <ng-template pTemplate="empty">
+          <div class="px-4 py-4 text-center text-[var(--text-2)] text-sm">
+            Ingen favoriter ännu
+          </div>
+        </ng-template>
+      </p-select>
+    </div>
+
+    <div class="mt-auto border-t border-[var(--border-0)] pt-6">
+      @if (authService.currentUser$ | async; as user) {
+      <div class="flex items-center gap-3 mb-4 p-3 bg-[var(--bg-2)] rounded-lg">
+        <div
+          class="w-10 h-10 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent-0)]">
+          <i class="pi pi-user text-xl"></i>
+        </div>
+        <div class="flex-1 overflow-hidden">
+          <p class="font-semibold text-sm truncate">{{ user.email }}</p>
+          <p class="text-xs text-[var(--text-2)]">Inloggad</p>
+        </div>
+      </div>
+      <button (click)="logout(); showMobileMenu.set(false)"
+        class="w-full py-3 px-4 rounded-lg border border-[var(--danger-0)] text-[var(--danger-0)] flex items-center justify-center gap-2 hover:bg-[var(--bg-2)] transition-colors">
+        <i class="pi pi-sign-out"></i>
+        Logga ut
+      </button>
+      } @else {
+      <a routerLink="/login" (click)="showMobileMenu.set(false)"
+        class="btn btn--primary w-full flex items-center justify-center gap-2 mb-3">
+        <i class="pi pi-sign-in"></i>
+        Logga in
+      </a>
+      <a routerLink="/register" (click)="showMobileMenu.set(false)"
+        class="btn btn--secondary w-full flex items-center justify-center gap-2">
+        <i class="pi pi-user-plus"></i>
+        Skapa konto
+      </a>
+      }
+    </div>
+  </div>
+</p-drawer>
 
 <!-- Station Detail Dialog -->
 <app-station-detail [station]="selectedStation()" [visible]="showStationDetail()"

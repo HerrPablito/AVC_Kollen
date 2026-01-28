@@ -7,13 +7,14 @@ import { SopinfoService } from '../../core/services/sopinfo.service';
 import { StationDetailComponent } from './station-detail.component';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
+import { DrawerModule } from 'primeng/drawer';
 import { Station } from '../../core/models/sopinfo.models';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
     selector: 'app-header',
     standalone: true,
-    imports: [RouterLink, CommonModule, FormsModule, StationDetailComponent, ButtonModule, SelectModule],
+    imports: [RouterLink, CommonModule, FormsModule, StationDetailComponent, ButtonModule, SelectModule, DrawerModule],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
@@ -25,6 +26,8 @@ export class HeaderComponent implements OnInit {
 
     selectedStation = signal<Station | null>(null);
     showStationDetail = signal(false);
+    showMobileMenu = signal(false);
+
 
     // Model for the p-select to allow resetting
     selectedFavorite: Station | null = null;
