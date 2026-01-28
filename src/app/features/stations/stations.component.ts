@@ -10,7 +10,7 @@ import { Station } from '../../core/models/sopinfo.models';
     standalone: true,
     imports: [CommonModule, FormsModule],
     templateUrl: './stations.component.html',
-    styleUrl: './stations.component.scss' // We'll create this file next
+    styleUrl: './stations.component.scss'
 })
 export class StationsComponent implements OnInit {
     stations = signal<Station[]>([]);
@@ -18,7 +18,6 @@ export class StationsComponent implements OnInit {
     selectedStationId = signal<number | null>(null);
     isLoading = signal(true);
 
-    // Filtered stations based on search query
     filteredStations = computed(() => {
         const query = this.searchQuery().toLowerCase();
         const all = this.stations();
@@ -39,11 +38,9 @@ export class StationsComponent implements OnInit {
     ngOnInit() {
         this.loadStations();
 
-        // Check for highlight query param
         this.route.queryParams.subscribe(params => {
             if (params['highlight']) {
                 this.selectedStationId.set(params['highlight']);
-                // Maybe scroll to element logic later?
             }
         });
     }
@@ -67,17 +64,11 @@ export class StationsComponent implements OnInit {
             this.selectedStationId.set(null);
         } else {
             this.selectedStationId.set(station.id);
-            // Here we could fetch specific details efficiently if not already present
-            // But user requirement said: "expandera... och hämta detaljer via GET /api/stationer/:id"
-            // So let's do that if needed, or if we want to ensure fresh data.
-            // Since simplistic getStations might return full data or summary, let's fetch details to be safe/compliant.
             this.fetchStationDetails(station.id);
         }
     }
 
     fetchStationDetails(id: number) {
-        // Optimistic update of UI implies we expand immediately.
-        // Fetching extra details could update the specific object in the signal array.
         this.sopinfoService.getStationDetails(id).subscribe(details => {
             this.stations.update(current =>
                 current.map(s => s.id === id ? { ...s, ...details } : s)
@@ -85,7 +76,6 @@ export class StationsComponent implements OnInit {
         });
     }
 
-    // Helper for template
     objectKeys(obj: any): string[] {
         return obj ? Object.keys(obj) : [];
     }

@@ -29,8 +29,6 @@ export class SortingGuideComponent implements OnInit {
 
     ref: DynamicDialogRef | undefined | null;
 
-    // Map of slugs to local fallback images
-    // We now prioritize these local images over the API ones as per user request
     private fallbackMap: { [key: string]: string } = {
         'plastforpackningar': 'assets/images/categories/plastforpackningar.png',
         'matavfall': 'assets/images/categories/matavfall.png',
@@ -44,12 +42,12 @@ export class SortingGuideComponent implements OnInit {
         'restavfall': 'assets/images/categories/restavfall.png',
         'pant': 'assets/images/categories/pant.png',
         'byggavfall': 'assets/images/categories/byggavfall.png',
-        'flyttguiden': 'assets/images/categories/aterbruksguiden.png', // Reusing reuse image
+        'flyttguiden': 'assets/images/categories/aterbruksguiden.png',
         'aterbruksguiden': 'assets/images/categories/aterbruksguiden.png',
-        'renoveringsguiden': 'assets/images/categories/byggavfall.png', // Reusing construction image
+        'renoveringsguiden': 'assets/images/categories/byggavfall.png',
         'tra_och_mobler': 'assets/images/categories/tra-och-mobler.png',
         'textilier': 'assets/images/categories/textil.png',
-        'sorteringshjalpen': 'assets/images/categories/aterbruksguiden.png', // Reusing reuse image
+        'sorteringshjalpen': 'assets/images/categories/aterbruksguiden.png',
         'batterier': 'assets/images/categories/batterier.png',
         'elektronik': 'assets/images/categories/elektronik.png'
     };
@@ -61,7 +59,6 @@ export class SortingGuideComponent implements OnInit {
     ngOnInit() {
         this.loadArticles();
 
-        // Handle query params for direct search/linking
         this.route.queryParams.subscribe(params => {
             if (params['search']) {
                 this.searchQuery.set(params['search']);
@@ -90,7 +87,6 @@ export class SortingGuideComponent implements OnInit {
     }
 
     selectArticle(article: GuideArticle) {
-        // Fetch full details before opening (or pass partial and let component fetch? Better to fetch here for consistent behavior)
         this.sopinfoService.getGuideArticle(article.slug).subscribe(fullArticle => {
             this.showArticleDialog(fullArticle);
         });
@@ -115,17 +111,13 @@ export class SortingGuideComponent implements OnInit {
     }
 
     getImageUrl(article: GuideArticle): string {
-        // Option 1: Prioritize local "fallback" images if they exist
         if (this.fallbackMap[article.slug]) {
             return this.fallbackMap[article.slug];
         }
-
-        // Option 2: Use API image if available
         if (article.image_url) {
             return `https://sopinfo.se/${article.image_url}`;
         }
 
-        // Option 3: Default fallback
         return this.defaultFallback;
     }
 

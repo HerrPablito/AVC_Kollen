@@ -18,7 +18,6 @@ export class GuideArticleDetailComponent {
 
     article: GuideArticle = this.config.data.article;
 
-    // Map of slugs to local fallback images
     private fallbackMap: { [key: string]: string } = {
         'plastforpackningar': 'assets/images/categories/plastforpackningar.png',
         'matavfall': 'assets/images/categories/matavfall.png',

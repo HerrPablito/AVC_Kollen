@@ -507,7 +507,6 @@ body.p-overflow-hidden {
     cursor: not-allowed;
 }
 
-// Only add icon margin when button has a label (text content)
 .p-button:not(.p-button-icon-only) {
 
     .p-icon,
@@ -536,7 +535,6 @@ body.p-overflow-hidden {
     }
 }
 
-/* PrimeNG Select Styling */
 .p-select {
     width: 100%;
     background: color-mix(in srgb, var(--burgundy-800) 95%, var(--burgundy-700) 5%) !important;
@@ -670,7 +668,6 @@ body.p-overflow-hidden {
     }
 }
 
-/* Dropdown overlay for favorites select */
 .my-favourites-select-overlay.p-select-overlay {
     background: var(--bg-0) !important;
 
@@ -698,7 +695,6 @@ body.p-overflow-hidden {
         background: transparent !important;
     }
 
-    // Enhanced hover effects for options
     .p-select-option {
         background: transparent !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -741,13 +737,12 @@ body.p-overflow-hidden {
         }
     }
 
-    // Target any wrapper divs
+
     >div {
         background: transparent !important;
     }
 }
 
-/* PrimeNG Dialog Styling */
 .p-dialog {
     border-radius: var(--radius-lg);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -809,7 +804,6 @@ body.p-overflow-hidden {
     backdrop-filter: blur(8px);
 }
 
-/* Custom dialog class */
 .p-dialog-custom {
     .p-dialog-header {
         background: linear-gradient(135deg, var(--bg-1), var(--bg-2));

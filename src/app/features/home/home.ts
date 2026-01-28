@@ -43,7 +43,6 @@ export class HomeComponent implements OnInit {
 
     wasteQuery = signal('');
 
-    // Computed Favorites with full Station objects
     favoriteStations = computed(() => {
         const favoriteIds = this.favoritesService.favourites();
         const stations = this.sopinfoService.stations();
@@ -76,11 +75,9 @@ export class HomeComponent implements OnInit {
         this.nearestStation.set(null);
 
         try {
-            // 1. Geocode postal code/city
             const location = await this.sopinfoService.geocode(this.searchQuery()).toPromise();
 
             if (location) {
-                // 2. Fetch all stations and find nearest
                 this.findNearestStation(location.latitude, location.longitude);
             }
         } catch (error) {
@@ -95,13 +92,10 @@ export class HomeComponent implements OnInit {
         this.nearestStation.set(null);
 
         try {
-            // 1. Get user location
             const location = await this.sopinfoService.getUserLocation();
 
-            // 2. Find nearest station
             this.findNearestStation(location.latitude, location.longitude);
 
-            // Update search input to say "Min position" or similar? Optional.
         } catch (error) {
             this.errorMessage.set('Kunde inte hämta din position. Tillåt platsåtkomst eller sök manuellt.');
             this.isLoading.set(false);
@@ -109,7 +103,6 @@ export class HomeComponent implements OnInit {
     }
 
     private findNearestStation(lat: number, lon: number) {
-        // Use cached stations if available in service, or fetch
         this.sopinfoService.getStations().subscribe({
             next: (stations) => {
                 if (!stations || stations.length === 0) {
@@ -120,13 +113,10 @@ export class HomeComponent implements OnInit {
 
 
 
-                // Calculate distances for all stations
                 const stationsWithDist = stations.map(s => {
                     s.distance = this.sopinfoService.calculateDistance(lat, lon, s.latitude, s.longitude);
                     return s;
                 });
-
-                // Filter stations within 1 mil (10 km)
                 const nearbyStations = stationsWithDist.filter(s => (s.distance || 0) <= this.SEARCH_RADIUS_KM);
 
                 if (nearbyStations.length === 0) {
@@ -135,7 +125,6 @@ export class HomeComponent implements OnInit {
                     return;
                 }
 
-                // Sort by distance
                 nearbyStations.sort((a, b) => (a.distance || 0) - (b.distance || 0));
 
 
@@ -175,23 +164,21 @@ export class HomeComponent implements OnInit {
 
     private showArticleDialog(article: GuideArticle) {
         this.ref = this.dialogService.open(GuideArticleDetailComponent, {
-            header: article.title, // Fallback if header is shown, but we hide it for custom look
-            width: '100%', // Mobile First
-            style: { 'max-width': '800px' }, // Restrict max width
+            header: article.title,
+            width: '100%',
+            style: { 'max-width': '800px' },
             styleClass: 'dynamic-dialog-custom',
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000,
             maximizable: false,
             resizable: false,
-            showHeader: false, // Use custom header in component
+            showHeader: false,
             data: {
                 article: article
             },
             modal: true
         });
     }
-
-    // closeModal removed as it is no longer used with DynamicDialog
 
     openStationDialog(station: Station) {
         this.selectedStation.set(station);

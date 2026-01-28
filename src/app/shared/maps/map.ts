@@ -104,6 +104,5 @@ export class MapComponent implements OnInit, OnDestroy {
 
 
     private handleMapClick(event: any): void {
-        // Handle map click
     }
 }

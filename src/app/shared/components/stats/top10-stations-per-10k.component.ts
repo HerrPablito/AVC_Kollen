@@ -14,11 +14,9 @@ import { KommunerService, EnrichedKommun } from '../../../core/services/kommuner
 export class Top10StationsPer10kComponent implements OnInit {
     private kommunerService = inject(KommunerService);
 
-    // Signals for state
     isLoading = signal(true);
     hasError = signal(false);
 
-    // Chart data
     chartData: any;
     chartOptions: any;
 
@@ -43,10 +41,8 @@ export class Top10StationsPer10kComponent implements OnInit {
 
     private setupChartData(kommuner: EnrichedKommun[]) {
         const labels = kommuner.map(k => k.name);
-        // Round to 1 decimal
         const dataValues = kommuner.map(k => parseFloat(k.stationsPer10k.toFixed(1)));
 
-        // Extra data for tooltips
         const rawData = kommuner;
 
         this.chartData = {
@@ -55,11 +51,9 @@ export class Top10StationsPer10kComponent implements OnInit {
                 {
                     label: 'Stationer per 10 000 invånare',
                     data: dataValues,
-                    backgroundColor: 'rgba(226, 59, 78, 0.7)', // --accent-0 with opacity
-                    borderColor: '#e23b4e', // --accent-0
+                    backgroundColor: 'rgba(226, 59, 78, 0.7)',
+                    borderColor: '#e23b4e',
                     borderWidth: 1,
-                    // Store raw data references if needed for advanced callbacks, 
-                    // though tooltip callback usually uses index
                     rawData: rawData
                 }
             ]
@@ -73,7 +67,7 @@ export class Top10StationsPer10kComponent implements OnInit {
         const surfaceBorder = documentStyle.getPropertyValue('--border-0') || 'rgba(255,255,255,0.1)';
 
         this.chartOptions = {
-            indexAxis: 'y', // Horizontal bars
+            indexAxis: 'y',
             maintainAspectRatio: false,
             aspectRatio: 0.8,
             plugins: {
@@ -85,13 +79,8 @@ export class Top10StationsPer10kComponent implements OnInit {
                 tooltip: {
                     callbacks: {
                         afterLabel: (context: any) => {
-                            // Find the corresponding municipality object
                             const index = context.dataIndex;
                             const dataset = context.dataset;
-                            // We can use the index to find the original data from the input array if stored,
-                            // or we can attach it to the dataset.
-                            // Accessing via the component instance is hard here because of 'this' binding.
-                            // But we stored rawData in the dataset above!
                             const kommun = dataset.rawData[index] as EnrichedKommun;
 
                             return [
