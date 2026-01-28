@@ -1,24 +1,33 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SopinfoService } from '../../core/services/sopinfo.service';
 import { GuideArticle } from '../../core/models/sopinfo.models';
+import { GuideArticleDetailComponent } from '../../shared/components/guide-article-detail.component';
 
 @Component({
     selector: 'app-guide',
     standalone: true,
     imports: [CommonModule, FormsModule, RouterLink, DialogModule, ButtonModule],
+    providers: [DialogService],
     templateUrl: './guide.component.html',
     styleUrl: './guide.component.scss'
 })
 export class SortingGuideComponent implements OnInit {
+    private sopinfoService = inject(SopinfoService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private dialogService = inject(DialogService);
+
     articles = signal<GuideArticle[]>([]);
     isLoading = signal(true);
     searchQuery = signal('');
-    selectedArticle = signal<GuideArticle | null>(null);
+
+    ref: DynamicDialogRef | undefined | null;
 
     // Map of slugs to local fallback images
     // We now prioritize these local images over the API ones as per user request
@@ -45,14 +54,9 @@ export class SortingGuideComponent implements OnInit {
         'elektronik': 'assets/images/categories/elektronik.png'
     };
     private defaultFallback = 'assets/images/categories/fallback.png';
-    // set of article IDs that have failed to load their remote image
     private failedImages = new Set<number>();
 
-    constructor(
-        private sopinfoService: SopinfoService,
-        private route: ActivatedRoute,
-        private router: Router
-    ) { }
+    constructor() { }
 
     ngOnInit() {
         this.loadArticles();
@@ -86,18 +90,28 @@ export class SortingGuideComponent implements OnInit {
     }
 
     selectArticle(article: GuideArticle) {
-        this.selectedArticle.set(article);
+        // Fetch full details before opening (or pass partial and let component fetch? Better to fetch here for consistent behavior)
         this.sopinfoService.getGuideArticle(article.slug).subscribe(fullArticle => {
-            // Persist the image fallback state if the list item failed
-            if (this.failedImages.has(article.id)) {
-                this.failedImages.add(fullArticle.id);
-            }
-            this.selectedArticle.set(fullArticle);
+            this.showArticleDialog(fullArticle);
         });
     }
 
-    clearSelection() {
-        this.selectedArticle.set(null);
+    private showArticleDialog(article: GuideArticle) {
+        this.ref = this.dialogService.open(GuideArticleDetailComponent, {
+            header: article.title,
+            width: '100%',
+            style: { 'max-width': '800px' },
+            styleClass: 'dynamic-dialog-custom',
+            contentStyle: { overflow: 'auto' },
+            baseZIndex: 10000,
+            maximizable: false,
+            resizable: false,
+            showHeader: false,
+            data: {
+                article: article
+            },
+            modal: true
+        });
     }
 
     getImageUrl(article: GuideArticle): string {
