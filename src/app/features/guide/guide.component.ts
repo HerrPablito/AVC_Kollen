@@ -38,7 +38,8 @@ export class SortingGuideComponent implements OnInit {
         'flyttguiden': 'assets/images/categories/aterbruksguiden.png', // Reusing reuse image
         'aterbruksguiden': 'assets/images/categories/aterbruksguiden.png',
         'renoveringsguiden': 'assets/images/categories/byggavfall.png', // Reusing construction image
-        'tra-och-mobler': 'assets/images/categories/tra-och-mobler.png',
+        'tra_och_mobler': 'assets/images/categories/tra-och-mobler.png',
+        'textilier': 'assets/images/categories/textil.png',
         'sorteringshjalpen': 'assets/images/categories/aterbruksguiden.png', // Reusing reuse image
         'batterier': 'assets/images/categories/batterier.png',
         'elektronik': 'assets/images/categories/elektronik.png'
