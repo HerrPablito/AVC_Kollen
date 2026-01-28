@@ -104,8 +104,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
 
     private handleMapClick(event: any): void {
-        console.log(`Zoom level: ${this.map?.getView().getZoom()}`);
-        console.log(`Map coordinates (wgs84): ${toLonLat(event.coordinate)}`);
-        console.log(`Pixel coordinates (top-left): ${event.pixel}`);
+        // Handle map click
     }
 }

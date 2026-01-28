@@ -152,10 +152,10 @@ export class HomeComponent implements OnInit {
 
 
     openSortingModal(slug: string) {
-        console.log('Opening modal for slug:', slug);
+
         this.sopinfoService.getGuideArticle(slug).subscribe({
             next: (article) => {
-                console.log('Article loaded:', article);
+
                 this.selectedArticle.set(article);
             },
             error: (err) => {

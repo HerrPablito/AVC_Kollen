@@ -50,7 +50,7 @@ export class SopinfoService {
             params = params.set('search', search);
         }
         return this.http.get<{ success: boolean; data: any[] }>(`${this.API_BASE}/sorteringsguide`, { params }).pipe(
-            tap(response => console.log('Sopinfo API: Fetched guide articles', response.data?.length)),
+
             map(response => this.mapArticles(response.data)),
             catchError(err => {
                 console.error('Sopinfo API Error (Sorting Guide):', err);
