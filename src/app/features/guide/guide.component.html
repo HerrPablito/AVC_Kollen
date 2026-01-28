@@ -29,10 +29,10 @@
             <div class="card overflow-hidden cursor-pointer hover:transform hover:-translate-y-1 transition-all duration-300 h-full flex flex-col"
                 (click)="selectArticle(article)">
                 <!-- Image Header -->
-                @if (article.image_url) {
-                <div class="relative h-48 overflow-hidden">
-                    <img [src]="'https://sopinfo.se/' + article.image_url" [alt]="article.title"
-                        class="w-full h-full object-cover">
+                <div class="relative h-48 overflow-hidden bg-[var(--bg-2)]">
+                    <img [src]="getImageUrl(article)" [alt]="article.title"
+                        class="w-full h-full object-cover transition-opacity duration-300"
+                        (error)="handleImageError(article)">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     @if (article.category) {
                     <span
@@ -41,7 +41,6 @@
                     </span>
                     }
                 </div>
-                }
 
                 <div class="p-6 flex-grow flex flex-col">
                     <!-- Title with color indicator -->
@@ -108,12 +107,10 @@
     <ng-template pTemplate="content">
         @if (selectedArticle(); as article) {
         <!-- Hero Image -->
-        @if (article.image_url) {
-        <div class="relative h-48 -mx-6 -mt-6 mb-6 overflow-hidden rounded-t-lg">
-            <img [src]="'https://sopinfo.se/' + article.image_url" [alt]="article.title"
-                class="w-full h-full object-cover">
+        <div class="relative h-48 -mx-6 -mt-6 mb-6 overflow-hidden rounded-t-lg bg-[var(--bg-2)]">
+            <img [src]="getImageUrl(article)" [alt]="article.title" class="w-full h-full object-cover"
+                (error)="handleImageError(article)">
         </div>
-        }
 
         <!-- Excerpt -->
         @if (article.excerpt) {

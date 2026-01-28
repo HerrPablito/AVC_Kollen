@@ -20,6 +20,20 @@ export class SortingGuideComponent implements OnInit {
     searchQuery = signal('');
     selectedArticle = signal<GuideArticle | null>(null);
 
+    // Map of slugs to local fallback images
+    private fallbackMap: { [key: string]: string } = {
+        'tidningar-och-papper': 'assets/images/categories/tidningar-och-papper.png',
+        'tradgardsavfall': 'assets/images/categories/tradgardsavfall.png',
+        'byggavfall': 'assets/images/categories/byggavfall.png',
+        'aterbruksguiden': 'assets/images/categories/aterbruksguiden.png',
+        'batterier': 'assets/images/categories/batterier.png',
+        'renoveringsguiden': 'assets/images/categories/byggavfall.png',
+        'sorteringshjalpen': 'assets/images/categories/aterbruksguiden.png'
+    };
+    private defaultFallback = 'assets/images/categories/fallback.png';
+    // set of article IDs that have failed to load their remote image
+    private failedImages = new Set<number>();
+
     constructor(
         private sopinfoService: SopinfoService,
         private route: ActivatedRoute,
@@ -28,6 +42,14 @@ export class SortingGuideComponent implements OnInit {
 
     ngOnInit() {
         this.loadArticles();
+
+        // Handle query params for direct search/linking
+        this.route.queryParams.subscribe(params => {
+            if (params['search']) {
+                this.searchQuery.set(params['search']);
+                this.loadArticles();
+            }
+        });
     }
 
     loadArticles() {
@@ -52,11 +74,34 @@ export class SortingGuideComponent implements OnInit {
     selectArticle(article: GuideArticle) {
         this.selectedArticle.set(article);
         this.sopinfoService.getGuideArticle(article.slug).subscribe(fullArticle => {
+            // Persist the image fallback state if the list item failed
+            if (this.failedImages.has(article.id)) {
+                this.failedImages.add(fullArticle.id);
+            }
             this.selectedArticle.set(fullArticle);
         });
     }
 
     clearSelection() {
         this.selectedArticle.set(null);
+    }
+
+    getImageUrl(article: GuideArticle): string {
+        // If we know this image failed, return local fallback
+        if (this.failedImages.has(article.id)) {
+            return this.fallbackMap[article.slug] || this.defaultFallback;
+        }
+
+        // If API has no URL, return local fallback immediately
+        if (!article.image_url) {
+            return this.fallbackMap[article.slug] || this.defaultFallback;
+        }
+
+        // Otherwise try the remote URL
+        return `https://sopinfo.se/${article.image_url}`;
+    }
+
+    handleImageError(article: GuideArticle) {
+        this.failedImages.add(article.id);
     }
 }
