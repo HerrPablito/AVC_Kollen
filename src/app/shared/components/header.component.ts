@@ -29,16 +29,15 @@ export class HeaderComponent implements OnInit {
     showMobileMenu = signal(false);
 
 
-    // Model for the p-select to allow resetting
+
     selectedFavorite: Station | null = null;
 
-    // All available stations (for mapping favorites)
-    allStations = signal<Station[]>([]);
 
-    // Computed Favorites with full Station objects for the dropdown
+
+
     favoriteStations = computed(() => {
         const favoriteIds = this.favoritesService.favourites();
-        const stations = this.allStations();
+        const stations = this.sopinfoService.stations();
 
         if (!favoriteIds || favoriteIds.length === 0 || !stations || stations.length === 0) {
             return [];
@@ -54,26 +53,17 @@ export class HeaderComponent implements OnInit {
     }
 
     private loadAllStations() {
-        this.sopinfoService.getStations().subscribe({
-            next: (stations) => {
-                this.allStations.set(stations);
-            },
+        this.sopinfoService.loadStations().subscribe({
             error: (err) => console.error('Failed to load stations for header favorites:', err)
         });
     }
 
     navigateHome() {
         this.router.navigate(['/']);
-        // Scroll to top
         window.scrollTo(0, 0);
     }
 
-    selectStation(station: Station | null) {
-        if (station) {
-            this.selectedStation.set(station);
-            this.showStationDetail.set(true);
-        }
-    }
+
 
     onStationSelect(event: any) {
         const station = event?.value;
@@ -81,8 +71,7 @@ export class HeaderComponent implements OnInit {
             this.selectedStation.set(station);
             this.showStationDetail.set(true);
 
-            // Reset selection immediately so "Mina ÅVC" placeholder returns
-            // and the same station can be selected again
+
             setTimeout(() => {
                 this.selectedFavorite = null;
             }, 100);
@@ -97,7 +86,7 @@ export class HeaderComponent implements OnInit {
         });
     }
 
-    // Helper for template to consistently access favorites list
+
     getFavoritesList(): Station[] {
         return this.favoriteStations();
     }

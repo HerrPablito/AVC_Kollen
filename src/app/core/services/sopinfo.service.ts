@@ -9,24 +9,29 @@ import { Station, GuideArticle, GeoLocation } from '../models/sopinfo.models';
 export class SopinfoService {
     private readonly API_BASE = 'https://sopinfo.se/api';
 
-    private stationsCache = signal<Station[] | null>(null);
+    // Public signal for stations to avoid multiple subscriptions/state in components
+    public stations = signal<Station[]>([]);
 
     constructor(private http: HttpClient) { }
 
-    getStations(): Observable<Station[]> {
-        if (this.stationsCache()) {
-            return of(this.stationsCache()!);
+    loadStations(): Observable<Station[]> {
+        if (this.stations().length > 0) {
+            return of(this.stations());
         }
 
         return this.http.get<{ success: boolean; data: any[] }>(`${this.API_BASE}/stationer?limit=10000`).pipe(
-            tap(response => console.log('Sopinfo API: Fetched stations', response.data?.length)),
             map(response => this.mapStations(response.data)),
-            tap(stations => this.stationsCache.set(stations)),
+            tap(stations => this.stations.set(stations)),
             catchError(err => {
                 console.error('Sopinfo API Error (Stations):', err);
                 return throwError(() => err);
             })
         );
+    }
+
+    // Deprecated: Use loadStations() and access stations() signal instead
+    getStations(): Observable<Station[]> {
+        return this.loadStations();
     }
 
     getStationDetails(id: number): Observable<Station> {

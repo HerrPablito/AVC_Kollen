@@ -5,7 +5,6 @@ import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { SopinfoService } from '../../core/services/sopinfo.service';
-import { FavoritesService } from '../../shared/services/favorites.service';
 import { GuideArticle } from '../../core/models/sopinfo.models';
 
 @Component({
@@ -24,12 +23,10 @@ export class SortingGuideComponent implements OnInit {
     constructor(
         private sopinfoService: SopinfoService,
         private route: ActivatedRoute,
-        private router: Router,
-        public favoritesService: FavoritesService
+        private router: Router
     ) { }
 
     ngOnInit() {
-
         this.loadArticles();
     }
 
@@ -54,8 +51,6 @@ export class SortingGuideComponent implements OnInit {
 
     selectArticle(article: GuideArticle) {
         this.selectedArticle.set(article);
-        // Optionally update URL to reflect selection?
-        // this.router.navigate([], { queryParams: { article: article.slug } });
         this.sopinfoService.getGuideArticle(article.slug).subscribe(fullArticle => {
             this.selectedArticle.set(fullArticle);
         });

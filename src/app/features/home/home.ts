@@ -31,21 +31,20 @@ export class HomeComponent implements OnInit {
     errorMessage = signal<string | null>(null);
     showSearchResults = signal(false);
 
-    // Dialog State
+
     selectedArticle = signal<GuideArticle | null>(null);
     selectedStation = signal<Station | null>(null);
     showStationDetail = signal(false);
 
-    // Quick Search "Vad vill du slänga?"
+
     wasteQuery = signal('');
 
-    // All available stations (for mapping favorites)
-    allStations = signal<Station[]>([]);
+
 
     // Computed Favorites with full Station objects
     favoriteStations = computed(() => {
         const favoriteIds = this.favoritesService.favourites();
-        const stations = this.allStations();
+        const stations = this.sopinfoService.stations();
 
         if (!favoriteIds || favoriteIds.length === 0 || !stations || stations.length === 0) {
             return [];
@@ -54,21 +53,16 @@ export class HomeComponent implements OnInit {
         return stations.filter(station => favoriteIds.includes(station.id.toString()));
     });
 
-    // Radius for search (in km) - 1 mil = ~10 km
     private readonly SEARCH_RADIUS_KM = 10;
 
     constructor() { }
 
     ngOnInit() {
-        // Load all stations to map favorites
         this.loadAllStations();
     }
 
     private loadAllStations() {
-        this.sopinfoService.getStations().subscribe({
-            next: (stations) => {
-                this.allStations.set(stations);
-            },
+        this.sopinfoService.loadStations().subscribe({
             error: (err) => console.error('Failed to load stations for favorites:', err)
         });
     }
@@ -85,7 +79,6 @@ export class HomeComponent implements OnInit {
 
             if (location) {
                 // 2. Fetch all stations and find nearest
-                // Note: We might already have stations in allStations, but reusing existing logic for now
                 this.findNearestStation(location.latitude, location.longitude);
             }
         } catch (error) {
@@ -123,10 +116,7 @@ export class HomeComponent implements OnInit {
                     return;
                 }
 
-                // Update allStations if not already set (side effect optimization)
-                if (this.allStations().length === 0) {
-                    this.allStations.set(stations);
-                }
+
 
                 // Calculate distances for all stations
                 const stationsWithDist = stations.map(s => {
@@ -146,7 +136,7 @@ export class HomeComponent implements OnInit {
                 // Sort by distance
                 nearbyStations.sort((a, b) => (a.distance || 0) - (b.distance || 0));
 
-                // Set results
+
                 this.nearestStation.set(nearbyStations[0]);
                 this.searchResults.set(nearbyStations);
                 this.showSearchResults.set(true);
@@ -159,9 +149,7 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    navigateToStation(station: Station) {
-        this.router.navigate(['/stationer'], { queryParams: { highlight: station.id } });
-    }
+
 
     openSortingModal(slug: string) {
         console.log('Opening modal for slug:', slug);

@@ -166,6 +166,17 @@ export class FavouritesService {
     }
 
     /**
+     * Toggle favourite status
+     */
+    toggleFavourite(avcId: string): void {
+        if (this.isFavourite(avcId)) {
+            this.removeFavourite(avcId);
+        } else {
+            this.addFavourite(avcId);
+        }
+    }
+
+    /**
      * Get all favourites
      */
     getFavourites(): string[] {

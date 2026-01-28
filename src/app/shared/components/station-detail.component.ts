@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { Station } from '../../core/models/sopinfo.models';
-import { FavoritesService } from '../services/favorites.service';
+import { FavouritesService } from '../../core/services/favourites.service';
 
 @Component({
     selector: 'app-station-detail',
@@ -17,15 +17,15 @@ export class StationDetailComponent {
     @Input() visible = false;
     @Output() onHide = new EventEmitter<void>();
 
-    constructor(public favoritesService: FavoritesService) { }
+    constructor(public favoritesService: FavouritesService) { }
 
     isFavorite(): boolean {
-        return this.station ? this.favoritesService.isFavorite(this.station.id) : false;
+        return this.station ? this.favoritesService.isFavourite(this.station.id.toString()) : false;
     }
 
     toggleFavorite(): void {
         if (this.station) {
-            this.favoritesService.toggleFavorite(this.station);
+            this.favoritesService.toggleFavourite(this.station.id.toString());
         }
     }
 
