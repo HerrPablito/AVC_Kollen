@@ -29,6 +29,9 @@
                         severity="secondary">
                         <i class="pi pi-map-marker"></i>
                     </p-button>
+                    <p-button label="Visa karta" [routerLink]="['/karta']" severity="secondary">
+                        <i class="pi pi-map"></i>
+                    </p-button>
                     @if (searchResults().length > 0 || nearestStation()) {
                     <p-button label="Rensa sökning" (onClick)="clearSearch()" severity="secondary">
                         <i class="pi pi-trash"></i>

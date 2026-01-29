@@ -31,6 +31,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/profile/profile.component')
             .then(m => m.ProfileComponent),
         canActivate: [authGuard]
+    },
+    {
+        path: 'karta',
+        loadComponent: () => import('./features/map-page/map-page')
+            .then(m => m.MapPageComponent)
     }
 ];
 

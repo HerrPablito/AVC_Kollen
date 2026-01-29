@@ -1,0 +1,10 @@
+<div class="h-[calc(100vh-64px)] w-full relative">
+    <app-map [stations]="stations()" [zoom]="5" [center]="[16.0, 62.0]"></app-map>
+
+    <!-- Loading overlay if needed -->
+    @if(isLoading()) {
+    <div class="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
+        <i class="pi pi-spin pi-spinner text-4xl text-white"></i>
+    </div>
+    }
+</div>

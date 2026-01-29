@@ -1,9 +1,25 @@
-<div #mapElement class="map-container">
-    <div>
-        <button (click)="onClickTerrain()">Terrain Labels Mode</button>
-        <button (click)="onClickDark()">Dark Mode</button>
-        <button (click)="onClickToner()">Toner Mode</button>
-        <button (click)="onClickWatercolor()">Watercolor Mode</button>
-        <button (click)="onClickOutdoors()">Outdoors Mode</button>
+<div #mapElement class="map-container"></div>
+<div #popupContainer class="ol-popup">
+    @if (selectedStation) {
+    <div class="popup-card">
+        <div class="popup-header">
+            <h3 class="popup-title">{{selectedStation.name}}</h3>
+            <button class="popup-close" (click)="closePopup()" aria-label="Close">
+                <i class="pi pi-times"></i>
+            </button>
+        </div>
+        <div class="popup-content">
+            <div class="popup-row">
+                <i class="pi pi-map-marker popup-icon"></i>
+                <span>{{selectedStation.address}}@if(selectedStation.city){, {{selectedStation.city}}}</span>
+            </div>
+            @if(selectedStation.opening_info) {
+            <div class="popup-row">
+                <i class="pi pi-clock popup-icon"></i>
+                <span>{{selectedStation.opening_info}}</span>
+            </div>
+            }
+        </div>
     </div>
+    }
 </div>

@@ -2,76 +2,97 @@
     position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+}
 
-    button {
-        position: absolute;
-        top: var(--space-3);
-        z-index: 10;
-        padding: var(--space-2) var(--space-3);
-        background: color-mix(in srgb, var(--bg-0) 95%, transparent 5%);
-        backdrop-filter: blur(10px);
-        border: 1px solid var(--border-0);
-        border-radius: var(--radius-sm);
+.ol-popup {
+    position: absolute;
+    min-width: 280px;
+    max-width: 320px;
+    /* Transformation handled by OpenLayers, usually translates from bottom-center */
+    bottom: 12px;
+    left: -50px;
+
+    /* Ensure it receives events */
+    pointer-events: auto;
+    z-index: 1000;
+}
+
+.popup-card {
+    background: var(--bg-1);
+    color: var(--text-0);
+    border: 1px solid var(--border-0);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-0);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    animation: fadeInUp 0.2s ease-out;
+}
+
+.popup-header {
+    background: color-mix(in srgb, var(--bg-0) 50%, var(--bg-1) 50%);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-0);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-title {
+    margin: 0;
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--text-0);
+}
+
+.popup-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-2);
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+
+    &:hover {
+        background: var(--bg-2);
         color: var(--text-0);
-        font-size: var(--text-sm);
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        &:hover {
-            background: color-mix(in srgb, var(--bg-1) 90%, transparent 10%);
-            border-color: var(--accent-0);
-        }
-
-        &:nth-child(1) {
-            left: var(--space-3);
-        }
-
-        &:nth-child(2) {
-            left: calc(var(--space-3) + 160px);
-        }
-
-        &:nth-child(3) {
-            left: calc(var(--space-3) + 320px);
-        }
-
-        &:nth-child(4) {
-            left: calc(var(--space-3) + 480px);
-        }
-
-        &:nth-child(5) {
-            left: calc(var(--space-3) + 640px);
-        }
     }
 }
 
-@media (max-width: 768px) {
-    .map-container button {
-        font-size: var(--text-xs);
-        padding: var(--space-1) var(--space-2);
+.popup-content {
+    padding: var(--space-4);
+}
 
-        &:nth-child(1) {
-            left: var(--space-2);
-            top: var(--space-2);
-        }
+.popup-row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--text-1);
 
-        &:nth-child(2) {
-            left: var(--space-2);
-            top: calc(var(--space-2) + 36px);
-        }
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
 
-        &:nth-child(3) {
-            left: var(--space-2);
-            top: calc(var(--space-2) + 72px);
-        }
+.popup-icon {
+    color: var(--accent-0);
+    margin-top: 2px;
+}
 
-        &:nth-child(4) {
-            left: var(--space-2);
-            top: calc(var(--space-2) + 108px);
-        }
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
 
-        &:nth-child(5) {
-            left: var(--space-2);
-            top: calc(var(--space-2) + 144px);
-        }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
